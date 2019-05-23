@@ -142,6 +142,7 @@ voiceSelect.innerHTML = selectHtml;
 voiceSelect.addEventListener('change', setCharLimit);
 document.getElementById('playbutton').addEventListener('click', generateTTSUrl);
 document.getElementById('copylinkbutton').addEventListener('click', copyToClipboard);
+document.getElementById('text').addEventListener('input', characterCount);
 
 // Generate URL to TTS output
 function generateTTSUrl() {
@@ -214,6 +215,20 @@ function copyToClipboard() {
 function setCharLimit() {
     const newCharLimit = this.options[voice.selectedIndex].dataset.charlimit;
     document.getElementById('text').maxLength = newCharLimit;
+    document.getElementById('charlimit').innerHTML = newCharLimit;
+}
+
+// Show character count/limit
+function characterCount() {
+    const curLength = this.value.trim().length;
+    document.getElementById('chars').innerHTML = curLength;
+
+    // if current length is near the max length change colour to red
+    if (curLength > (this.maxLength - 10)) {
+        document.getElementById('character-count').classList.add('has-text-danger');
+    } else {
+        document.getElementById('character-count').classList.remove('has-text-danger');
+    }
 }
 
 // Convert country code (ISO 3166-1 alpha-2) to emoji flag
