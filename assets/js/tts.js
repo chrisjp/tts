@@ -5,9 +5,9 @@ const ttsServices = {
         url: 'https://streamlabs.com/polly/speak',
         charLimit: 550,
         voices: [
-            {vid: 'Brian', name: 'Brian (English, British)', flag: 'GB-ENG'},
-            {vid: 'Amy', name: 'Amy (English, British)', flag: 'GB-ENG'},
-            {vid: 'Emma', name: 'Emma (English, British)', flag: 'GB-ENG'},
+            {vid: 'Brian', name: 'Brian (English, British)', flag: 'GB'},
+            {vid: 'Amy', name: 'Amy (English, British)', flag: 'GB'},
+            {vid: 'Emma', name: 'Emma (English, British)', flag: 'GB'},
             {vid: 'Geraint', name: 'Geraint (English, Welsh)', flag: 'GB-WLS'},
             {vid: 'Russell', name: 'Russell (English, Australian)', flag: 'AU'},
             {vid: 'Nicole', name: 'Nicole (English, Australian)', flag: 'AU'},
@@ -69,7 +69,7 @@ const ttsServices = {
         url: 'http://translate.google.com/translate_tts?ie=UTF-8&total=1&idx=0&client=tw-ob&prev=input&textlen=__LEN__&q=__TEXT__&tl=__LOCALE__&ttsspeed=__SPEED__',
         charLimit: 200,
         voices: [
-            {vid: 'en-gb', name: 'English (British)', flag: 'GB-ENG'},
+            {vid: 'en-gb', name: 'English (British)', flag: 'GB'},
             {vid: 'en-us', name: 'English (American)', flag: 'US'},
             {vid: 'en-au', name: 'English (Australian)', flag: 'AU'},
             {vid: 'en-in', name: 'English (Indian)', flag: 'IN'},
@@ -129,7 +129,9 @@ for (var voiceGroup in ttsServices) {
     selectHtml += '<optgroup label="' + voiceGroup + ' (' + voices.length + ')">';
     for (var i = 0; i < voices.length; i++) {
         // Add the option
-        selectHtml += '<option value="' + voices[i].vid + '" data-api="' + voiceGroup + '" data-charlimit="' + ttsServices[voiceGroup].charLimit + '">' + voices[i].name + ' ' + countryCodeToEmoji(voices[i].flag) + '</option>';
+        selectHtml += '<option value="' + voices[i].vid + '" data-api="' + voiceGroup + '" data-charlimit="' + ttsServices[voiceGroup].charLimit + '">' + 
+                      countryCodeToEmoji(voices[i].flag) + ' ' + voices[i].name +
+                      '</option>';
     }
     selectHtml += '</optgroup>';
 }
@@ -240,19 +242,19 @@ function countryCodeToEmoji(countryCode) {
         const secondChar = countryCode.codePointAt(1);
         var emoji = String.fromCodePoint(firstChar + offset) + String.fromCodePoint(secondChar + offset);
 
-        // Handle special cases (England, Scotland, Wales) by appending subdivision flag
+        // Handle special cases (England, Scotland, Wales) with subdivision flags
         if (countryCode.length == 6) {
             switch (countryCode.substr(3, 3)) {
                 case 'ENG':
-                emoji += '\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f';
+                emoji = '\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f';
                 break;
 
                 case 'SCT':
-                emoji += '\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc73\udb40\udc63\udb40\udc74\udb40\udc7f';
+                emoji = '\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc73\udb40\udc63\udb40\udc74\udb40\udc7f';
                 break;
 
                 case 'WLS':
-                emoji += '\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc77\udb40\udc6c\udb40\udc73\udb40\udc7f';
+                emoji = '\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc77\udb40\udc6c\udb40\udc73\udb40\udc7f';
                 break;
             }
         }
@@ -260,5 +262,5 @@ function countryCodeToEmoji(countryCode) {
         return emoji;
     }
 
-    return '';
+    return '\ud83c\udff3\ufe0f';
 }
