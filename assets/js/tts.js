@@ -137,7 +137,7 @@ for (var voiceGroup in ttsServices) {
 }
 
 // Insert <select> HTML into the DOM
-var voiceSelect = document.getElementById("voice");
+var voiceSelect = document.getElementById('voice');
 voiceSelect.innerHTML = selectHtml;
 
 // Add Event Listeners
@@ -158,7 +158,11 @@ function generateTTSUrl() {
             var response = JSON.parse(xhr.responseText);
             if (xhr.readyState == 4 && xhr.status == '200') {
                 console.log(response);
-                if (response.success === true) showAudioPlayer(response.speak_url);
+                if (response.success === true) {
+                    showAudioPlayer(response.speak_url);
+                } else if (response.error) {
+                    showErrorMessage(response.error);
+                }
             } else {
                 console.error(response);
             }
@@ -180,8 +184,17 @@ function generateTTSUrl() {
 function showAudioPlayer(ttsUrl) {
     var audioHtml = '<audio autoplay controls id="audioplayer" preload="metadata" src="' + ttsUrl + '" title="TTS Audio Clip"><p>Your browser does not support the <code>audio</code> element.</p></audio>';
     document.getElementById('tts-player').innerHTML = audioHtml;
-    document.getElementById('audiocontainer').classList.remove('is-hidden');
+    document.getElementById('tts-player').classList.remove('is-hidden');
     document.getElementById('copylinkbutton').classList.remove('is-hidden');
+}
+
+// Show error message
+function showErrorMessage(message) {
+    document.getElementById('tts-error-text').innerHTML = '<strong>Error:</strong> ' + message;
+    document.getElementById('tts-error').classList.remove('is-hidden');
+    setTimeout(() => {
+        document.getElementById('tts-error').classList.add('is-hidden');
+    }, 2500);
 }
 
 // Copy audio link to clipboard

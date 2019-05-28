@@ -65,12 +65,19 @@
                         </div>
                     </div>
                     
-                    <div class="field is-horizontal is-hidden" id="audiocontainer">
+                    <div class="field is-horizontal">
                         <div class="field-label is-normal">
                         </div>
                         <div class="field-body">
-                            <div class="field is-narrow">
-                                <div id="tts-player" class="control">
+                            <div class="field is-grouped">
+                                <div class="control">
+                                    <div id="tts-player" class="control is-pulled-left is-hidden">
+                                    </div>
+                                </div>
+                                <div class="control">
+                                    <div id="tts-error" class="message is-pulled-left is-small is-hidden">
+                                        <div id="tts-error-text" class="message-body"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
