@@ -150,7 +150,7 @@ document.getElementById('text').addEventListener('input', characterCount);
 function generateTTSUrl() {
     const voice = document.getElementById('voice');
     const api = voice.options[voice.selectedIndex].dataset.api;
-    const text = document.getElementById('text').value || 'Please enter some text.';
+    const text = document.getElementById('text').value.trim() || 'Please enter some text.';
 
     if (api === 'Polly') {
         var xhr = new XMLHttpRequest();
@@ -165,11 +165,11 @@ function generateTTSUrl() {
         }
         xhr.open('POST', 'proxy.php', true);    // Use our own proxy to get around CORS issues
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.send('voice=' + encodeURIComponent(voice.value) + '&text=' + encodeURIComponent(text.trim()));
+        xhr.send('voice=' + encodeURIComponent(voice.value) + '&text=' + encodeURIComponent(text));
     } else if (api === 'Google Translate') {
         var url = ttsServices[api].url;
         url = url.replace('__LEN__', text.length);
-        url = url.replace('__TEXT__', text);
+        url = url.replace('__TEXT__', encodeURIComponent(text));
         url = url.replace('__LOCALE__', voice.value);
         url = url.replace('__SPEED__', 1);
         showAudioPlayer(url);
