@@ -64,6 +64,33 @@ const ttsServices = {
             {vid: 'Gwyneth', name: 'Gwyneth (Welsh)', flag: 'GB-WLS'},
         ],
     },
+    'IBM Watson':
+    {
+        url: 'https://text-to-speech-demo.ng.bluemix.net/api/v1/synthesize?text=__TEXT__&voice=__VOICE__&accept=audio%2Fmp3',
+        charLimit: 5000,
+        voices: [
+            {vid: 'en-GB_KateVoice', name: 'Kate (English, British)', flag: 'GB'},
+            {vid: 'en-US_AllisonVoice', name: 'Allison (English, American)', flag: 'US'},
+            {vid: 'en-US_AllisonV2Voice', name: 'Allison V2 (English, American)', flag: 'US'},
+            {vid: 'en-US_LisaVoice', name: 'Lisa (English, American)', flag: 'US'},
+            {vid: 'en-US_LisaV2Voice', name: 'Lisa V2 (English, American)', flag: 'US'},
+            {vid: 'en-US_MichaelVoice', name: 'Michael (English, American)', flag: 'US'},
+            {vid: 'en-US_MichaelV2Voice', name: 'Michael V2 (English, American)', flag: 'US'},
+            {vid: 'fr-FR_ReneeVoice', name: 'Renee (French)', flag: 'FR'},
+            {vid: 'de-DE_BirgitVoice', name: 'Birgit (German)', flag: 'DE'},
+            {vid: 'de-DE_BirgitV2Voice', name: 'Birgit V2 (German)', flag: 'DE'},
+            {vid: 'de-DE_DieterVoice', name: 'Dieter (German)', flag: 'DE'},
+            {vid: 'de-DE_DieterV2Voice', name: 'Dieter V2 (German)', flag: 'DE'},
+            {vid: 'it-IT_FrancescaVoice', name: 'Francesca (Italian)', flag: 'IT'},
+            {vid: 'it-IT_FrancescaV2Voice', name: 'Francesca V2 (Italian)', flag: 'IT'},
+            {vid: 'ja-JP_EmiVoice', name: 'Emi (Japanese)', flag: 'JP'},
+            {vid: 'pt-BR_IsabelaVoice', name: 'Isabela (Portuguese, Brazilian)', flag: 'BR'},
+            {vid: 'es-ES_EnriqueVoice', name: 'Enrique (Spanish, European)', flag: 'ES'},
+            {vid: 'es-ES_LauraVoice', name: 'Laura (Spanish, European)', flag: 'ES'},
+            {vid: 'es-LA_SofiaVoice', name: 'Sofia (Spanish, Latin American)', flag: 'MX'},
+            {vid: 'es-US_SofiaVoice', name: 'Sofia (Spanish, American)', flag: 'US'},
+        ],
+    },
     'Google Translate':
     {
         url: 'http://translate.google.com/translate_tts?ie=UTF-8&total=1&idx=0&client=tw-ob&prev=input&textlen=__LEN__&q=__TEXT__&tl=__LOCALE__&ttsspeed=__SPEED__',
@@ -123,6 +150,7 @@ const ttsServices = {
 
 // Iterate over each group of voices
 var selectHtml = '';
+var voiceCount = 0;
 for (var voiceGroup in ttsServices) {
     // Add an option group and iterate over each voice
     var voices = ttsServices[voiceGroup].voices;
@@ -134,11 +162,13 @@ for (var voiceGroup in ttsServices) {
                       '</option>';
     }
     selectHtml += '</optgroup>';
+    voiceCount += voices.length;
 }
 
-// Insert <select> HTML into the DOM
+// Insert <select> HTML into the DOM, and show exact voice count
 var voiceSelect = document.getElementById('voice');
 voiceSelect.innerHTML = selectHtml;
+document.getElementById('voicecount').innerHTML = voiceCount;
 
 // Add Event Listeners
 voiceSelect.addEventListener('change', setCharLimit);
@@ -151,6 +181,7 @@ function generateTTSUrl() {
     const voice = document.getElementById('voice');
     const api = voice.options[voice.selectedIndex].dataset.api;
     const text = document.getElementById('text').value.trim() || 'Please enter some text.';
+    var url = ttsServices[api].url;
 
     if (api === 'Polly') {
         var xhr = new XMLHttpRequest();
@@ -171,11 +202,14 @@ function generateTTSUrl() {
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.send('voice=' + encodeURIComponent(voice.value) + '&text=' + encodeURIComponent(text));
     } else if (api === 'Google Translate') {
-        var url = ttsServices[api].url;
         url = url.replace('__LEN__', text.length);
         url = url.replace('__TEXT__', encodeURIComponent(text));
         url = url.replace('__LOCALE__', voice.value);
         url = url.replace('__SPEED__', 1);
+        showAudioPlayer(url);
+    } else if (api === 'IBM Watson') {
+        url = url.replace('__TEXT__', encodeURIComponent(text));
+        url = url.replace('__VOICE__', voice.value);
         showAudioPlayer(url);
     }
 }

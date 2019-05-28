@@ -15,7 +15,8 @@
             <h1 class="title is-2">Text-to-Speech Demo</h1>
             <p class="subtitle is-4">A simple web app demonstrating how text sounds in different TTS voices.</p>
             <div class="box">
-                <p>Choose from any of the 57 voices in Amazon Polly (via Streamlabs API) or 48 voices in Google Translate. Polly voices can be useful for testing how Twitch.tv donations will sound as many streamers make use of these.</p>
+                <p>Choose from any of <span id="voicecount" class="has-text-weight-bold">100+</span> voices from Amazon Polly (via Streamlabs API), IBM Watson, and Google Translate.<br />
+                    Polly voices can be useful for testing how Twitch.tv donations will sound as many streamers make use of these.</p>
 
                 <hr />
 
@@ -43,7 +44,7 @@
                         <div class="field-body">
                             <div class="field is-narrow">
                                 <div class="control">
-                                    <textarea id="text" name="text" rows="2" cols="70" maxlength="550" class="textarea" placeholder="Enter some text here..."></textarea>
+                                    <textarea id="text" name="text" rows="3" cols="70" maxlength="550" class="textarea" placeholder="Enter some text here..."></textarea>
                                     <span id="character-count" class="is-pulled-right is-size-7 has-text-right"><span id="chars">0</span>/<span id="charlimit">550</span></span>
                                 </div>
                             </div>
@@ -90,7 +91,8 @@
     <footer class="footer">
         <div class="content has-text-centered">
             <p>
-                TTS Demo by <a href="https://chrisphillips.uk">Chris Phillips</a>. Powered by <a href="https://aws.amazon.com/polly/">Amazon Polly</a> (via <a href="https://streamlabs.com/">Streamlabs</a> API) and <a href="https://translate.google.com/">Google Translate</a>.
+                TTS Demo by <a href="https://chrisphillips.uk">Chris Phillips</a>.<br />
+                Powered by: <a href="https://aws.amazon.com/polly/">Amazon Polly</a> (via <a href="https://streamlabs.com/">Streamlabs</a> API) // <a href="https://www.ibm.com/watson/services/text-to-speech/">IBM Watson</a> // <a href="https://translate.google.com/">Google Translate</a>.
             </p>
         </div>
     </footer>
