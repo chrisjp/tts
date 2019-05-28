@@ -231,11 +231,13 @@ function setCharLimit() {
     const newCharLimit = this.options[voice.selectedIndex].dataset.charlimit;
     document.getElementById('text').maxLength = newCharLimit;
     document.getElementById('charlimit').innerHTML = newCharLimit;
+    document.getElementById('text').dispatchEvent(new Event('input'));
 }
 
 // Show character count/limit
 function characterCount() {
-    const curLength = this.value.trim().length;
+    // Streamlabs counts bytes, Google Translate counts characters
+    const curLength = this.maxLength === ttsServices['Polly'].charLimit ? byteCount(this.value.trim()) : this.value.trim().length;
     document.getElementById('chars').innerHTML = curLength;
 
     // if current length is near the max length change colour to red
@@ -244,6 +246,12 @@ function characterCount() {
     } else {
         document.getElementById('character-count').classList.remove('has-text-danger');
     }
+}
+
+// Count bytes of text string
+// https://stackoverflow.com/a/12203648/403476
+function byteCount(s) {
+    return encodeURI(s).split(/%..|./).length - 1;
 }
 
 // Convert country code (ISO 3166-1 alpha-2) to emoji flag

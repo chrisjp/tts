@@ -14,7 +14,7 @@ Inspired by [Peter Cunha's](https://github.com/petercunha/tts) very similar tool
 - Simple HTML5 and JavaScript, with no dependencies, frameworks, libraries etc. required
 
 ## Limitations
-- Streamlabs has a 550 character limit for TTS processing with Amazon Polly voices
+- Streamlabs has a 550 byte limit for TTS processing with Amazon Polly voices
 - Streamlabs TTS is outputted in ogg vorbis which is unsupported in web browsers on iOS, though can be played in third-party apps
 - Streamlabs TTS URLs are valid for only 5 minutes.
 - Google Translate has a 200 character limit
