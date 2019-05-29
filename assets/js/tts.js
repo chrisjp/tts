@@ -4,6 +4,7 @@ const ttsServices = {
     {
         url: 'https://streamlabs.com/polly/speak',
         charLimit: 550,
+        countBytes: true,
         voices: [
             {vid: 'Brian', name: 'Brian (English, British)', flag: 'GB'},
             {vid: 'Amy', name: 'Amy (English, British)', flag: 'GB'},
@@ -68,6 +69,7 @@ const ttsServices = {
     {
         url: 'https://text-to-speech-demo.ng.bluemix.net/api/v1/synthesize?text=__TEXT__&voice=__VOICE__&accept=audio%2Fmp3',
         charLimit: 5000,
+        countBytes: false,
         voices: [
             {vid: 'en-GB_KateVoice', name: 'Kate (English, British)', flag: 'GB'},
             {vid: 'en-US_AllisonVoice', name: 'Allison (English, American)', flag: 'US'},
@@ -95,6 +97,7 @@ const ttsServices = {
     {
         url: 'http://translate.google.com/translate_tts?ie=UTF-8&total=1&idx=0&client=tw-ob&prev=input&textlen=__LEN__&q=__TEXT__&tl=__LOCALE__&ttsspeed=__SPEED__',
         charLimit: 200,
+        countBytes: false,
         voices: [
             {vid: 'en-gb', name: 'English (British)', flag: 'GB'},
             {vid: 'en-us', name: 'English (American)', flag: 'US'},
@@ -150,6 +153,7 @@ const ttsServices = {
     {
         url: 'https://www.ispeech.org/p/generic/getaudio?action=convert&pitch=100&voice=__VOICE__&speed=__SPEED__&text=__TEXT__',
         charLimit: 150,
+        countBytes: true,
         voices: [
             {vid: 'ukenglishfemale', name: 'English (British) - Female', flag: 'GB'},
             {vid: 'ukenglishmale', name: 'English (British) - Male', flag: 'GB'},
@@ -323,8 +327,10 @@ function setCharLimit() {
 
 // Show character count/limit
 function characterCount() {
-    // Streamlabs counts bytes, Google Translate counts characters
-    const curLength = this.maxLength === ttsServices['Polly'].charLimit ? byteCount(this.value.trim()) : this.value.trim().length;
+    // Some services count bytes rather than characters
+    const voice = document.getElementById('voice');
+    const api = voice.options[voice.selectedIndex].dataset.api;
+    const curLength = ttsServices[api].countBytes === true ? byteCount(this.value.trim()) : this.value.trim().length;
     document.getElementById('chars').innerHTML = curLength;
 
     // if current length is near the max length change colour to red
