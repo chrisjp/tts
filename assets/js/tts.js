@@ -146,6 +146,53 @@ const ttsServices = {
             {vid: 'vi-vn', name: 'Vietnamese', flag: 'VN'},
         ],
     },
+    'iSpeech':
+    {
+        url: 'https://www.ispeech.org/p/generic/getaudio?action=convert&pitch=100&voice=__VOICE__&speed=__SPEED__&text=__TEXT__',
+        charLimit: 150,
+        voices: [
+            {vid: 'ukenglishfemale', name: 'English (British) - Female', flag: 'GB'},
+            {vid: 'ukenglishmale', name: 'English (British) - Male', flag: 'GB'},
+            {vid: 'usenglishfemale', name: 'English (American) - Female', flag: 'US'},
+            {vid: 'usenglishmale', name: 'English (American) - Male', flag: 'US'},
+            {vid: 'auenglishfemale', name: 'English (Australian) - Female', flag: 'AU'},
+            {vid: 'caenglishfemale', name: 'English (Canadian) - Female', flag: 'CA'},
+            {vid: 'arabicmale', name: 'Arabic - Male', flag: 'EG'},
+            {vid: 'chchinesefemale', name: 'Chinese (China) - Female', flag: 'CN'},
+            {vid: 'hkchinesefemale', name: 'Chinese (Hong Kong) - Female', flag: 'HK'},
+            //{vid: 'twchinesefemale', name: 'Chinese (Taiwan) - Female', flag: 'TW'}, // "invalid voice" as of May 2019
+            {vid: 'eurczechfemale', name: 'Czech - Female', flag: 'CZ'},
+            {vid: 'eurdanishfemale', name: 'Danish - Female', flag: 'DK'},
+            {vid: 'eurdutchfemale', name: 'Dutch - Female', flag: 'NL'},
+            {vid: 'eurfinnishfemale', name: 'Finnish - Female', flag: 'FI'},
+            {vid: 'eurfrenchfemale', name: 'French (European) - Female', flag: 'FR'},
+            {vid: 'eurfrenchmale', name: 'French (European) - Male', flag: 'FR'},
+            {vid: 'cafrenchfemale', name: 'French (Canadian) - Female', flag: 'CA'},
+            {vid: 'cafrenchmale', name: 'French (Canadian) - Male', flag: 'CA'},
+            {vid: 'eurgermanfemale', name: 'German - Female', flag: 'DE'},
+            {vid: 'eurgermanmale', name: 'German - Male', flag: 'DE'},
+            {vid: 'eurgreekfemale', name: 'Greek - Female', flag: 'GR'},
+            {vid: 'huhungarianfemale', name: 'Hungarian - Female', flag: 'HU'},
+            {vid: 'euritalianfemale', name: 'Italian - Female', flag: 'IT'},
+            {vid: 'euritalianmale', name: 'Italian - Male', flag: 'IT'},
+            {vid: 'jpjapanesefemale', name: 'Japanese - Female', flag: 'JP'},
+            {vid: 'krkoreanfemale', name: 'Korean - Female', flag: 'KR'},
+            {vid: 'eurnorwegianfemale', name: 'Norwegian - Female', flag: 'NO'},
+            {vid: 'eurpolishfemale', name: 'Polish - Female', flag: 'PL'},
+            {vid: 'eurportuguesefemale', name: 'Portuguese (European) - Female', flag: 'PT'},
+            {vid: 'eurportuguesemale', name: 'Portuguese (European) - Male', flag: 'PT'},
+            {vid: 'brportuguesefemale', name: 'Portuguese (Brazilian) - Female', flag: 'BR'},
+            {vid: 'rurussianfemale', name: 'Russian - Female', flag: 'RU'},
+            {vid: 'rurussianmale', name: 'Russian - Male', flag: 'RU'},
+            {vid: 'eurspanishfemale', name: 'Spanish (European) - Female', flag: 'ES'},
+            {vid: 'eurspanishmale', name: 'Spanish (European) - Male', flag: 'ES'},
+            {vid: 'usspanishfemale', name: 'Spanish (Latin American) - Female', flag: 'MX'},
+            {vid: 'usspanishmale', name: 'Spanish (Latin American) - Male', flag: 'MX'},
+            {vid: 'swswedishfemale', name: 'Swedish - Female', flag: 'SE'},
+            {vid: 'eurturkishfemale', name: 'Turkish - Female', flag: 'TR'},
+            {vid: 'eurturkishmale', name: 'Turkish - Male', flag: 'TR'},
+        ],
+    },
 };
 
 // Iterate over each group of voices
@@ -210,6 +257,12 @@ function generateTTSUrl() {
     } else if (api === 'IBM Watson') {
         url = url.replace('__TEXT__', encodeURIComponent(text));
         url = url.replace('__VOICE__', voice.value);
+        showAudioPlayer(url);
+    }
+     else if (api === 'iSpeech') {
+        url = url.replace('__TEXT__', encodeURIComponent(text));
+        url = url.replace('__VOICE__', voice.value);
+        url = url.replace('__SPEED__', 0);
         showAudioPlayer(url);
     }
 }
