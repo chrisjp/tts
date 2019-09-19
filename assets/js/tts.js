@@ -340,10 +340,11 @@ function showErrorMessage(message) {
 function copyToClipboard() {
     var audioUrl = document.getElementById('audioplayer').src;
 
-    // Create a temporary <input> to contain the above text, which we can the select and copy
+    // Create a temporary text <input> to contain the URL of the audio clip, which we can then select and copy
     var tempInput = document.createElement('input');
     tempInput.type = 'text';
     tempInput.value = audioUrl;
+    tempInput.className = 'is-hidden';
     document.body.appendChild(tempInput);
 
     // Select and copy
