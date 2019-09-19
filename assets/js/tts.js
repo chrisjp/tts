@@ -347,7 +347,26 @@ function copyToClipboard() {
     document.body.appendChild(tempInput);
 
     // Select and copy
-    tempInput.select();
+    // on iOS? Need to do a hacky workaround for this to work
+    if (navigator.userAgent.match(/ipad|ipod|iphone/i)) {
+        // Set input's contentEditable to true
+        tempInput.contentEditable = true;
+
+        // create a selectable range
+        var range = document.createRange();
+        range.selectNodeContents(tempInput);
+
+        // select the range
+        var selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        tempInput.setSelectionRange(0, 9999);
+
+        // revert contentEditable back to false
+        tempInput.contentEditable = false;
+    } else {
+        tempInput.select();
+    }
     document.execCommand('Copy');
 
     // Remove element
