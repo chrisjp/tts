@@ -199,16 +199,24 @@ const ttsServices = {
     },
 };
 
+// Current URL paramaters
+const url = new URL(window.location.href);
+const urlParamVoice = url.searchParams.get('voice');
+const urlParamApi = url.searchParams.get('service');
+const urlParamText = url.searchParams.get('text');
+
 // Iterate over each group of voices
 var selectHtml = '';
 var voiceCount = 0;
+var selVoice = '';
 for (var voiceGroup in ttsServices) {
     // Add an option group and iterate over each voice
     var voices = ttsServices[voiceGroup].voices;
     selectHtml += '<optgroup label="' + voiceGroup + ' (' + voices.length + ')">';
     for (var i = 0; i < voices.length; i++) {
+        selVoice = (urlParamVoice == voices[i].vid) && (urlParamApi == voiceGroup) ? ' selected' : '';
         // Add the option
-        selectHtml += '<option value="' + voices[i].vid + '" data-api="' + voiceGroup + '" data-charlimit="' + ttsServices[voiceGroup].charLimit + '">' + 
+        selectHtml += '<option value="' + voices[i].vid + '" ' + selVoice + ' data-api="' + voiceGroup + '" data-charlimit="' + ttsServices[voiceGroup].charLimit + '">' + 
                       countryCodeToEmoji(voices[i].flag) + ' ' + voices[i].name +
                       '</option>';
     }
@@ -222,10 +230,47 @@ voiceSelect.innerHTML = selectHtml;
 document.getElementById('voicecount').innerHTML = voiceCount;
 
 // Add Event Listeners
-voiceSelect.addEventListener('change', setCharLimit);
+voiceSelect.addEventListener('change', selectVoice);
 document.getElementById('playbutton').addEventListener('click', generateTTSUrl);
 document.getElementById('copylinkbutton').addEventListener('click', copyToClipboard);
 document.getElementById('text').addEventListener('input', characterCount);
+
+// If there is text present in the URL, put it in the textarea and play the audio
+if (urlParamText !== null && decodeURIComponent(urlParamText).trim().length > 0) {
+    document.getElementById('text').value = urlParamText;
+    setCharLimit();
+    characterCount();
+    generateTTSUrl();
+}
+
+
+/** 
+ * HELPER FUNCTIONS
+ */
+
+
+// When selecting a voice from the dropdown, set new char limit and URL
+function selectVoice() {
+    const selVoice = this.options[voice.selectedIndex];
+    
+    // Set character limit on textarea
+    setCharLimit();
+    
+    // Change the URL parameters
+    var newUrl = updateURLParameter(window.location.href, 'voice', selVoice.value);
+    newUrl = updateURLParameter(newUrl, 'service', selVoice.dataset.api);
+    
+    // Change the URL in the address bar
+    setNewUrl(newUrl);
+}
+
+// Update the URL in the browser's address bar
+function setNewUrl(newUrl) {
+    if (window.history.replaceState) {
+       // prevents browser from storing history with each change:
+       window.history.replaceState('', document.getElementsByTagName('title')[0].innerHTML, newUrl);
+    }
+}
 
 // Generate URL to TTS output
 function generateTTSUrl() {
@@ -277,6 +322,9 @@ function showAudioPlayer(ttsUrl) {
     document.getElementById('tts-player').innerHTML = audioHtml;
     document.getElementById('tts-player').classList.remove('is-hidden');
     document.getElementById('copylinkbutton').classList.remove('is-hidden');
+    
+    // Update the URL in the address bar with the text to be spoken
+    setNewUrl(updateURLParameter(window.location.href, 'text', encodeURIComponent(document.getElementById('text').value.trim())));
 }
 
 // Show error message
@@ -319,7 +367,9 @@ function copyToClipboard() {
 
 // Set character limit on textarea
 function setCharLimit() {
-    const newCharLimit = this.options[voice.selectedIndex].dataset.charlimit;
+    const voice = document.getElementById('voice');
+    const selectedVoice = voice.options[voice.selectedIndex];
+    const newCharLimit = selectedVoice.dataset.charlimit;
     document.getElementById('text').maxLength = newCharLimit;
     document.getElementById('charlimit').innerHTML = newCharLimit;
     document.getElementById('text').dispatchEvent(new Event('input'));
@@ -328,9 +378,10 @@ function setCharLimit() {
 // Show character count/limit
 function characterCount() {
     // Some services count bytes rather than characters
+    const thisText = this.value === undefined ? document.getElementById('text').value : this.value;
     const voice = document.getElementById('voice');
     const api = voice.options[voice.selectedIndex].dataset.api;
-    const curLength = ttsServices[api].countBytes === true ? byteCount(this.value.trim()) : this.value.trim().length;
+    const curLength = ttsServices[api].countBytes === true ? byteCount(thisText.trim()) : thisText.trim().length;
     document.getElementById('chars').innerHTML = curLength;
 
     // if current length is near the max length change colour to red
@@ -377,4 +428,51 @@ function countryCodeToEmoji(countryCode) {
     }
 
     return '\ud83c\udff3\ufe0f';
+}
+
+// change URL paramaters
+// https://stackoverflow.com/a/10997390/403476
+function updateURLParameter(url, param, paramVal)
+{
+    var TheAnchor = null;
+    var newAdditionalURL = "";
+    var tempArray = url.split("?");
+    var baseURL = tempArray[0];
+    var additionalURL = tempArray[1];
+    var temp = "";
+
+    if (additionalURL) 
+    {
+        var tmpAnchor = additionalURL.split("#");
+        var TheParams = tmpAnchor[0];
+            TheAnchor = tmpAnchor[1];
+        if(TheAnchor)
+            additionalURL = TheParams;
+
+        tempArray = additionalURL.split("&");
+
+        for (var i=0; i<tempArray.length; i++)
+        {
+            if(tempArray[i].split('=')[0] != param)
+            {
+                newAdditionalURL += temp + tempArray[i];
+                temp = "&";
+            }
+        }        
+    }
+    else
+    {
+        var tmpAnchor = baseURL.split("#");
+        var TheParams = tmpAnchor[0];
+            TheAnchor  = tmpAnchor[1];
+
+        if(TheParams)
+            baseURL = TheParams;
+    }
+
+    if(TheAnchor)
+        paramVal += "#" + TheAnchor;
+
+    var rows_txt = temp + "" + param + "=" + paramVal;
+    return baseURL + "?" + newAdditionalURL + rows_txt;
 }
