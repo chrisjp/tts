@@ -201,42 +201,60 @@ const ttsServices = {
 
 // Current URL paramaters
 const url = new URL(window.location.href);
-const urlParamVoice = url.searchParams.get('voice');
-const urlParamApi = url.searchParams.get('service');
-const urlParamText = url.searchParams.get('text');
+var urlParamVoice = url.searchParams.get('voice');
+var urlParamApi = url.searchParams.get('service');
+var urlParamText = url.searchParams.get('text');
 
 // Iterate over each group of voices
-var selectHtml = '';
-var voiceCount = 0;
-var selVoice = '';
+var columnsHtml, selVoice, voiceCount = 0, voicesPerColumn = 0, columns = 3;
+const defaultVoice = 'Brian';
+const defaultApi = 'Polly';
 for (var voiceGroup in ttsServices) {
     // Add an option group and iterate over each voice
     var voices = ttsServices[voiceGroup].voices;
-    selectHtml += '<optgroup label="' + voiceGroup + ' (' + voices.length + ')">';
-    for (var i = 0; i < voices.length; i++) {
-        selVoice = (urlParamVoice == voices[i].vid) && (urlParamApi == voiceGroup) ? ' selected' : '';
-        // Add the option
-        selectHtml += '<option value="' + voices[i].vid + '" ' + selVoice + ' data-api="' + voiceGroup + '" data-charlimit="' + ttsServices[voiceGroup].charLimit + '">' + 
+    var columnCount = 1;
+    voicesPerColumn = Math.ceil(voices.length / columns);
+    
+    columnsHtml = '<div class="columns"><div class="column"><div class="buttons are-small">';
+    for (var i = 0; i < voices.length; i++) {      
+        // Start new column?
+        if (columnCount < columns && i > 0 && i % voicesPerColumn == 0) {
+            columnCount++;
+            columnsHtml += '</div></div><div class="column"><div class="buttons are-small">';
+        }
+          
+        // Add button
+        selVoice = ((urlParamVoice == voices[i].vid) && (urlParamApi == voiceGroup)) || ( (!urlParamApi || !urlParamVoice) && (defaultVoice == voices[i].vid) && (defaultApi == voiceGroup) ) ? ' selected-voice' : ' is-outlined';
+        columnsHtml += '<button type="button" class="button button-voice is-success is-fullwidth is-rounded' + selVoice + '" data-vid="' + voices[i].vid + '" data-api="' + voiceGroup + '" data-charlimit="' + ttsServices[voiceGroup].charLimit + '">' + 
                       countryCodeToEmoji(voices[i].flag) + ' ' + voices[i].name +
-                      '</option>';
+                      '</button>' + "\n";
+
     }
-    selectHtml += '</optgroup>';
+    columnsHtml += '</div></div></div>';
+    
+    // Insert columns into DOM
+    document.getElementById(voiceGroup.replace(' ', '')).innerHTML = columnsHtml;
+    
     voiceCount += voices.length;
 }
 
-// Insert <select> HTML into the DOM, and show exact voice count
-var voiceSelect = document.getElementById('voice');
-voiceSelect.innerHTML = selectHtml;
+// Show exact voice count
 document.getElementById('voicecount').innerHTML = voiceCount;
 
 // Add Event Listeners
-voiceSelect.addEventListener('change', selectVoice);
+var buttons = document.getElementsByClassName('button-voice');
+for (var i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener('click', selectVoice);
+}
 document.getElementById('playbutton').addEventListener('click', generateTTSUrl);
 document.getElementById('copylinkbutton').addEventListener('click', copyToClipboard);
 document.getElementById('text').addEventListener('input', handleTextInput);
 
 // We may need to update the character limit if a different voice was selected by default via URL paramaters
 setCharLimit();
+
+// If API is set via URL parameters let's make sure we're on the right tab
+if (urlParamApi) openTab(null, urlParamApi.replace(' ', ''));
 
 // If there is text present in the URL, put it in the textarea and play the audio
 if (urlParamText !== null && decodeURIComponent(urlParamText).trim().length > 0) {
@@ -251,16 +269,47 @@ if (urlParamText !== null && decodeURIComponent(urlParamText).trim().length > 0)
  * HELPER FUNCTIONS
  */
 
+// Return the currently selected voice element
+function getSelectedVoice() {
+    return document.getElementById('container-voices').getElementsByClassName('selected-voice')[0];
+}
+
+// Open the contents of the selected tab
+function openTab(evt, tabName) {
+    var i, x, tablinks;
+    x = document.getElementsByClassName("content-tab");
+    for (i = 0; i < x.length; i++) {
+        x[i].classList.add("is-hidden");
+    }
+    tablinks = document.getElementsByClassName("tab");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].classList.remove("is-active");
+    }
+    document.getElementById(tabName).classList.remove("is-hidden");
+    
+    var activeTab = evt !== null ? evt.currentTarget : document.getElementById('tab-' + tabName);
+    activeTab.classList.add("is-active");
+}
 
 // When selecting a voice from the dropdown, set new char limit and URL
-function selectVoice() {
-    const selVoice = this.options[voice.selectedIndex];
+function selectVoice(e) {
+    const selVoice = e ? e.currentTarget : getSelectedVoice();
+    
+    // Remove active state from all buttons
+    var buttons = document.getElementsByClassName('button-voice');
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].classList.remove('selected-voice');
+        buttons[i].classList.add('is-outlined');
+    }
+    // Add selected class to this button
+    selVoice.classList.add('selected-voice');
+    selVoice.classList.remove('is-outlined');
     
     // Set character limit on textarea
     setCharLimit();
     
     // Change the URL parameters
-    var newUrl = updateURLParameter(window.location.href, 'voice', selVoice.value);
+    var newUrl = updateURLParameter(window.location.href, 'voice', selVoice.dataset.vid);
     newUrl = updateURLParameter(newUrl, 'service', selVoice.dataset.api);
     
     // Change the URL in the address bar
@@ -293,8 +342,8 @@ function handleTextInput(e) {
 
 // Generate URL to TTS output
 function generateTTSUrl() {
-    const voice = document.getElementById('voice');
-    const api = voice.options[voice.selectedIndex].dataset.api;
+    const voice = getSelectedVoice();
+    const api = voice.dataset.api;
     const text = document.getElementById('text').value.trim() || 'Please enter some text.';
     var url = ttsServices[api].url;
 
@@ -319,17 +368,17 @@ function generateTTSUrl() {
     } else if (api === 'Google Translate') {
         url = url.replace('__LEN__', text.length);
         url = url.replace('__TEXT__', encodeURIComponent(text));
-        url = url.replace('__LOCALE__', voice.value);
+        url = url.replace('__LOCALE__', voice.dataset.vid);
         url = url.replace('__SPEED__', 1);
         showAudioPlayer(url);
     } else if (api === 'IBM Watson') {
         url = url.replace('__TEXT__', encodeURIComponent(text));
-        url = url.replace('__VOICE__', voice.value);
+        url = url.replace('__VOICE__', voice.dataset.vid);
         showAudioPlayer(url);
     }
      else if (api === 'iSpeech') {
         url = url.replace('__TEXT__', encodeURIComponent(text));
-        url = url.replace('__VOICE__', voice.value);
+        url = url.replace('__VOICE__', voice.dataset.vid);
         url = url.replace('__SPEED__', 0);
         showAudioPlayer(url);
     }
@@ -406,8 +455,7 @@ function copyToClipboard() {
 
 // Set character limit on textarea
 function setCharLimit() {
-    const voice = document.getElementById('voice');
-    const selectedVoice = voice.options[voice.selectedIndex];
+    const selectedVoice = getSelectedVoice();
     const newCharLimit = selectedVoice.dataset.charlimit;
     document.getElementById('text').maxLength = newCharLimit;
     document.getElementById('charlimit').innerHTML = newCharLimit;
@@ -418,8 +466,8 @@ function setCharLimit() {
 function characterCount(textarea) {
     // Some services count bytes rather than characters
     const thisText = textarea.value;
-    const voice = document.getElementById('voice');
-    const api = voice.options[voice.selectedIndex].dataset.api;
+    const voice = getSelectedVoice();
+    const api = voice.dataset.api;
     const curLength = ttsServices[api].countBytes === true ? byteCount(thisText.trim()) : thisText.trim().length;
     document.getElementById('chars').innerHTML = curLength;
 

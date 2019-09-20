@@ -5,6 +5,7 @@
         <title>Text-to-Speech (TTS) Demo Generator Emulator Tool Thing</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
+        <link rel="stylesheet" href="/assets/css/tts.css">
         <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -19,24 +20,38 @@
                     Polly voices can be useful for testing how Twitch.tv donations will sound as many streamers make use of these.</p>
 
                 <hr />
+                
+                <h4 class="title is-5 has-text-centered">Voice Provider</h4>
+                <div class="tabs is-toggle is-centered is-small">
+                    <ul>
+                        <li class="tab is-active" id="tab-Polly" onclick="openTab(event, 'Polly');">
+                            <a>Polly (Streamlabs)</a>
+                        </li>
+                        <li class="tab" id="tab-IBMWatson" onclick="openTab(event, 'IBMWatson');">
+                            <a>IBM Watson</a>
+                        </li>
+                        <li class="tab" id="tab-GoogleTranslate" onclick="openTab(event, 'GoogleTranslate');">
+                            <a>Google Translate</a>
+                        </li>
+                        <li class="tab" id="tab-iSpeech" onclick="openTab(event, 'iSpeech');">
+                            <a>iSpeech</a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div id="container-voices" class="voice-selection">
+                    <div class="content-tab" id="Polly">
+                    </div>
+                    <div class="content-tab is-hidden" id="IBMWatson">
+                    </div>
+                    <div class="content-tab is-hidden" id="GoogleTranslate">
+                    </div>
+                    <div class="content-tab is-hidden" id="iSpeech">
+                    </div>
+                </div>
+                <br />
 
                 <form action="" method="post">
-                    <div class="field is-horizontal">
-                        <div class="field-label is-normal">
-                            <label class="label">Voice</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field is-narrow">
-                                <div class="control">
-                                    <div class="select is-fullwidth">
-                                        <select id="voice" name="voice">
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="field is-horizontal">
                         <div class="field-label is-normal">
                             <label class="label">Message</label>
@@ -44,7 +59,7 @@
                         <div class="field-body">
                             <div class="field is-narrow">
                                 <div class="control">
-                                    <textarea id="text" name="text" rows="3" cols="70" maxlength="550" class="textarea" placeholder="Enter some text here..." style="min-height: 100px;"></textarea>
+                                    <textarea id="text" name="text" rows="3" cols="70" maxlength="550" class="textarea" placeholder="Enter some text here..."></textarea>
                                     <span id="character-count" class="is-pulled-right is-size-7 has-text-right"><span id="chars">0</span>/<span id="charlimit">550</span></span>
                                 </div>
                             </div>
