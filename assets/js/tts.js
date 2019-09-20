@@ -233,13 +233,16 @@ document.getElementById('voicecount').innerHTML = voiceCount;
 voiceSelect.addEventListener('change', selectVoice);
 document.getElementById('playbutton').addEventListener('click', generateTTSUrl);
 document.getElementById('copylinkbutton').addEventListener('click', copyToClipboard);
-document.getElementById('text').addEventListener('input', characterCount);
+document.getElementById('text').addEventListener('input', handleTextInput);
+
+// We may need to update the character limit if a different voice was selected by default via URL paramaters
+setCharLimit();
 
 // If there is text present in the URL, put it in the textarea and play the audio
 if (urlParamText !== null && decodeURIComponent(urlParamText).trim().length > 0) {
-    document.getElementById('text').value = urlParamText;
-    setCharLimit();
-    characterCount();
+    var textarea = document.getElementById('text');
+    textarea.value = urlParamText;
+    textarea.dispatchEvent(new Event('input'));     // setting value doesn't trigger an input event so we manually dispatch this
     generateTTSUrl();
 }
 
@@ -270,6 +273,22 @@ function setNewUrl(newUrl) {
        // prevents browser from storing history with each change:
        window.history.replaceState('', document.getElementsByTagName('title')[0].innerHTML, newUrl);
     }
+}
+
+// Handle textarea input
+function handleTextInput(e) {
+    var textarea = e.currentTarget;
+    
+    // Autogrow the textarea, or reset if emptied
+    if (textarea.value) {
+        textarea.style.height = textarea.scrollHeight + 'px';
+    } else {
+        textarea.style.height = '100px';
+        textarea.scrollHeight = 100;
+    }
+    
+    // Count characters used
+    characterCount(textarea);
 }
 
 // Generate URL to TTS output
@@ -396,9 +415,9 @@ function setCharLimit() {
 }
 
 // Show character count/limit
-function characterCount() {
+function characterCount(textarea) {
     // Some services count bytes rather than characters
-    const thisText = this.value === undefined ? document.getElementById('text').value : this.value;
+    const thisText = textarea.value;
     const voice = document.getElementById('voice');
     const api = voice.options[voice.selectedIndex].dataset.api;
     const curLength = ttsServices[api].countBytes === true ? byteCount(thisText.trim()) : thisText.trim().length;
