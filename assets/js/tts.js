@@ -344,7 +344,6 @@ function copyToClipboard() {
     var tempInput = document.createElement('input');
     tempInput.type = 'text';
     tempInput.value = audioUrl;
-    tempInput.className = 'is-hidden';
     document.body.appendChild(tempInput);
 
     // Select and copy
@@ -352,6 +351,7 @@ function copyToClipboard() {
     if (navigator.userAgent.match(/ipad|ipod|iphone/i)) {
         // Set input's contentEditable to true
         tempInput.contentEditable = true;
+        tempInput.readOnly = true;
 
         // create a selectable range
         var range = document.createRange();
