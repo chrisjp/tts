@@ -413,10 +413,10 @@ function changeUrl(selVoice, text) {
     text = text ? text : document.getElementById('text').value.trim();
     
     var newUrl = updateURLParameter(window.location.href, 'voice', selVoice.dataset.vid);
-    newUrl = updateURLParameter(newUrl, 'service', selVoice.dataset.api);
+    newUrl = updateURLParameter(newUrl, 'service', getSelectedApi().textContent);
     newUrl = updateURLParameter(newUrl, 'text', encodeURIComponent(text));
-    newUrl = updateURLParameter(newUrl, 'lang', selVoice.dataset.lang);
-    newUrl = updateURLParameter(newUrl, 's', selVoice.dataset.sex);
+    newUrl = updateURLParameter(newUrl, 'lang', getSelectedLang().textContent);
+    newUrl = updateURLParameter(newUrl, 's', getSelectedSex().textContent.charAt(0));
     
     // Change the URL in the address bar
     setNewUrl(newUrl);
