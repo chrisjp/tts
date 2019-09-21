@@ -4,3 +4,13 @@
 .button-voice {
     width: 45%;
 }
+@media (max-width: 767.999px) {
+    .button-voice {
+        width: 100%;
+    }
+}
+@media (min-width: 768px) {
+    .button-voice {
+        width: 45%;
+    }
+}
