@@ -290,7 +290,10 @@ document.getElementById('text').addEventListener('input', handleTextInput);
 setCharLimit();
 
 // If lang isn't set via URL parameters let's make sure we start by only showing default (English) voices
+// which in turn will call updateVoiceList()
+// Otherwise we'll call updateVoiceList() directly to ensure any filters set by URL params are accounted for
 if (!urlParamLang) selectLang(null, defaultLang);
+else updateVoiceList();
 
 // If there is text present in the URL, put it in the textarea and play the audio
 if (urlParamText !== null && decodeURIComponent(urlParamText).trim().length > 0) {
