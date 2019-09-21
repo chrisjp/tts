@@ -21,84 +21,73 @@
 
                 <hr />
                 
-                <h4 class="title is-5 has-text-centered">Voice Provider</h4>
-                <div class="tabs is-toggle is-centered is-small">
-                    <ul>
-                        <li class="tab is-active" id="tab-Polly" onclick="openTab(event, 'Polly');">
-                            <a>Polly (Streamlabs)</a>
-                        </li>
-                        <li class="tab" id="tab-IBMWatson" onclick="openTab(event, 'IBMWatson');">
-                            <a>IBM Watson</a>
-                        </li>
-                        <li class="tab" id="tab-GoogleTranslate" onclick="openTab(event, 'GoogleTranslate');">
-                            <a>Google Translate</a>
-                        </li>
-                        <li class="tab" id="tab-iSpeech" onclick="openTab(event, 'iSpeech');">
-                            <a>iSpeech</a>
-                        </li>
-                    </ul>
+                <div id="filter-api" class="tabs is-toggle is-centered is-small">
                 </div>
                 
-                <div id="container-voices" class="voice-selection">
-                    <div class="content-tab" id="Polly">
-                    </div>
-                    <div class="content-tab is-hidden" id="IBMWatson">
-                    </div>
-                    <div class="content-tab is-hidden" id="GoogleTranslate">
-                    </div>
-                    <div class="content-tab is-hidden" id="iSpeech">
+                <div id="filter-sex" class="tabs is-toggle is-centered is-small">
+                </div>
+                
+                <div id="container-langs">
+                    <div id="lang-selection" class="buttons are-small">
                     </div>
                 </div>
+                
                 <br />
-
-                <form action="" method="post">
-                    <div class="field is-horizontal">
-                        <div class="field-label is-normal">
-                            <label class="label">Message</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field is-narrow">
-                                <div class="control">
-                                    <textarea id="text" name="text" rows="3" cols="70" maxlength="550" class="textarea" placeholder="Enter some text here..."></textarea>
-                                    <span id="character-count" class="is-pulled-right is-size-7 has-text-right"><span id="chars">0</span>/<span id="charlimit">550</span></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="field is-horizontal">
-                        <div class="field-label is-normal">
-                        </div>
-                        <div class="field-body">
-                            <div class="field is-narrow is-grouped">
-                                <div class="control">
-                                    <button id="playbutton" name="play" type="button" class="button is-success">Say It</button>
-                                </div>
-                                <div class="control">
-                                    <button id="copylinkbutton" name="copy" type="button" class="button is-outlined is-hidden">Copy Link</button>
-                                </div>
+                
+                <div class="columns">
+                    
+                    <div class="column is-one-half">
+                        <div id="container-voices">
+                            <div id="voice-selection" class="buttons">
                             </div>
                         </div>
                     </div>
                     
-                    <div class="field is-horizontal">
-                        <div class="field-label is-normal">
-                        </div>
-                        <div class="field-body">
-                            <div class="field is-grouped">
-                                <div class="control">
-                                    <div id="tts-player" class="control is-pulled-left is-hidden">
-                                    </div>
-                                </div>
-                                <div class="control">
-                                    <div id="tts-error" class="message is-pulled-left is-small is-hidden">
-                                        <div id="tts-error-text" class="message-body"></div>
+                    <div class="column">
+                        <form action="" method="post">
+                            <div class="field is-horizontal">
+                                <div class="field-body">
+                                    <div class="field is-narrow">
+                                        <div class="control">
+                                            <textarea id="text" name="text" rows="3" cols="70" maxlength="550" class="textarea" placeholder="Enter some text here..."></textarea>
+                                            <span id="character-count" class="is-pulled-right is-size-7 has-text-right"><span id="chars">0</span>/<span id="charlimit">550</span></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+        
+                            <div class="field is-horizontal">
+                                <div class="field-body">
+                                    <div class="field is-narrow is-grouped">
+                                        <div class="control">
+                                            <button id="playbutton" name="play" type="button" class="button is-success">Say It</button>
+                                        </div>
+                                        <div class="control">
+                                            <button id="copylinkbutton" name="copy" type="button" class="button is-outlined is-hidden">Copy Link</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="field is-horizontal">
+                                <div class="field-body">
+                                    <div class="field is-grouped">
+                                        <div class="control">
+                                            <div id="tts-player" class="control is-pulled-left is-hidden">
+                                            </div>
+                                        </div>
+                                        <div class="control">
+                                            <div id="tts-error" class="message is-pulled-left is-small is-hidden">
+                                                <div id="tts-error-text" class="message-body"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                </form>
+                
+                </div>
 
             </div>
         </div>

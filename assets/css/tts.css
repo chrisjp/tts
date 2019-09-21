@@ -1,7 +1,6 @@
 .textarea {
     min-height: 100px;
 }
-.voice-selection {
-    overflow: scroll;
-    max-height: 200px;
+.button-voice {
+    width: 45%;
 }
