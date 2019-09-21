@@ -213,7 +213,7 @@ const defaultApi = 'Polly';
 const defaultVoice = 'Brian';
 const defaultLang = 'English';
 
-var selApi = !urlParamApi ? ' is-active' : '';
+var selApi = !urlParamApi || urlParamApi == 'All' ? ' is-active' : '';
 var filterApiHtml = '<li class="tab tab-api has-text-weight-bold' + selApi + '" id="tab-All"><a>All</a></li>';
 for (var voiceGroup in ttsServices) {
     var voices = ttsServices[voiceGroup].voices;
@@ -247,7 +247,7 @@ for (var i = 0; i < langs.length; i++) {
 
 // Sexes
 var sexes = ['Male', 'Female', 'Novelty'];
-var selSex = !urlParamSex ? ' is-active' : '';
+var selSex = !urlParamSex || urlParamSex.toUpperCase() == 'A' ? ' is-active' : '';
 var filterSexHtml = '<li class="tab tab-sex has-text-weight-bold' + selSex + '" id="tab-A"><a>All</a></li>';
 for (var i = 0; i < sexes.length; i++) {
     selSex = (urlParamSex && urlParamSex.toUpperCase() == sexes[i].charAt(0)) ? ' is-active' : '';
@@ -307,22 +307,30 @@ if (urlParamText !== null && decodeURIComponent(urlParamText).trim().length > 0)
 
 // Return the currently selected voice element
 function getSelectedVoice() {
-    return document.getElementById('container-voices').getElementsByClassName('selected-voice')[0];
+    var selVoice = document.getElementById('container-voices').getElementsByClassName('selected-voice')[0];
+    
+    return selVoice ? selVoice : document.getElementsByClassName('button-voice')[0];    // Return first voice as a fallback
 }
 
 // Return the currently selected api element
 function getSelectedApi() {
-    return document.querySelectorAll('.tab-api.is-active')[0];
+    var selApi = document.querySelectorAll('.tab-api.is-active')[0];
+    
+    return selApi ? selApi : document.getElementById('tab-Polly');      // Return Polly as a fallback
 }
 
 // Return the currently selected api element
 function getSelectedSex() {
-    return document.querySelectorAll('.tab-sex.is-active')[0];
+    var selSex = document.querySelectorAll('.tab-sex.is-active')[0];
+    
+    return selSex ? selSex : document.getElementById('tab-A');          // Return All as a fallback
 }
 
 // Return the currently selected lang element
 function getSelectedLang() {
-    return document.querySelectorAll('.button-lang.is-active')[0];
+    var selLang = document.querySelectorAll('.button-lang.is-active')[0];
+    
+    return selLang ? selLang : document.getElementsByClassName('button-lang')[0];    // Return All as a fallback
 }
 
 // Change selected API
@@ -413,7 +421,7 @@ function changeUrl(selVoice, text) {
     text = text ? text : document.getElementById('text').value.trim();
     
     var newUrl = updateURLParameter(window.location.href, 'voice', selVoice.dataset.vid);
-    newUrl = updateURLParameter(newUrl, 'service', getSelectedApi().textContent);
+    newUrl = updateURLParameter(newUrl, 'service', selVoice.dataset.api);
     newUrl = updateURLParameter(newUrl, 'text', encodeURIComponent(text));
     newUrl = updateURLParameter(newUrl, 'lang', getSelectedLang().textContent);
     newUrl = updateURLParameter(newUrl, 's', getSelectedSex().textContent.charAt(0));
