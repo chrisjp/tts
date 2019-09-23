@@ -208,7 +208,7 @@ var urlParamSex = url.searchParams.get('s');
 var urlParamText = url.searchParams.get('text');
 
 // Iterate over each group of voices
-var buttonsHtml = '', selVoice, selLang, voiceCount = 0, voicesPerColumn = 0, columns = 3, langs = [];
+var buttonsHtml = '', selVoice, voiceCount = 0, voicesPerColumn = 0, columns = 3, langs = [];
 const defaultApi = 'Polly';
 const defaultVoice = 'Brian';
 const defaultLang = 'English';
@@ -239,9 +239,10 @@ for (var voiceGroup in ttsServices) {
 
 // Loop through languages
 langs.sort();
-var langHtml = '<button type="button" class="button button-lang is-success is-rounded is-outlined has-text-weight-bold" data-lang="All">All</button>' + "\n"; 
+var selLang = urlParamLang == 'All' ? ' is-active' : ' is-outlined is-hidden';
+var langHtml = '<button type="button" class="button button-lang is-success is-rounded has-text-weight-bold' + selLang + '" data-lang="All">All</button>' + "\n"; 
 for (var i = 0; i < langs.length; i++) {
-    selLang = (urlParamLang == langs[i]) || ( !urlParamLang && (defaultLang == langs[i]) ) ? ' is-active' : ' is-outlined';
+    selLang = (urlParamLang == langs[i]) || ( !urlParamLang && (defaultLang == langs[i]) ) ? ' is-active' : ' is-outlined is-hidden';
     langHtml += '<button type="button" class="button button-lang is-success is-rounded' + selLang + '" data-lang="' + langs[i] + '">' + langs[i] + '</button>' + "\n";
 }
 
@@ -255,12 +256,12 @@ for (var i = 0; i < sexes.length; i++) {
 }
 
 // Insert API and Sex filters
-document.getElementById('filter-api').innerHTML = '<ul>' + filterApiHtml + '</ul>';
-document.getElementById('filter-sex').innerHTML = '<ul>' + filterSexHtml + '</ul>';
+document.getElementById('filter-api').innerHTML = '<ul><li class="tab"><a class="has-text-weight-bold has-background-grey-lighter no-hover" disabled>API</a></li>' + filterApiHtml + '</ul>';
+document.getElementById('filter-sex').innerHTML = '<ul><li class="tab"><a class="has-text-weight-bold has-background-grey-lighter no-hover" disabled>Sex</a></li>' + filterSexHtml + '</ul>';
 
 // Insert buttons
 document.getElementById('voice-selection').innerHTML = buttonsHtml;
-document.getElementById('lang-selection').innerHTML = langHtml;
+document.getElementById('lang-selection').innerHTML = '<button id="toggleLangs" class="button has-background-grey-lighter has-text-weight-bold is-outlined" onclick="toggleLangs();">Language (show/hide)</button>' + langHtml;
 
 // Show exact voice count
 document.getElementById('voicecount').innerHTML = voiceCount;
@@ -438,6 +439,16 @@ function setNewUrl(newUrl) {
     if (window.history.replaceState) {
        // prevents browser from storing history with each change:
        window.history.replaceState('', document.getElementsByTagName('title')[0].innerHTML, newUrl);
+    }
+}
+
+// Show/hide buttons for language selection
+function toggleLangs() {
+    var currentLang = getSelectedLang();
+    
+    var langs = document.getElementsByClassName('button-lang');
+    for (var i = 0; i < langs.length; i++) {
+        if (!langs[i].classList.contains('is-active')) langs[i].classList.toggle('is-hidden');
     }
 }
 

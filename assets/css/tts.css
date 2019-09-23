@@ -1,8 +1,10 @@
 .textarea {
     min-height: 100px;
 }
-.button-voice {
-    width: 45%;
+.no-hover, .no-hover:hover {
+    color: #4a4a4a !important;
+    border-color: #dbdbdb !important;
+    z-index: 0 !important;
 }
 @media (max-width: 767.999px) {
     .button-voice {
