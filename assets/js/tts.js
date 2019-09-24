@@ -225,8 +225,8 @@ for (var voiceGroup in ttsServices) {
     // Loop through this API's voices
     for (var i = 0; i < voices.length; i++) { 
         // Add button
-        selVoice = ((urlParamVoice == voices[i].vid) && (urlParamApi == voiceGroup)) || ( (!urlParamApi || !urlParamVoice) && (defaultVoice == voices[i].vid) && (defaultApi == voiceGroup) ) ? ' selected-voice' : ' is-outlined';
-        buttonsHtml += '<button type="button" class="button button-voice is-success is-rounded' + selVoice + '" data-vid="' + voices[i].vid + '" data-api="' + voiceGroup + '" data-lang="' + voices[i].lang + '" data-sex="' + voices[i].sex + '" data-charlimit="' + ttsServices[voiceGroup].charLimit + '">' + 
+        selVoice = ((urlParamVoice == voices[i].vid) && (urlParamApi == voiceGroup)) || ( (!urlParamApi || !urlParamVoice) && (defaultVoice == voices[i].vid) && (defaultApi == voiceGroup) ) ? ' is-success selected-voice' : '';
+        buttonsHtml += '<button type="button" class="button button-voice is-light is-rounded' + selVoice + '" data-vid="' + voices[i].vid + '" data-api="' + voiceGroup + '" data-lang="' + voices[i].lang + '" data-sex="' + voices[i].sex + '" data-charlimit="' + ttsServices[voiceGroup].charLimit + '">' + 
                       countryCodeToEmoji(voices[i].flag) + ' ' + voices[i].name +
                       '</button>' + "\n";
 
@@ -239,11 +239,11 @@ for (var voiceGroup in ttsServices) {
 
 // Loop through languages
 langs.sort();
-var selLang = urlParamLang == 'All' ? ' is-active' : ' is-outlined is-hidden';
-var langHtml = '<button type="button" class="button button-lang is-success is-rounded has-text-weight-bold' + selLang + '" data-lang="All">All</button>' + "\n"; 
+var selLang = urlParamLang == 'All' ? ' is-success selected-lang' : ' is-light is-hidden';
+var langHtml = '<button type="button" class="button button-lang is-light is-rounded has-text-weight-bold' + selLang + '" data-lang="All">All</button>' + "\n"; 
 for (var i = 0; i < langs.length; i++) {
-    selLang = (urlParamLang == langs[i]) || ( !urlParamLang && (defaultLang == langs[i]) ) ? ' is-active' : ' is-outlined is-hidden';
-    langHtml += '<button type="button" class="button button-lang is-success is-rounded' + selLang + '" data-lang="' + langs[i] + '">' + langs[i] + '</button>' + "\n";
+    selLang = (urlParamLang == langs[i]) || ( !urlParamLang && (defaultLang == langs[i]) ) ? ' is-success selected-lang' : ' is-light is-hidden';
+    langHtml += '<button type="button" class="button button-lang is-light is-rounded' + selLang + '" data-lang="' + langs[i] + '">' + langs[i] + '</button>' + "\n";
 }
 
 // Sexes
@@ -311,7 +311,7 @@ if (urlParamText !== null && decodeURIComponent(urlParamText).trim().length > 0)
 
 // Return the currently selected voice element
 function getSelectedVoice() {
-    var selVoice = document.getElementById('container-voices').getElementsByClassName('selected-voice')[0];
+    var selVoice = document.querySelectorAll('.button-voice.selected-voice')[0];
     
     return selVoice ? selVoice : document.getElementsByClassName('button-voice')[0];    // Return first voice as a fallback
 }
@@ -332,7 +332,7 @@ function getSelectedSex() {
 
 // Return the currently selected lang element
 function getSelectedLang() {
-    var selLang = document.querySelectorAll('.button-lang.is-active')[0];
+    var selLang = document.querySelectorAll('.button-lang.selected-lang')[0];
     
     return selLang ? selLang : document.getElementsByClassName('button-lang')[0];    // Return All as a fallback
 }
@@ -367,13 +367,15 @@ function selectSex(e, tabName) {
 function selectLang(e, tabName) {
     var buttons = document.querySelectorAll(".button-lang");
     for (var i = 0; i < buttons.length; i++) {
-        buttons[i].classList.remove("is-active");
-        buttons[i].classList.add("is-outlined");
+        buttons[i].classList.remove("is-success");
+        buttons[i].classList.remove("selected-lang");
+        buttons[i].classList.add("is-light");
     }
     
     var activeTab = e !== null ? e.currentTarget : document.querySelectorAll("button[data-lang='" + tabName + "']")[0];
-    activeTab.classList.add("is-active");
-    activeTab.classList.remove("is-outlined");
+    activeTab.classList.add("selected-lang");
+    activeTab.classList.add("is-success");
+    activeTab.classList.remove("is-light");
     
     updateVoiceList();
 }
@@ -409,11 +411,13 @@ function selectVoice(e) {
     var buttons = document.getElementsByClassName('button-voice');
     for (var i = 0; i < buttons.length; i++) {
         buttons[i].classList.remove('selected-voice');
-        buttons[i].classList.add('is-outlined');
+        buttons[i].classList.remove('is-success');
+        buttons[i].classList.add('is-light');
     }
     // Add selected class to this button
     selVoice.classList.add('selected-voice');
-    selVoice.classList.remove('is-outlined');
+    selVoice.classList.add('is-success');
+    selVoice.classList.remove('is-light');
     
     // Set character limit on textarea
     setCharLimit();
@@ -448,7 +452,7 @@ function toggleLangs() {
     
     var langs = document.getElementsByClassName('button-lang');
     for (var i = 0; i < langs.length; i++) {
-        if (!langs[i].classList.contains('is-active')) langs[i].classList.toggle('is-hidden');
+        if (!langs[i].classList.contains('selected-lang')) langs[i].classList.toggle('is-hidden');
     }
 }
 
