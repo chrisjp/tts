@@ -18,19 +18,14 @@
     font-size: 0.9rem;
     justify-content: space-between !important;
 }
-@media (max-width: 599.98px) {
+@media (max-width: 639.98px) {
     .button-voice {
         width: 100%;
     }
 }
-@media (max-width: 767.98px) {
+@media (min-width: 640px) and (max-width: 1023.98px) {
     .button-voice {
-        width: 280px;
-    }
-}
-@media (max-width: 1023.98px) {
-    .button-voice {
-        width: 315px;
+        width: 290px;
     }
 }
 @media (min-width: 1024px) {
@@ -39,5 +34,11 @@
     }
     .textarea {
         min-height: 190px;
+    }
+}
+@media (min-width: 1280px) and (max-width: 1407px) {
+    .column-voices {
+        flex: none;
+        width: 60% !important;
     }
 }
