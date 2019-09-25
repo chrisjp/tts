@@ -1,18 +1,39 @@
 .textarea {
-    min-height: 100px;
+    min-height: 150px;
 }
 .no-hover, .no-hover:hover {
     color: #4a4a4a !important;
     border-color: #dbdbdb !important;
     z-index: 0 !important;
 }
-@media (max-width: 767.999px) {
+.button-voice {
+    font-size: 0.9rem;
+}
+.button-heading {
+    cursor: default !important;
+    border: 0 !important;
+    justify-content: left !important;
+}
+@media (max-width: 599.98px) {
     .button-voice {
         width: 100%;
     }
 }
-@media (min-width: 768px) {
+@media (max-width: 767.98px) {
     .button-voice {
-        width: 45%;
+        width: 280px;
+    }
+}
+@media (max-width: 1023.98px) {
+    .button-voice {
+        width: 315px;
+    }
+}
+@media (min-width: 1024px) {
+    .button-voice {
+        width: 300px;
+    }
+    .textarea {
+        min-height: 190px;
     }
 }

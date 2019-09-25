@@ -222,6 +222,9 @@ for (var voiceGroup in ttsServices) {
     selApi = urlParamApi == voiceGroup ? ' is-active' : '';
     filterApiHtml += '<li class="tab tab-api' + selApi +'" id="tab-' + voiceGroup.replace(' ', '') + '"><a>' + voiceGroup + '</a></li>';
     
+    // Add a button to act as a heading for this API's voices
+    buttonsHtml += '<a class="button button-voice button-heading has-background-lighter has-text-left has-text-weight-bold is-fullwidth no-hover" data-api="' + voiceGroup + '">' + voiceGroup + '</a>' + "\n";
+    
     // Loop through this API's voices
     for (var i = 0; i < voices.length; i++) { 
         // Add button
@@ -267,7 +270,7 @@ document.getElementById('lang-selection').innerHTML = '<button id="toggleLangs" 
 document.getElementById('voicecount').innerHTML = voiceCount;
 
 // Add Event Listeners
-var buttons = document.getElementsByClassName('button-voice');
+var buttons = document.querySelectorAll('button.button-voice');
 for (var i = 0; i < buttons.length; i++) {
     buttons[i].addEventListener('click', selectVoice);
 }
@@ -392,9 +395,9 @@ function updateVoiceList() {
     // Loop through buttons and unhide any that match our filters, hide the rest
     for (var i = 0; i < b.length; i++) {
         if ( 
-            ((lang != 'All' && b[i].getAttribute('data-lang') == lang) || lang == 'All')
+            ((lang != 'All' && b[i].getAttribute('data-lang') == lang) || lang == 'All' || b[i].getAttribute('data-lang') == null)
             && ((api != 'All' && b[i].getAttribute('data-api') == api) || api == 'All')
-            && ((sex != 'A' && b[i].getAttribute('data-sex') == sex) || sex == 'A')
+            && ((sex != 'A' && b[i].getAttribute('data-sex') == sex) || sex == 'A' || b[i].getAttribute('data-sex') == null)
         ) {
             b[i].classList.remove('is-hidden');
         } else {
@@ -408,7 +411,7 @@ function selectVoice(e) {
     const selVoice = e ? e.currentTarget : getSelectedVoice();
     
     // Remove active state from all buttons
-    var buttons = document.getElementsByClassName('button-voice');
+    var buttons = document.querySelectorAll('button.button-voice');
     for (var i = 0; i < buttons.length; i++) {
         buttons[i].classList.remove('selected-voice');
         buttons[i].classList.remove('is-success');
@@ -464,8 +467,8 @@ function handleTextInput(e) {
     if (textarea.value) {
         textarea.style.height = textarea.scrollHeight + 'px';
     } else {
-        textarea.style.height = '100px';
-        textarea.scrollHeight = 100;
+        textarea.style.height = textarea.style.minHeight;
+        textarea.scrollHeight = textarea.offsetHeight;
     }
     
     // Count characters used
