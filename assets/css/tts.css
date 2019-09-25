@@ -6,13 +6,17 @@
     border-color: #dbdbdb !important;
     z-index: 0 !important;
 }
-.button-voice {
-    font-size: 0.9rem;
+.voice-sex {
+    width: 16px;
 }
 .button-heading {
     cursor: default !important;
     border: 0 !important;
     justify-content: left !important;
+}
+.button-voice {
+    font-size: 0.9rem;
+    justify-content: space-between !important;
 }
 @media (max-width: 599.98px) {
     .button-voice {

@@ -155,46 +155,46 @@ const ttsServices = {
         charLimit: 150,
         countBytes: true,
         voices: [
-            {vid: 'ukenglishfemale', name: 'English (British) - Female', flag: 'GB', lang: 'English', accent: 'England', sex: 'F'},
-            {vid: 'ukenglishmale', name: 'English (British) - Male', flag: 'GB', lang: 'English', accent: 'England', sex: 'M'},
-            {vid: 'usenglishfemale', name: 'English (American) - Female', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'usenglishmale', name: 'English (American) - Male', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'auenglishfemale', name: 'English (Australian) - Female', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'F'},
-            {vid: 'caenglishfemale', name: 'English (Canadian) - Female', flag: 'CA', lang: 'English', accent: 'Canadian', sex: 'F'},
-            {vid: 'arabicmale', name: 'Arabic - Male', flag: 'EG', lang: 'Arabic', accent: '', sex: 'M'},
-            {vid: 'chchinesefemale', name: 'Chinese (China) - Female', flag: 'CN', lang: 'Chinese', accent: '', sex: 'F'},
-            {vid: 'hkchinesefemale', name: 'Chinese (Hong Kong) - Female', flag: 'HK', lang: 'Chinese', accent: 'Hong Kong', sex: 'F'},
-            //{vid: 'twchinesefemale', name: 'Chinese (Taiwan) - Female', flag: 'TW', lang: 'Chinese', accent: 'Taiwan', sex: 'F'}, // "invalid voice" as of May 2019
-            {vid: 'eurczechfemale', name: 'Czech - Female', flag: 'CZ', lang: 'Czech', accent: '', sex: 'F'},
-            {vid: 'eurdanishfemale', name: 'Danish - Female', flag: 'DK', lang: 'Danish', accent: '', sex: 'F'},
-            {vid: 'eurdutchfemale', name: 'Dutch - Female', flag: 'NL', lang: 'Dutch', accent: '', sex: 'F'},
-            {vid: 'eurfinnishfemale', name: 'Finnish - Female', flag: 'FI', lang: 'Finnish', accent: '', sex: 'F'},
-            {vid: 'eurfrenchfemale', name: 'French (European) - Female', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'eurfrenchmale', name: 'French (European) - Male', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
-            {vid: 'cafrenchfemale', name: 'French (Canadian) - Female', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'F'},
-            {vid: 'cafrenchmale', name: 'French (Canadian) - Male', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'M'},
-            {vid: 'eurgermanfemale', name: 'German - Female', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            {vid: 'eurgermanmale', name: 'German - Male', flag: 'DE', lang: 'German', accent: '', sex: 'M'},
-            {vid: 'eurgreekfemale', name: 'Greek - Female', flag: 'GR', lang: 'Greek', accent: '', sex: 'F'},
-            {vid: 'huhungarianfemale', name: 'Hungarian - Female', flag: 'HU', lang: 'Hungarian', accent: '', sex: 'F'},
-            {vid: 'euritalianfemale', name: 'Italian - Female', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
-            {vid: 'euritalianmale', name: 'Italian - Male', flag: 'IT', lang: 'Italian', accent: '', sex: 'M'},
-            {vid: 'jpjapanesefemale', name: 'Japanese - Female', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
-            {vid: 'krkoreanfemale', name: 'Korean - Female', flag: 'KR', lang: 'Korean', accent: '', sex: 'F'},
-            {vid: 'eurnorwegianfemale', name: 'Norwegian - Female', flag: 'NO', lang: 'Norwegian', accent: '', sex: 'F'},
-            {vid: 'eurpolishfemale', name: 'Polish - Female', flag: 'PL', lang: 'Polish', accent: '', sex: 'F'},
-            {vid: 'eurportuguesefemale', name: 'Portuguese (European) - Female', flag: 'PT', lang: 'Portuguese', accent: 'European', sex: 'F'},
-            {vid: 'eurportuguesemale', name: 'Portuguese (European) - Male', flag: 'PT', lang: 'Portuguese', accent: 'European', sex: 'M'},
-            {vid: 'brportuguesefemale', name: 'Portuguese (Brazilian) - Female', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'F'},
-            {vid: 'rurussianfemale', name: 'Russian - Female', flag: 'RU', lang: 'Russian', accent: '', sex: 'F'},
-            {vid: 'rurussianmale', name: 'Russian - Male', flag: 'RU', lang: 'Russian', accent: '', sex: 'M'},
-            {vid: 'eurspanishfemale', name: 'Spanish (European) - Female', flag: 'ES', lang: 'Spanish', accent: 'Spain', sex: 'F'},
-            {vid: 'eurspanishmale', name: 'Spanish (European) - Male', flag: 'ES', lang: 'Spanish', accent: 'Spain', sex: 'M'},
-            {vid: 'usspanishfemale', name: 'Spanish (Latin American) - Female', flag: 'MX', lang: 'Spanish', accent: 'Latin American', sex: 'F'},
-            {vid: 'usspanishmale', name: 'Spanish (Latin American) - Male', flag: 'MX', lang: 'Spanish', accent: 'Latin American', sex: 'M'},
-            {vid: 'swswedishfemale', name: 'Swedish - Female', flag: 'SE', lang: 'Swedish', accent: '', sex: 'F'},
-            {vid: 'eurturkishfemale', name: 'Turkish - Female', flag: 'TR', lang: 'Turkish', accent: '', sex: 'F'},
-            {vid: 'eurturkishmale', name: 'Turkish - Male', flag: 'TR', lang: 'Turkish', accent: '', sex: 'M'},
+            {vid: 'ukenglishfemale', name: 'English (British)', flag: 'GB', lang: 'English', accent: 'England', sex: 'F'},
+            {vid: 'ukenglishmale', name: 'English (British)', flag: 'GB', lang: 'English', accent: 'England', sex: 'M'},
+            {vid: 'usenglishfemale', name: 'English (American)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
+            {vid: 'usenglishmale', name: 'English (American)', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
+            {vid: 'auenglishfemale', name: 'English (Australian)', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'F'},
+            {vid: 'caenglishfemale', name: 'English (Canadian)', flag: 'CA', lang: 'English', accent: 'Canadian', sex: 'F'},
+            {vid: 'arabicmale', name: 'Arabic', flag: 'EG', lang: 'Arabic', accent: '', sex: 'M'},
+            {vid: 'chchinesefemale', name: 'Chinese (China)', flag: 'CN', lang: 'Chinese', accent: '', sex: 'F'},
+            {vid: 'hkchinesefemale', name: 'Chinese (Hong Kong)', flag: 'HK', lang: 'Chinese', accent: 'Hong Kong', sex: 'F'},
+            //{vid: 'twchinesefemale', name: 'Chinese (Taiwan)', flag: 'TW', lang: 'Chinese', accent: 'Taiwan', sex: 'F'}, // "invalid voice" as of May 2019
+            {vid: 'eurczechfemale', name: 'Czech', flag: 'CZ', lang: 'Czech', accent: '', sex: 'F'},
+            {vid: 'eurdanishfemale', name: 'Danish', flag: 'DK', lang: 'Danish', accent: '', sex: 'F'},
+            {vid: 'eurdutchfemale', name: 'Dutch', flag: 'NL', lang: 'Dutch', accent: '', sex: 'F'},
+            {vid: 'eurfinnishfemale', name: 'Finnish', flag: 'FI', lang: 'Finnish', accent: '', sex: 'F'},
+            {vid: 'eurfrenchfemale', name: 'French (European)', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
+            {vid: 'eurfrenchmale', name: 'French (European)', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
+            {vid: 'cafrenchfemale', name: 'French (Canadian)', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'F'},
+            {vid: 'cafrenchmale', name: 'French (Canadian)', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'M'},
+            {vid: 'eurgermanfemale', name: 'German', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
+            {vid: 'eurgermanmale', name: 'German', flag: 'DE', lang: 'German', accent: '', sex: 'M'},
+            {vid: 'eurgreekfemale', name: 'Greek', flag: 'GR', lang: 'Greek', accent: '', sex: 'F'},
+            {vid: 'huhungarianfemale', name: 'Hungarian', flag: 'HU', lang: 'Hungarian', accent: '', sex: 'F'},
+            {vid: 'euritalianfemale', name: 'Italian', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
+            {vid: 'euritalianmale', name: 'Italian', flag: 'IT', lang: 'Italian', accent: '', sex: 'M'},
+            {vid: 'jpjapanesefemale', name: 'Japanese', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
+            {vid: 'krkoreanfemale', name: 'Korean', flag: 'KR', lang: 'Korean', accent: '', sex: 'F'},
+            {vid: 'eurnorwegianfemale', name: 'Norwegian', flag: 'NO', lang: 'Norwegian', accent: '', sex: 'F'},
+            {vid: 'eurpolishfemale', name: 'Polish', flag: 'PL', lang: 'Polish', accent: '', sex: 'F'},
+            {vid: 'eurportuguesefemale', name: 'Portuguese (European)', flag: 'PT', lang: 'Portuguese', accent: 'European', sex: 'F'},
+            {vid: 'eurportuguesemale', name: 'Portuguese (European)', flag: 'PT', lang: 'Portuguese', accent: 'European', sex: 'M'},
+            {vid: 'brportuguesefemale', name: 'Portuguese (Brazilian)', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'F'},
+            {vid: 'rurussianfemale', name: 'Russian', flag: 'RU', lang: 'Russian', accent: '', sex: 'F'},
+            {vid: 'rurussianmale', name: 'Russian', flag: 'RU', lang: 'Russian', accent: '', sex: 'M'},
+            {vid: 'eurspanishfemale', name: 'Spanish (European)', flag: 'ES', lang: 'Spanish', accent: 'Spain', sex: 'F'},
+            {vid: 'eurspanishmale', name: 'Spanish (European)', flag: 'ES', lang: 'Spanish', accent: 'Spain', sex: 'M'},
+            {vid: 'usspanishfemale', name: 'Spanish (Latin American)', flag: 'MX', lang: 'Spanish', accent: 'Latin American', sex: 'F'},
+            {vid: 'usspanishmale', name: 'Spanish (Latin American)', flag: 'MX', lang: 'Spanish', accent: 'Latin American', sex: 'M'},
+            {vid: 'swswedishfemale', name: 'Swedish', flag: 'SE', lang: 'Swedish', accent: '', sex: 'F'},
+            {vid: 'eurturkishfemale', name: 'Turkish', flag: 'TR', lang: 'Turkish', accent: '', sex: 'F'},
+            {vid: 'eurturkishmale', name: 'Turkish', flag: 'TR', lang: 'Turkish', accent: '', sex: 'M'},
         ],
     },
 };
@@ -230,8 +230,8 @@ for (var voiceGroup in ttsServices) {
         // Add button
         selVoice = ((urlParamVoice == voices[i].vid) && (urlParamApi == voiceGroup)) || ( (!urlParamApi || !urlParamVoice) && (defaultVoice == voices[i].vid) && (defaultApi == voiceGroup) ) ? ' is-success selected-voice' : '';
         buttonsHtml += '<button type="button" class="button button-voice is-light is-rounded' + selVoice + '" data-vid="' + voices[i].vid + '" data-api="' + voiceGroup + '" data-lang="' + voices[i].lang + '" data-sex="' + voices[i].sex + '" data-charlimit="' + ttsServices[voiceGroup].charLimit + '">' + 
-                      countryCodeToEmoji(voices[i].flag) + ' ' + voices[i].name +
-                      '</button>' + "\n";
+                      '<span class="voice-flag">' + countryCodeToEmoji(voices[i].flag) + '</span><span class="voice-name">' + voices[i].name +
+                      '</span><span class="voice-sex">' + genderLetterToEmoji(voices[i]) + '</span></button>' + "\n";
 
         // Add language to array if necessary
         if (voices[i].lang && langs.indexOf(voices[i].lang) === -1) langs.push(voices[i].lang);
@@ -619,6 +619,20 @@ function characterCount(textarea) {
 // https://stackoverflow.com/a/12203648/403476
 function byteCount(s) {
     return encodeURI(s).split(/%..|./).length - 1;
+}
+
+// Convert gender letter to Emoji
+function genderLetterToEmoji(voice) {
+    if (voice.sex == 'M') {
+        return '\u2642';
+    } else if (voice.sex == 'F') {
+        return '\u2640';
+    } else if (voice.sex == 'N') {
+        if (voice.customEmoji) return voice.customEmoji;
+        return '\u2753';
+    }
+
+    return '\u2753';
 }
 
 // Convert country code (ISO 3166-1 alpha-2) to emoji flag
