@@ -5,6 +5,7 @@ const ttsServices = {
         url: 'https://streamlabs.com/polly/speak',
         charLimit: 550,
         countBytes: true,
+        needsProxy: true,
         voices: [
             {vid: 'Brian', name: 'Brian (English, British)', flag: 'GB', lang: 'English', accent: 'British', sex: 'M'},
             {vid: 'Amy', name: 'Amy (English, British)', flag: 'GB', lang: 'English', accent: 'British', sex: 'F'},
@@ -481,17 +482,21 @@ function generateTTSUrl() {
     const api = voice.dataset.api;
     const text = document.getElementById('text').value.trim() || 'Please enter some text.';
     var url = ttsServices[api].url;
-    
+
     // Change the URL parameters
     changeUrl(voice);
 
-    // Send request to the server
-    if (api === 'Polly') {
+    // Send request to the server if it needs proxying to get around CORS issues
+    if (ttsServices[api].needsProxy) {
+        // Show a loading spinner while the proxy sends/receives the request
+        document.getElementById('playbutton').classList.add('is-loading');
+
+        // Send request to our proxy script
         var xhr = new XMLHttpRequest();
         xhr.onload = function () {
             var response = JSON.parse(xhr.responseText);
             if (xhr.readyState == 4 && xhr.status == '200') {
-                console.log(response);
+                //console.log(response);
                 if (response.success === true) {
                     showAudioPlayer(response.speak_url);
                 } else if (response.error) {
@@ -500,25 +505,26 @@ function generateTTSUrl() {
             } else {
                 console.error(response);
             }
+
+            // Remove loading spinner
+            document.getElementById('playbutton').classList.remove('is-loading');
         }
-        xhr.open('POST', 'proxy.php', true);    // Use our own proxy to get around CORS issues
+        xhr.open('POST', 'proxy.php', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.send('voice=' + encodeURIComponent(voice.value) + '&text=' + encodeURIComponent(text));
-    } else if (api === 'Google Translate') {
+        xhr.send('service=' + encodeURIComponent(api) + '&voice=' + encodeURIComponent(voice.dataset.vid) + '&text=' + encodeURIComponent(text));
+    } else {
+        // No need to proxy we can just replace some URL parameters
+
+        // Google's default speed is 1, iSpeech uses 0, no other service has such a variable
+        var speed = (api === 'Google Translate') ? 1 : 0;
+
+        // Perform possible rext replacements for this api
         url = url.replace('__LEN__', text.length);
         url = url.replace('__TEXT__', encodeURIComponent(text));
         url = url.replace('__LOCALE__', voice.dataset.vid);
-        url = url.replace('__SPEED__', 1);
-        showAudioPlayer(url);
-    } else if (api === 'IBM Watson') {
-        url = url.replace('__TEXT__', encodeURIComponent(text));
         url = url.replace('__VOICE__', voice.dataset.vid);
-        showAudioPlayer(url);
-    }
-     else if (api === 'iSpeech') {
-        url = url.replace('__TEXT__', encodeURIComponent(text));
-        url = url.replace('__VOICE__', voice.dataset.vid);
-        url = url.replace('__SPEED__', 0);
+        url = url.replace('__SPEED__', speed);
+
         showAudioPlayer(url);
     }
 }
