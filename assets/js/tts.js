@@ -537,7 +537,7 @@ function showErrorMessage(message) {
     document.getElementById('tts-error').classList.remove('is-hidden');
     setTimeout(() => {
         document.getElementById('tts-error').classList.add('is-hidden');
-    }, 2500);
+    }, 5000);
 }
 
 // Copy audio link to clipboard
