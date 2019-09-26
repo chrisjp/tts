@@ -5,6 +5,7 @@
         <title>Text-to-Speech (TTS) Demo Generator Emulator Tool Thing</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
+        <link rel="stylesheet" href="/assets/css/tts.css">
         <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -19,71 +20,70 @@
                     Polly voices can be useful for testing how Twitch.tv donations will sound as many streamers make use of these.</p>
 
                 <hr />
-
-                <form action="" method="post">
-                    <div class="field is-horizontal">
-                        <div class="field-label is-normal">
-                            <label class="label">Voice</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field is-narrow">
-                                <div class="control">
-                                    <div class="select is-fullwidth">
-                                        <select id="voice" name="voice">
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="field is-horizontal">
-                        <div class="field-label is-normal">
-                            <label class="label">Message</label>
-                        </div>
-                        <div class="field-body">
-                            <div class="field is-narrow">
-                                <div class="control">
-                                    <textarea id="text" name="text" rows="3" cols="70" maxlength="550" class="textarea" placeholder="Enter some text here..." style="min-height: 100px;"></textarea>
-                                    <span id="character-count" class="is-pulled-right is-size-7 has-text-right"><span id="chars">0</span>/<span id="charlimit">550</span></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="field is-horizontal">
-                        <div class="field-label is-normal">
-                        </div>
-                        <div class="field-body">
-                            <div class="field is-narrow is-grouped">
-                                <div class="control">
-                                    <button id="playbutton" name="play" type="button" class="button is-success">Say It</button>
-                                </div>
-                                <div class="control">
-                                    <button id="copylinkbutton" name="copy" type="button" class="button is-outlined is-hidden">Copy Link</button>
-                                </div>
-                            </div>
+                
+                <div id="filter-api" class="tabs is-toggle is-centered is-small">
+                </div>
+                
+                <div id="filter-sex" class="tabs is-toggle is-centered is-small">
+                </div>
+                
+                <div id="lang-selection" class="buttons are-small">
+                </div>
+                
+                <hr />
+                
+                <div class="columns">
+                    
+                    <div class="column column-voices">
+                        <div id="voice-selection" class="buttons is-centered">
                         </div>
                     </div>
                     
-                    <div class="field is-horizontal">
-                        <div class="field-label is-normal">
-                        </div>
-                        <div class="field-body">
-                            <div class="field is-grouped">
-                                <div class="control">
-                                    <div id="tts-player" class="control is-pulled-left is-hidden">
-                                    </div>
-                                </div>
-                                <div class="control">
-                                    <div id="tts-error" class="message is-pulled-left is-small is-hidden">
-                                        <div id="tts-error-text" class="message-body"></div>
+                    <div class="column">
+                        <form action="" method="post">
+                            <div class="field is-horizontal">
+                                <div class="field-body">
+                                    <div class="field is-narrow">
+                                        <div class="control">
+                                            <textarea id="text" name="text" rows="3" cols="80" maxlength="550" class="textarea" placeholder="Enter some text here..."></textarea>
+                                            <span id="character-count" class="is-pulled-right is-size-7 has-text-right"><span id="chars">0</span>/<span id="charlimit">550</span></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+        
+                            <div class="field is-horizontal">
+                                <div class="field-body">
+                                    <div class="field is-narrow is-grouped">
+                                        <div class="control">
+                                            <button id="playbutton" name="play" type="button" class="button is-success">Say It</button>
+                                        </div>
+                                        <div class="control">
+                                            <button id="copylinkbutton" name="copy" type="button" class="button is-outlined is-hidden">Copy Link</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="field is-horizontal">
+                                <div class="field-body">
+                                    <div class="field is-grouped">
+                                        <div class="control">
+                                            <div id="tts-player" class="control is-pulled-left is-hidden">
+                                            </div>
+                                        </div>
+                                        <div class="control">
+                                            <div id="tts-error" class="message is-pulled-left is-small is-hidden">
+                                                <div id="tts-error-text" class="message-body"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                </form>
+                
+                </div>
 
             </div>
         </div>

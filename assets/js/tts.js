@@ -5,64 +5,65 @@ const ttsServices = {
         url: 'https://streamlabs.com/polly/speak',
         charLimit: 550,
         countBytes: true,
+        needsProxy: true,
         voices: [
-            {vid: 'Brian', name: 'Brian (English, British)', flag: 'GB'},
-            {vid: 'Amy', name: 'Amy (English, British)', flag: 'GB'},
-            {vid: 'Emma', name: 'Emma (English, British)', flag: 'GB'},
-            {vid: 'Geraint', name: 'Geraint (English, Welsh)', flag: 'GB-WLS'},
-            {vid: 'Russell', name: 'Russell (English, Australian)', flag: 'AU'},
-            {vid: 'Nicole', name: 'Nicole (English, Australian)', flag: 'AU'},
-            {vid: 'Joey', name: 'Joey (English, American)', flag: 'US'},
-            {vid: 'Justin', name: 'Justin (English, American)', flag: 'US'},
-            {vid: 'Matthew', name: 'Matthew (English, American)', flag: 'US'},
-            {vid: 'Ivy', name: 'Ivy (English, American)', flag: 'US'},
-            {vid: 'Joanna', name: 'Joanna (English, American)', flag: 'US'},
-            {vid: 'Kendra', name: 'Kendra (English, American)', flag: 'US'},
-            {vid: 'Kimberly', name: 'Kimberly (English, American)', flag: 'US'},
-            {vid: 'Salli', name: 'Salli (English, American)', flag: 'US'},
-            {vid: 'Raveena', name: 'Raveena (English, Indian)', flag: 'IN'},
-            {vid: 'Zeina', name: 'Zeina (Arabic)', flag: ''},
-            {vid: 'Zhiyu', name: 'Zhiyu (Chinese, Mandarin)', flag: 'CN'},
-            {vid: 'Mads', name: 'Mads (Danish)', flag: 'DK'},
-            {vid: 'Naja', name: 'Naja (Danish)', flag: 'DK'},
-            {vid: 'Ruben', name: 'Ruben (Dutch)', flag: 'NL'},
-            {vid: 'Lotte', name: 'Lotte (Dutch)', flag: 'NL'},
-            {vid: 'Mathieu', name: 'Mathieu (French)', flag: 'FR'},
-            {vid: 'Celine', name: 'Céline (French)', flag: 'FR'},
-            {vid: 'Chantal', name: 'Chantal (French, Canadian)', flag: 'CA'},
-            {vid: 'Hans', name: 'Hans (German)', flag: 'DE'},
-            {vid: 'Marlene', name: 'Marlene (German)', flag: 'DE'},
-            {vid: 'Vicki', name: 'Vicki (German)', flag: 'DE'},
-            {vid: 'Aditi', name: 'Aditi (Hindi + English, Indian)', flag: 'IN'},
-            {vid: 'Karl', name: 'Karl (Icelandic)', flag: 'IS'},
-            {vid: 'Dora', name: 'Dóra (Icelandic)', flag: 'IS'},
-            {vid: 'Giorgio', name: 'Giorgio (Italian)', flag: 'IT'},
-            {vid: 'Carla', name: 'Carla (Italian)', flag: 'IT'},
-            {vid: 'Bianca', name: 'Bianca (Italian)', flag: 'IT'},
-            {vid: 'Takumi', name: 'Takumi (Japanese)', flag: 'JP'},
-            {vid: 'Mizuki', name: 'Mizuki (Japanese)', flag: 'JP'},
-            {vid: 'Seoyeon', name: 'Seoyeon (Korean)', flag: 'KR'},
-            {vid: 'Liv', name: 'Liv (Norwegian)', flag: 'NO'},
-            {vid: 'Jacek', name: 'Jacek (Polish)', flag: 'PL'},
-            {vid: 'Jan', name: 'Jan (Polish)', flag: 'PL'},
-            {vid: 'Ewa', name: 'Ewa (Polish)', flag: 'PL'},
-            {vid: 'Maja', name: 'Maja (Polish)', flag: 'PL'},
-            {vid: 'Ricardo', name: 'Ricardo (Portuguese, Brazilian)', flag: 'BR'},
-            {vid: 'Vitoria', name: 'Vitória (Portuguese, Brazilian)', flag: 'BR'},
-            {vid: 'Cristiano', name: 'Cristiano (Portuguese, European)', flag: 'PT'},
-            {vid: 'Ines', name: 'Inês (Portuguese, European)', flag: 'PT'},
-            {vid: 'Carmen', name: 'Carmen (Romanian)', flag: 'RO'},
-            {vid: 'Maxim', name: 'Maxim (Russian)', flag: 'RU'},
-            {vid: 'Tatyana', name: 'Tatyana (Russian)', flag: 'RU'},
-            {vid: 'Enrique', name: 'Enrique (Spanish, European)', flag: 'ES'},
-            {vid: 'Conchita', name: 'Conchita (Spanish, European)', flag: 'ES'},
-            {vid: 'Lucia', name: 'Lucia (Spanish, European)', flag: 'ES'},
-            {vid: 'Mia', name: 'Mia (Spanish, Mexican)', flag: 'MX'},
-            {vid: 'Miguel', name: 'Miguel (Spanish, American)', flag: 'US'},
-            {vid: 'Penelope', name: 'Penélope (Spanish, American)', flag: 'US'},
-            {vid: 'Astrid', name: 'Astrid (Swedish)', flag: 'SE'},
-            {vid: 'Filiz', name: 'Filiz (Turkish)', flag: 'TR'},
-            {vid: 'Gwyneth', name: 'Gwyneth (Welsh)', flag: 'GB-WLS'},
+            {vid: 'Brian', name: 'Brian (English, British)', flag: 'GB', lang: 'English', accent: 'British', sex: 'M'},
+            {vid: 'Amy', name: 'Amy (English, British)', flag: 'GB', lang: 'English', accent: 'British', sex: 'F'},
+            {vid: 'Emma', name: 'Emma (English, British)', flag: 'GB', lang: 'English', accent: 'British', sex: 'F'},
+            {vid: 'Geraint', name: 'Geraint (English, Welsh)', flag: 'GB-WLS', lang: 'English', accent: 'Welsh', sex: 'M'},
+            {vid: 'Russell', name: 'Russell (English, Australian)', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'M'},
+            {vid: 'Nicole', name: 'Nicole (English, Australian)', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'F'},
+            {vid: 'Joey', name: 'Joey (English, American)', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
+            {vid: 'Justin', name: 'Justin (English, American)', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
+            {vid: 'Matthew', name: 'Matthew (English, American)', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
+            {vid: 'Ivy', name: 'Ivy (English, American)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
+            {vid: 'Joanna', name: 'Joanna (English, American)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
+            {vid: 'Kendra', name: 'Kendra (English, American)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
+            {vid: 'Kimberly', name: 'Kimberly (English, American)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
+            {vid: 'Salli', name: 'Salli (English, American)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
+            {vid: 'Raveena', name: 'Raveena (English, Indian)', flag: 'IN', lang: 'English', accent: 'Indian', sex: 'F'},
+            {vid: 'Zeina', name: 'Zeina (Arabic)', flag: '', lang: 'Arabic', accent: '', sex: 'F'},
+            {vid: 'Zhiyu', name: 'Zhiyu (Chinese, Mandarin)', flag: 'CN', lang: 'Chinese', accent: 'Mandarin', sex: 'F'},
+            {vid: 'Mads', name: 'Mads (Danish)', flag: 'DK', lang: 'Danish', accent: '', sex: 'M'},
+            {vid: 'Naja', name: 'Naja (Danish)', flag: 'DK', lang: 'Danish', accent: '', sex: 'F'},
+            {vid: 'Ruben', name: 'Ruben (Dutch)', flag: 'NL', lang: 'Dutch', accent: '', sex: 'M'},
+            {vid: 'Lotte', name: 'Lotte (Dutch)', flag: 'NL', lang: 'Dutch', accent: '', sex: 'F'},
+            {vid: 'Mathieu', name: 'Mathieu (French)', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
+            {vid: 'Celine', name: 'Céline (French)', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
+            {vid: 'Chantal', name: 'Chantal (French, Canadian)', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'F'},
+            {vid: 'Hans', name: 'Hans (German)', flag: 'DE', lang: 'German', accent: '', sex: 'M'},
+            {vid: 'Marlene', name: 'Marlene (German)', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
+            {vid: 'Vicki', name: 'Vicki (German)', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
+            {vid: 'Aditi', name: 'Aditi (Hindi + English, Indian)', flag: 'IN', lang: 'Hindi', accent: '', sex: 'F'},
+            {vid: 'Karl', name: 'Karl (Icelandic)', flag: 'IS', lang: 'Icelandic', accent: '', sex: 'M'},
+            {vid: 'Dora', name: 'Dóra (Icelandic)', flag: 'IS', lang: 'Icelandic', accent: '', sex: 'F'},
+            {vid: 'Giorgio', name: 'Giorgio (Italian)', flag: 'IT', lang: 'Italian', accent: '', sex: 'M'},
+            {vid: 'Carla', name: 'Carla (Italian)', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
+            {vid: 'Bianca', name: 'Bianca (Italian)', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
+            {vid: 'Takumi', name: 'Takumi (Japanese)', flag: 'JP', lang: 'Japanese', accent: '', sex: 'M'},
+            {vid: 'Mizuki', name: 'Mizuki (Japanese)', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
+            {vid: 'Seoyeon', name: 'Seoyeon (Korean)', flag: 'KR', lang: 'Korean', accent: '', sex: 'F'},
+            {vid: 'Liv', name: 'Liv (Norwegian)', flag: 'NO', lang: 'Norwegian', accent: '', sex: 'F'},
+            {vid: 'Jacek', name: 'Jacek (Polish)', flag: 'PL', lang: 'Polish', accent: '', sex: 'M'},
+            {vid: 'Jan', name: 'Jan (Polish)', flag: 'PL', lang: 'Polish', accent: '', sex: 'M'},
+            {vid: 'Ewa', name: 'Ewa (Polish)', flag: 'PL', lang: 'Polish', accent: '', sex: 'F'},
+            {vid: 'Maja', name: 'Maja (Polish)', flag: 'PL', lang: 'Polish', accent: '', sex: 'F'},
+            {vid: 'Ricardo', name: 'Ricardo (Portuguese, Brazilian)', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'M'},
+            {vid: 'Vitoria', name: 'Vitória (Portuguese, Brazilian)', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'F'},
+            {vid: 'Cristiano', name: 'Cristiano (Portuguese, European)', flag: 'PT', lang: 'Portuguese', accent: 'European', sex: 'M'},
+            {vid: 'Ines', name: 'Inês (Portuguese, European)', flag: 'PT', lang: 'Portuguese', accent: 'European', sex: 'F'},
+            {vid: 'Carmen', name: 'Carmen (Romanian)', flag: 'RO', lang: 'Romanian', accent: '', sex: 'F'},
+            {vid: 'Maxim', name: 'Maxim (Russian)', flag: 'RU', lang: 'Russian', accent: '', sex: 'M'},
+            {vid: 'Tatyana', name: 'Tatyana (Russian)', flag: 'RU', lang: 'Russian', accent: '', sex: 'F'},
+            {vid: 'Enrique', name: 'Enrique (Spanish, European)', flag: 'ES', lang: 'Spanish', accent: 'European', sex: 'M'},
+            {vid: 'Conchita', name: 'Conchita (Spanish, European)', flag: 'ES', lang: 'Spanish', accent: 'European', sex: 'F'},
+            {vid: 'Lucia', name: 'Lucia (Spanish, European)', flag: 'ES', lang: 'Spanish', accent: 'European', sex: 'F'},
+            {vid: 'Mia', name: 'Mia (Spanish, Mexican)', flag: 'MX', lang: 'Spanish', accent: 'Mexican', sex: 'F'},
+            {vid: 'Miguel', name: 'Miguel (Spanish, American)', flag: 'US', lang: 'Spanish', accent: 'American', sex: 'M'},
+            {vid: 'Penelope', name: 'Penélope (Spanish, American)', flag: 'US', lang: 'Spanish', accent: 'American', sex: 'F'},
+            {vid: 'Astrid', name: 'Astrid (Swedish)', flag: 'SE', lang: 'Swedish', accent: '', sex: 'F'},
+            {vid: 'Filiz', name: 'Filiz (Turkish)', flag: 'TR', lang: 'Turkish', accent: '', sex: 'M'},
+            {vid: 'Gwyneth', name: 'Gwyneth (Welsh)', flag: 'GB-WLS', lang: 'Welsh', accent: '', sex: 'F'},
         ],
     },
     'IBM Watson':
@@ -71,26 +72,26 @@ const ttsServices = {
         charLimit: 5000,
         countBytes: false,
         voices: [
-            {vid: 'en-GB_KateVoice', name: 'Kate (English, British)', flag: 'GB'},
-            {vid: 'en-US_AllisonVoice', name: 'Allison (English, American)', flag: 'US'},
-            {vid: 'en-US_AllisonV2Voice', name: 'Allison V2 (English, American)', flag: 'US'},
-            {vid: 'en-US_LisaVoice', name: 'Lisa (English, American)', flag: 'US'},
-            {vid: 'en-US_LisaV2Voice', name: 'Lisa V2 (English, American)', flag: 'US'},
-            {vid: 'en-US_MichaelVoice', name: 'Michael (English, American)', flag: 'US'},
-            {vid: 'en-US_MichaelV2Voice', name: 'Michael V2 (English, American)', flag: 'US'},
-            {vid: 'fr-FR_ReneeVoice', name: 'Renee (French)', flag: 'FR'},
-            {vid: 'de-DE_BirgitVoice', name: 'Birgit (German)', flag: 'DE'},
-            {vid: 'de-DE_BirgitV2Voice', name: 'Birgit V2 (German)', flag: 'DE'},
-            {vid: 'de-DE_DieterVoice', name: 'Dieter (German)', flag: 'DE'},
-            {vid: 'de-DE_DieterV2Voice', name: 'Dieter V2 (German)', flag: 'DE'},
-            {vid: 'it-IT_FrancescaVoice', name: 'Francesca (Italian)', flag: 'IT'},
-            {vid: 'it-IT_FrancescaV2Voice', name: 'Francesca V2 (Italian)', flag: 'IT'},
-            {vid: 'ja-JP_EmiVoice', name: 'Emi (Japanese)', flag: 'JP'},
-            {vid: 'pt-BR_IsabelaVoice', name: 'Isabela (Portuguese, Brazilian)', flag: 'BR'},
-            {vid: 'es-ES_EnriqueVoice', name: 'Enrique (Spanish, European)', flag: 'ES'},
-            {vid: 'es-ES_LauraVoice', name: 'Laura (Spanish, European)', flag: 'ES'},
-            {vid: 'es-LA_SofiaVoice', name: 'Sofia (Spanish, Latin American)', flag: 'MX'},
-            {vid: 'es-US_SofiaVoice', name: 'Sofia (Spanish, American)', flag: 'US'},
+            {vid: 'en-GB_KateVoice', name: 'Kate (English, British)', flag: 'GB', lang: 'English', accent: 'England', sex: 'F'},
+            {vid: 'en-US_AllisonVoice', name: 'Allison (English, American)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
+            {vid: 'en-US_AllisonV2Voice', name: 'Allison V2 (English, American)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
+            {vid: 'en-US_LisaVoice', name: 'Lisa (English, American)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
+            {vid: 'en-US_LisaV2Voice', name: 'Lisa V2 (English, American)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
+            {vid: 'en-US_MichaelVoice', name: 'Michael (English, American)', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
+            {vid: 'en-US_MichaelV2Voice', name: 'Michael V2 (English, American)', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
+            {vid: 'fr-FR_ReneeVoice', name: 'Renee (French)', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
+            {vid: 'de-DE_BirgitVoice', name: 'Birgit (German)', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
+            {vid: 'de-DE_BirgitV2Voice', name: 'Birgit V2 (German)', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
+            {vid: 'de-DE_DieterVoice', name: 'Dieter (German)', flag: 'DE', lang: 'German', accent: '', sex: 'M'},
+            {vid: 'de-DE_DieterV2Voice', name: 'Dieter V2 (German)', flag: 'DE', lang: 'German', accent: '', sex: 'M'},
+            {vid: 'it-IT_FrancescaVoice', name: 'Francesca (Italian)', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
+            {vid: 'it-IT_FrancescaV2Voice', name: 'Francesca V2 (Italian)', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
+            {vid: 'ja-JP_EmiVoice', name: 'Emi (Japanese)', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
+            {vid: 'pt-BR_IsabelaVoice', name: 'Isabela (Portuguese, Brazilian)', flag: 'BR', lang: 'Portuguese', accent: 'Brazil', sex: 'F'},
+            {vid: 'es-ES_EnriqueVoice', name: 'Enrique (Spanish, European)', flag: 'ES', lang: 'Spanish', accent: 'European', sex: 'M'},
+            {vid: 'es-ES_LauraVoice', name: 'Laura (Spanish, European)', flag: 'ES', lang: 'Spanish', accent: 'European', sex: 'F'},
+            {vid: 'es-LA_SofiaVoice', name: 'Sofia (Spanish, Latin American)', flag: 'MX', lang: 'Spanish', accent: 'Latin American', sex: 'F'},
+            {vid: 'es-US_SofiaVoice', name: 'Sofia (Spanish, American)', flag: 'US', lang: 'Spanish', accent: 'American', sex: 'F'},
         ],
     },
     'Google Translate':
@@ -99,54 +100,54 @@ const ttsServices = {
         charLimit: 200,
         countBytes: false,
         voices: [
-            {vid: 'en-gb', name: 'English (British)', flag: 'GB'},
-            {vid: 'en-us', name: 'English (American)', flag: 'US'},
-            {vid: 'en-au', name: 'English (Australian)', flag: 'AU'},
-            {vid: 'en-in', name: 'English (Indian)', flag: 'IN'},
-            {vid: 'ar', name: 'Arabic', flag: ''},
-            {vid: 'bn-bd', name: 'Bengali', flag: 'BD'},
-            {vid: 'zh-cn', name: 'Chinese', flag: 'CN'},
-            {vid: 'cs-cz', name: 'Czech', flag: 'CZ'},
-            {vid: 'da-dk', name: 'Danish', flag: 'DK'},
-            {vid: 'nl-nl', name: 'Dutch', flag: 'NL'},
-            {vid: 'et-ee', name: 'Estonian', flag: 'EE'},
-            {vid: 'tl-ph', name: 'Filipino (Tagalog)', flag: 'PH'},
-            {vid: 'fi-fi', name: 'Finnish', flag: 'FI'},
-            {vid: 'fr-fr', name: 'French - France', flag: 'FR'},
-            {vid: 'fr-ca', name: 'French - Canada', flag: 'CA'},
-            {vid: 'de-de', name: 'German', flag: 'DE'},
-            {vid: 'el-gr', name: 'Greek', flag: 'GR'},
-            {vid: 'hi-in', name: 'Hindi', flag: 'IN'},
-            {vid: 'hu-hu', name: 'Hungarian', flag: 'HU'},
-            {vid: 'it-it', name: 'Italian', flag: 'IT'},
-            {vid: 'id-id', name: 'Indonesian', flag: 'ID'},
-            {vid: 'ja-jp', name: 'Japanese', flag: 'JP'},
-            {vid: 'jw-id', name: 'Javanese', flag: 'ID'},
-            {vid: 'km-kh', name: 'Khmer', flag: 'KH'},
-            {vid: 'ko-kr', name: 'Korean', flag: 'KR'},
-            {vid: 'la', name: 'Latin', flag: ''},
-            {vid: 'ml-in', name: 'Malayalam', flag: 'IN'},
-            {vid: 'mr-in', name: 'Marathi', flag: 'IN'},
-            {vid: 'my-mm', name: 'Myanmar (Burmese)', flag: 'MM'},
-            {vid: 'ne-np', name: 'Nepali', flag: 'NP'},
-            {vid: 'nb-no', name: 'Norwegian', flag: 'NO'},
-            {vid: 'pl-pl', name: 'Polish', flag: 'PL'},
-            {vid: 'pt-pt', name: 'Portuguese - Europe', flag: 'PT'},
-            {vid: 'pt-br', name: 'Portuguese - Brazil', flag: 'BR'},
-            {vid: 'ro-ro', name: 'Romanian', flag: 'RO'},
-            {vid: 'ru-ru', name: 'Russian', flag: 'RU'},
-            {vid: 'si-lk', name: 'Sinhala', flag: 'LK'},
-            {vid: 'sk-sk', name: 'Slovak', flag: 'SK'},
-            {vid: 'es-es', name: 'Spanish - Spain', flag: 'ES'},
-            {vid: 'es-mx', name: 'Spanish - Mexico', flag: 'MX'},
-            {vid: 'su-sd', name: 'Sudanese', flag: 'SD'},
-            {vid: 'sv-se', name: 'Swedish', flag: 'SE'},
-            {vid: 'ta-in', name: 'Tamil', flag: 'IN'},
-            {vid: 'te-in', name: 'Telugu', flag: 'IN'},
-            {vid: 'th-th', name: 'Thai', flag: 'TH'},
-            {vid: 'tr-tr', name: 'Turkish', flag: 'TR'},
-            {vid: 'uk-ua', name: 'Ukrainian', flag: 'UA'},
-            {vid: 'vi-vn', name: 'Vietnamese', flag: 'VN'},
+            {vid: 'en-gb', name: 'English (British)', flag: 'GB', lang: 'English', accent: 'England', sex: 'F'},
+            {vid: 'en-us', name: 'English (American)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
+            {vid: 'en-au', name: 'English (Australian)', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'F'},
+            {vid: 'en-in', name: 'English (Indian)', flag: 'IN', lang: 'English', accent: 'Indian', sex: 'F'},
+            {vid: 'ar', name: 'Arabic', flag: '', lang: 'Arabic', accent: '', sex: 'F'},
+            {vid: 'bn-bd', name: 'Bengali', flag: 'BD', lang: 'Bengali', accent: '', sex: 'M'},
+            {vid: 'zh-cn', name: 'Chinese', flag: 'CN', lang: 'Chinese', accent: '', sex: 'F'},
+            {vid: 'cs-cz', name: 'Czech', flag: 'CZ', lang: 'Czech', accent: '', sex: 'F'},
+            {vid: 'da-dk', name: 'Danish', flag: 'DK', lang: 'Danish', accent: '', sex: 'F'},
+            {vid: 'nl-nl', name: 'Dutch', flag: 'NL', lang: 'Dutch', accent: '', sex: 'F'},
+            {vid: 'et-ee', name: 'Estonian', flag: 'EE', lang: 'Estonian', accent: '', sex: 'M'},
+            {vid: 'tl-ph', name: 'Filipino (Tagalog)', flag: 'PH', lang: 'Filipino', accent: '', sex: 'F'},
+            {vid: 'fi-fi', name: 'Finnish', flag: 'FI', lang: 'Finnish', accent: '', sex: 'F'},
+            {vid: 'fr-fr', name: 'French - France', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
+            {vid: 'fr-ca', name: 'French - Canada', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'F'},
+            {vid: 'de-de', name: 'German', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
+            {vid: 'el-gr', name: 'Greek', flag: 'GR', lang: 'Greek', accent: '', sex: 'F'},
+            {vid: 'hi-in', name: 'Hindi', flag: 'IN', lang: 'Hindi', accent: '', sex: 'F'},
+            {vid: 'hu-hu', name: 'Hungarian', flag: 'HU', lang: 'Hungarian', accent: '', sex: 'F'},
+            {vid: 'it-it', name: 'Italian', flag: 'IT', lang: 'Italian', accent: '', sex: 'M'},
+            {vid: 'id-id', name: 'Indonesian', flag: 'ID', lang: 'Indonesian', accent: '', sex: 'F'},
+            {vid: 'ja-jp', name: 'Japanese', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
+            {vid: 'jw-id', name: 'Javanese', flag: 'ID', lang: 'Javanese', accent: '', sex: 'F'},
+            {vid: 'km-kh', name: 'Khmer', flag: 'KH', lang: 'Khmer', accent: '', sex: 'F'},
+            {vid: 'ko-kr', name: 'Korean', flag: 'KR', lang: 'Korean', accent: '', sex: 'M'},
+            {vid: 'la', name: 'Latin', flag: '', lang: 'Latin', accent: '', sex: 'M'},
+            {vid: 'ml-in', name: 'Malayalam', flag: 'IN', lang: 'Malayalam', accent: '', sex: 'M'},
+            {vid: 'mr-in', name: 'Marathi', flag: 'IN', lang: 'Marathi', accent: '', sex: 'F'},
+            {vid: 'my-mm', name: 'Myanmar (Burmese)', flag: 'MM', lang: 'Myanmar (Burmese)', accent: '', sex: 'F'},
+            {vid: 'ne-np', name: 'Nepali', flag: 'NP', lang: 'Nepali', accent: '', sex: 'F'},
+            {vid: 'nb-no', name: 'Norwegian', flag: 'NO', lang: 'Norwegian', accent: '', sex: 'F'},
+            {vid: 'pl-pl', name: 'Polish', flag: 'PL', lang: 'Polish', accent: '', sex: 'M'},
+            {vid: 'pt-pt', name: 'Portuguese - Europe', flag: 'PT', lang: 'Portuguese', accent: 'Europe', sex: 'F'},
+            {vid: 'pt-br', name: 'Portuguese - Brazil', flag: 'BR', lang: 'Portuguese', accent: 'Brazil', sex: 'F'},
+            {vid: 'ro-ro', name: 'Romanian', flag: 'RO', lang: 'Romanian', accent: '', sex: 'F'},
+            {vid: 'ru-ru', name: 'Russian', flag: 'RU', lang: 'Russian', accent: '', sex: 'F'},
+            {vid: 'si-lk', name: 'Sinhala', flag: 'LK', lang: 'Sinhala', accent: '', sex: 'F'},
+            {vid: 'sk-sk', name: 'Slovak', flag: 'SK', lang: 'Slovak', accent: '', sex: 'F'},
+            {vid: 'es-es', name: 'Spanish - Spain', flag: 'ES', lang: 'Spanish', accent: 'Spain', sex: 'F'},
+            {vid: 'es-mx', name: 'Spanish - Mexico', flag: 'MX', lang: 'Spanish', accent: 'Mexico', sex: 'F'},
+            {vid: 'su-sd', name: 'Sudanese', flag: 'SD', lang: 'Sudanese', accent: '', sex: 'F'},
+            {vid: 'sv-se', name: 'Swedish', flag: 'SE', lang: 'Swedish', accent: '', sex: 'F'},
+            {vid: 'ta-in', name: 'Tamil', flag: 'IN', lang: 'Tamil', accent: '', sex: 'F'},
+            {vid: 'te-in', name: 'Telugu', flag: 'IN', lang: 'Telugu', accent: '', sex: 'F'},
+            {vid: 'th-th', name: 'Thai', flag: 'TH', lang: 'Thai', accent: '', sex: 'F'},
+            {vid: 'tr-tr', name: 'Turkish', flag: 'TR', lang: 'Turkish', accent: '', sex: 'F'},
+            {vid: 'uk-ua', name: 'Ukrainian', flag: 'UA', lang: 'Ukrainian', accent: '', sex: 'F'},
+            {vid: 'vi-vn', name: 'Vietnamese', flag: 'VN', lang: 'Vietnamese', accent: '', sex: 'F'},
         ],
     },
     'iSpeech':
@@ -155,88 +156,149 @@ const ttsServices = {
         charLimit: 150,
         countBytes: true,
         voices: [
-            {vid: 'ukenglishfemale', name: 'English (British) - Female', flag: 'GB'},
-            {vid: 'ukenglishmale', name: 'English (British) - Male', flag: 'GB'},
-            {vid: 'usenglishfemale', name: 'English (American) - Female', flag: 'US'},
-            {vid: 'usenglishmale', name: 'English (American) - Male', flag: 'US'},
-            {vid: 'auenglishfemale', name: 'English (Australian) - Female', flag: 'AU'},
-            {vid: 'caenglishfemale', name: 'English (Canadian) - Female', flag: 'CA'},
-            {vid: 'arabicmale', name: 'Arabic - Male', flag: 'EG'},
-            {vid: 'chchinesefemale', name: 'Chinese (China) - Female', flag: 'CN'},
-            {vid: 'hkchinesefemale', name: 'Chinese (Hong Kong) - Female', flag: 'HK'},
-            //{vid: 'twchinesefemale', name: 'Chinese (Taiwan) - Female', flag: 'TW'}, // "invalid voice" as of May 2019
-            {vid: 'eurczechfemale', name: 'Czech - Female', flag: 'CZ'},
-            {vid: 'eurdanishfemale', name: 'Danish - Female', flag: 'DK'},
-            {vid: 'eurdutchfemale', name: 'Dutch - Female', flag: 'NL'},
-            {vid: 'eurfinnishfemale', name: 'Finnish - Female', flag: 'FI'},
-            {vid: 'eurfrenchfemale', name: 'French (European) - Female', flag: 'FR'},
-            {vid: 'eurfrenchmale', name: 'French (European) - Male', flag: 'FR'},
-            {vid: 'cafrenchfemale', name: 'French (Canadian) - Female', flag: 'CA'},
-            {vid: 'cafrenchmale', name: 'French (Canadian) - Male', flag: 'CA'},
-            {vid: 'eurgermanfemale', name: 'German - Female', flag: 'DE'},
-            {vid: 'eurgermanmale', name: 'German - Male', flag: 'DE'},
-            {vid: 'eurgreekfemale', name: 'Greek - Female', flag: 'GR'},
-            {vid: 'huhungarianfemale', name: 'Hungarian - Female', flag: 'HU'},
-            {vid: 'euritalianfemale', name: 'Italian - Female', flag: 'IT'},
-            {vid: 'euritalianmale', name: 'Italian - Male', flag: 'IT'},
-            {vid: 'jpjapanesefemale', name: 'Japanese - Female', flag: 'JP'},
-            {vid: 'krkoreanfemale', name: 'Korean - Female', flag: 'KR'},
-            {vid: 'eurnorwegianfemale', name: 'Norwegian - Female', flag: 'NO'},
-            {vid: 'eurpolishfemale', name: 'Polish - Female', flag: 'PL'},
-            {vid: 'eurportuguesefemale', name: 'Portuguese (European) - Female', flag: 'PT'},
-            {vid: 'eurportuguesemale', name: 'Portuguese (European) - Male', flag: 'PT'},
-            {vid: 'brportuguesefemale', name: 'Portuguese (Brazilian) - Female', flag: 'BR'},
-            {vid: 'rurussianfemale', name: 'Russian - Female', flag: 'RU'},
-            {vid: 'rurussianmale', name: 'Russian - Male', flag: 'RU'},
-            {vid: 'eurspanishfemale', name: 'Spanish (European) - Female', flag: 'ES'},
-            {vid: 'eurspanishmale', name: 'Spanish (European) - Male', flag: 'ES'},
-            {vid: 'usspanishfemale', name: 'Spanish (Latin American) - Female', flag: 'MX'},
-            {vid: 'usspanishmale', name: 'Spanish (Latin American) - Male', flag: 'MX'},
-            {vid: 'swswedishfemale', name: 'Swedish - Female', flag: 'SE'},
-            {vid: 'eurturkishfemale', name: 'Turkish - Female', flag: 'TR'},
-            {vid: 'eurturkishmale', name: 'Turkish - Male', flag: 'TR'},
+            {vid: 'ukenglishfemale', name: 'English (British)', flag: 'GB', lang: 'English', accent: 'England', sex: 'F'},
+            {vid: 'ukenglishmale', name: 'English (British)', flag: 'GB', lang: 'English', accent: 'England', sex: 'M'},
+            {vid: 'usenglishfemale', name: 'English (American)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
+            {vid: 'usenglishmale', name: 'English (American)', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
+            {vid: 'auenglishfemale', name: 'English (Australian)', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'F'},
+            {vid: 'caenglishfemale', name: 'English (Canadian)', flag: 'CA', lang: 'English', accent: 'Canadian', sex: 'F'},
+            {vid: 'arabicmale', name: 'Arabic', flag: 'EG', lang: 'Arabic', accent: '', sex: 'M'},
+            {vid: 'chchinesefemale', name: 'Chinese (China)', flag: 'CN', lang: 'Chinese', accent: '', sex: 'F'},
+            {vid: 'hkchinesefemale', name: 'Chinese (Hong Kong)', flag: 'HK', lang: 'Chinese', accent: 'Hong Kong', sex: 'F'},
+            //{vid: 'twchinesefemale', name: 'Chinese (Taiwan)', flag: 'TW', lang: 'Chinese', accent: 'Taiwan', sex: 'F'}, // "invalid voice" as of May 2019
+            {vid: 'eurczechfemale', name: 'Czech', flag: 'CZ', lang: 'Czech', accent: '', sex: 'F'},
+            {vid: 'eurdanishfemale', name: 'Danish', flag: 'DK', lang: 'Danish', accent: '', sex: 'F'},
+            {vid: 'eurdutchfemale', name: 'Dutch', flag: 'NL', lang: 'Dutch', accent: '', sex: 'F'},
+            {vid: 'eurfinnishfemale', name: 'Finnish', flag: 'FI', lang: 'Finnish', accent: '', sex: 'F'},
+            {vid: 'eurfrenchfemale', name: 'French (European)', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
+            {vid: 'eurfrenchmale', name: 'French (European)', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
+            {vid: 'cafrenchfemale', name: 'French (Canadian)', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'F'},
+            {vid: 'cafrenchmale', name: 'French (Canadian)', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'M'},
+            {vid: 'eurgermanfemale', name: 'German', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
+            {vid: 'eurgermanmale', name: 'German', flag: 'DE', lang: 'German', accent: '', sex: 'M'},
+            {vid: 'eurgreekfemale', name: 'Greek', flag: 'GR', lang: 'Greek', accent: '', sex: 'F'},
+            {vid: 'huhungarianfemale', name: 'Hungarian', flag: 'HU', lang: 'Hungarian', accent: '', sex: 'F'},
+            {vid: 'euritalianfemale', name: 'Italian', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
+            {vid: 'euritalianmale', name: 'Italian', flag: 'IT', lang: 'Italian', accent: '', sex: 'M'},
+            {vid: 'jpjapanesefemale', name: 'Japanese', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
+            {vid: 'krkoreanfemale', name: 'Korean', flag: 'KR', lang: 'Korean', accent: '', sex: 'F'},
+            {vid: 'eurnorwegianfemale', name: 'Norwegian', flag: 'NO', lang: 'Norwegian', accent: '', sex: 'F'},
+            {vid: 'eurpolishfemale', name: 'Polish', flag: 'PL', lang: 'Polish', accent: '', sex: 'F'},
+            {vid: 'eurportuguesefemale', name: 'Portuguese (European)', flag: 'PT', lang: 'Portuguese', accent: 'European', sex: 'F'},
+            {vid: 'eurportuguesemale', name: 'Portuguese (European)', flag: 'PT', lang: 'Portuguese', accent: 'European', sex: 'M'},
+            {vid: 'brportuguesefemale', name: 'Portuguese (Brazilian)', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'F'},
+            {vid: 'rurussianfemale', name: 'Russian', flag: 'RU', lang: 'Russian', accent: '', sex: 'F'},
+            {vid: 'rurussianmale', name: 'Russian', flag: 'RU', lang: 'Russian', accent: '', sex: 'M'},
+            {vid: 'eurspanishfemale', name: 'Spanish (European)', flag: 'ES', lang: 'Spanish', accent: 'Spain', sex: 'F'},
+            {vid: 'eurspanishmale', name: 'Spanish (European)', flag: 'ES', lang: 'Spanish', accent: 'Spain', sex: 'M'},
+            {vid: 'usspanishfemale', name: 'Spanish (Latin American)', flag: 'MX', lang: 'Spanish', accent: 'Latin American', sex: 'F'},
+            {vid: 'usspanishmale', name: 'Spanish (Latin American)', flag: 'MX', lang: 'Spanish', accent: 'Latin American', sex: 'M'},
+            {vid: 'swswedishfemale', name: 'Swedish', flag: 'SE', lang: 'Swedish', accent: '', sex: 'F'},
+            {vid: 'eurturkishfemale', name: 'Turkish', flag: 'TR', lang: 'Turkish', accent: '', sex: 'F'},
+            {vid: 'eurturkishmale', name: 'Turkish', flag: 'TR', lang: 'Turkish', accent: '', sex: 'M'},
         ],
     },
 };
 
 // Current URL paramaters
 const url = new URL(window.location.href);
-const urlParamVoice = url.searchParams.get('voice');
-const urlParamApi = url.searchParams.get('service');
-const urlParamText = url.searchParams.get('text');
+var urlParamVoice = url.searchParams.get('voice');
+var urlParamApi = url.searchParams.get('service');
+var urlParamLang = url.searchParams.get('lang');
+var urlParamSex = url.searchParams.get('s');
+var urlParamText = url.searchParams.get('text');
 
 // Iterate over each group of voices
-var selectHtml = '';
-var voiceCount = 0;
-var selVoice = '';
+var buttonsHtml = '', selVoice, voiceCount = 0, voicesPerColumn = 0, columns = 3, langs = [];
+const defaultApi = 'Polly';
+const defaultVoice = 'Brian';
+const defaultLang = 'English';
+
+var selApi = !urlParamApi || urlParamApi == 'All' ? ' is-active' : '';
+var filterApiHtml = '<li class="tab tab-api has-text-weight-bold' + selApi + '" id="tab-All"><a>All</a></li>';
 for (var voiceGroup in ttsServices) {
-    // Add an option group and iterate over each voice
     var voices = ttsServices[voiceGroup].voices;
-    selectHtml += '<optgroup label="' + voiceGroup + ' (' + voices.length + ')">';
-    for (var i = 0; i < voices.length; i++) {
-        selVoice = (urlParamVoice == voices[i].vid) && (urlParamApi == voiceGroup) ? ' selected' : '';
-        // Add the option
-        selectHtml += '<option value="' + voices[i].vid + '" ' + selVoice + ' data-api="' + voiceGroup + '" data-charlimit="' + ttsServices[voiceGroup].charLimit + '">' + 
-                      countryCodeToEmoji(voices[i].flag) + ' ' + voices[i].name +
-                      '</option>';
+    
+    // Add a tab for this API
+    selApi = urlParamApi == voiceGroup ? ' is-active' : '';
+    filterApiHtml += '<li class="tab tab-api' + selApi +'" id="tab-' + voiceGroup.replace(' ', '') + '"><a>' + voiceGroup + '</a></li>';
+    
+    // Add a button to act as a heading for this API's voices
+    buttonsHtml += '<a class="button button-voice button-heading has-background-lighter has-text-left has-text-weight-bold is-fullwidth no-hover" data-api="' + voiceGroup + '">' + voiceGroup + '</a>' + "\n";
+    
+    // Loop through this API's voices
+    for (var i = 0; i < voices.length; i++) { 
+        // Add button
+        selVoice = ((urlParamVoice == voices[i].vid) && (urlParamApi == voiceGroup)) || ( (!urlParamApi || !urlParamVoice) && (defaultVoice == voices[i].vid) && (defaultApi == voiceGroup) ) ? ' is-success selected-voice' : '';
+        buttonsHtml += '<button type="button" class="button button-voice is-light is-rounded' + selVoice + '" data-vid="' + voices[i].vid + '" data-api="' + voiceGroup + '" data-lang="' + voices[i].lang + '" data-sex="' + voices[i].sex + '" data-charlimit="' + ttsServices[voiceGroup].charLimit + '">' + 
+                      '<span class="voice-flag">' + countryCodeToEmoji(voices[i].flag) + '</span><span class="voice-name">' + voices[i].name +
+                      '</span><span class="voice-sex">' + genderLetterToEmoji(voices[i]) + '</span></button>' + "\n";
+
+        // Add language to array if necessary
+        if (voices[i].lang && langs.indexOf(voices[i].lang) === -1) langs.push(voices[i].lang);
     }
-    selectHtml += '</optgroup>';
+
     voiceCount += voices.length;
 }
 
-// Insert <select> HTML into the DOM, and show exact voice count
-var voiceSelect = document.getElementById('voice');
-voiceSelect.innerHTML = selectHtml;
+// Loop through languages
+langs.sort();
+var selLang = urlParamLang == 'All' ? ' is-success selected-lang' : ' is-light is-hidden';
+var langHtml = '<button type="button" class="button button-lang is-light is-rounded has-text-weight-bold' + selLang + '" data-lang="All">All</button>' + "\n"; 
+for (var i = 0; i < langs.length; i++) {
+    selLang = (urlParamLang == langs[i]) || ( !urlParamLang && (defaultLang == langs[i]) ) ? ' is-success selected-lang' : ' is-light is-hidden';
+    langHtml += '<button type="button" class="button button-lang is-light is-rounded' + selLang + '" data-lang="' + langs[i] + '">' + langs[i] + '</button>' + "\n";
+}
+
+// Sexes
+var sexes = ['Male', 'Female', 'Novelty'];
+var selSex = !urlParamSex || urlParamSex.toUpperCase() == 'A' ? ' is-active' : '';
+var filterSexHtml = '<li class="tab tab-sex has-text-weight-bold' + selSex + '" id="tab-A"><a>All</a></li>';
+for (var i = 0; i < sexes.length; i++) {
+    selSex = (urlParamSex && urlParamSex.toUpperCase() == sexes[i].charAt(0)) ? ' is-active' : '';
+    filterSexHtml += '<li class="tab tab-sex' + selSex +'" id="tab-' + sexes[i].charAt(0) + '"><a>' + sexes[i] + '</a></li>';
+}
+
+// Insert API and Sex filters
+document.getElementById('filter-api').innerHTML = '<ul><li class="tab"><a class="has-text-weight-bold has-background-grey-lighter no-hover" disabled>API</a></li>' + filterApiHtml + '</ul>';
+document.getElementById('filter-sex').innerHTML = '<ul><li class="tab"><a class="has-text-weight-bold has-background-grey-lighter no-hover" disabled>Sex</a></li>' + filterSexHtml + '</ul>';
+
+// Insert buttons
+document.getElementById('voice-selection').innerHTML = buttonsHtml;
+document.getElementById('lang-selection').innerHTML = '<button id="toggleLangs" class="button has-background-grey-lighter has-text-weight-bold is-outlined" onclick="toggleLangs();">Language (show/hide)</button>' + langHtml;
+
+// Show exact voice count
 document.getElementById('voicecount').innerHTML = voiceCount;
 
 // Add Event Listeners
-voiceSelect.addEventListener('change', selectVoice);
+var buttons = document.querySelectorAll('button.button-voice');
+for (var i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener('click', selectVoice);
+}
+var apiTabs = document.getElementsByClassName('tab-api');
+for (var i = 0; i < apiTabs.length; i++) {
+    apiTabs[i].addEventListener('click', selectApi);
+}
+var sexTabs = document.getElementsByClassName('tab-sex');
+for (var i = 0; i < sexTabs.length; i++) {
+    sexTabs[i].addEventListener('click', selectSex);
+}
+var langTabs = document.getElementsByClassName('button-lang');
+for (var i = 0; i < langTabs.length; i++) {
+    langTabs[i].addEventListener('click', selectLang);
+}
 document.getElementById('playbutton').addEventListener('click', generateTTSUrl);
 document.getElementById('copylinkbutton').addEventListener('click', copyToClipboard);
 document.getElementById('text').addEventListener('input', handleTextInput);
 
 // We may need to update the character limit if a different voice was selected by default via URL paramaters
 setCharLimit();
+
+// If lang isn't set via URL parameters let's make sure we start by only showing default (English) voices
+// which in turn will call updateVoiceList()
+// Otherwise we'll call updateVoiceList() directly to ensure any filters set by URL params are accounted for
+if (!urlParamLang) selectLang(null, defaultLang);
+else updateVoiceList();
 
 // If there is text present in the URL, put it in the textarea and play the audio
 if (urlParamText !== null && decodeURIComponent(urlParamText).trim().length > 0) {
@@ -251,17 +313,130 @@ if (urlParamText !== null && decodeURIComponent(urlParamText).trim().length > 0)
  * HELPER FUNCTIONS
  */
 
+// Return the currently selected voice element
+function getSelectedVoice() {
+    var selVoice = document.querySelectorAll('.button-voice.selected-voice')[0];
+    
+    return selVoice ? selVoice : document.getElementsByClassName('button-voice')[0];    // Return first voice as a fallback
+}
+
+// Return the currently selected api element
+function getSelectedApi() {
+    var selApi = document.querySelectorAll('.tab-api.is-active')[0];
+    
+    return selApi ? selApi : document.getElementById('tab-Polly');      // Return Polly as a fallback
+}
+
+// Return the currently selected api element
+function getSelectedSex() {
+    var selSex = document.querySelectorAll('.tab-sex.is-active')[0];
+    
+    return selSex ? selSex : document.getElementById('tab-A');          // Return All as a fallback
+}
+
+// Return the currently selected lang element
+function getSelectedLang() {
+    var selLang = document.querySelectorAll('.button-lang.selected-lang')[0];
+    
+    return selLang ? selLang : document.getElementsByClassName('button-lang')[0];    // Return All as a fallback
+}
+
+// Change selected API
+function selectApi(e, tabName) {
+    var tabs = document.querySelectorAll(".tab-api");
+    for (var i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove("is-active");
+    }
+    
+    var activeTab = e !== null ? e.currentTarget : document.getElementById("tab-" + tabName);
+    activeTab.classList.add("is-active");
+    
+    updateVoiceList();
+}
+
+// Change selected sex
+function selectSex(e, tabName) {
+    var tabs = document.querySelectorAll(".tab-sex");
+    for (var i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove("is-active");
+    }
+    
+    var activeTab = e !== null ? e.currentTarget : document.getElementById("tab-" + tabName);
+    activeTab.classList.add("is-active");
+    
+    updateVoiceList();
+}
+
+// Change selected language
+function selectLang(e, tabName) {
+    var buttons = document.querySelectorAll(".button-lang");
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].classList.remove("is-success");
+        buttons[i].classList.remove("selected-lang");
+        buttons[i].classList.add("is-light");
+    }
+    
+    var activeTab = e !== null ? e.currentTarget : document.querySelectorAll("button[data-lang='" + tabName + "']")[0];
+    activeTab.classList.add("selected-lang");
+    activeTab.classList.add("is-success");
+    activeTab.classList.remove("is-light");
+    
+    updateVoiceList();
+}
+
+// Update the voices matching our currently selected filters
+function updateVoiceList() {
+    const api = getSelectedApi().textContent;
+    const sex = getSelectedSex().textContent.charAt(0);
+    const lang = getSelectedLang().innerHTML;
+        
+    // Get all the buttons
+    var b = document.querySelectorAll('.button-voice');
+    
+    // Loop through buttons and unhide any that match our filters, hide the rest
+    for (var i = 0; i < b.length; i++) {
+        if ( 
+            ((lang != 'All' && b[i].getAttribute('data-lang') == lang) || lang == 'All' || b[i].getAttribute('data-lang') == null)
+            && ((api != 'All' && b[i].getAttribute('data-api') == api) || api == 'All')
+            && ((sex != 'A' && b[i].getAttribute('data-sex') == sex) || sex == 'A' || b[i].getAttribute('data-sex') == null)
+        ) {
+            b[i].classList.remove('is-hidden');
+        } else {
+            b[i].classList.add('is-hidden');
+        }
+    }
+}
 
 // When selecting a voice from the dropdown, set new char limit and URL
-function selectVoice() {
-    const selVoice = this.options[voice.selectedIndex];
+function selectVoice(e) {
+    const selVoice = e ? e.currentTarget : getSelectedVoice();
+    
+    // Remove active state from all buttons
+    var buttons = document.querySelectorAll('button.button-voice');
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].classList.remove('selected-voice');
+        buttons[i].classList.remove('is-success');
+        buttons[i].classList.add('is-light');
+    }
+    // Add selected class to this button
+    selVoice.classList.add('selected-voice');
+    selVoice.classList.add('is-success');
+    selVoice.classList.remove('is-light');
     
     // Set character limit on textarea
     setCharLimit();
+}
+
+// Change URL parameters
+function changeUrl(selVoice, text) {
+    selVoice = selVoice ? selVoice : getSelectedVoice();
+    text = text ? text : document.getElementById('text').value.trim();
     
-    // Change the URL parameters
-    var newUrl = updateURLParameter(window.location.href, 'voice', selVoice.value);
+    var newUrl = updateURLParameter(window.location.href, 'voice', selVoice.dataset.vid);
     newUrl = updateURLParameter(newUrl, 'service', selVoice.dataset.api);
+    newUrl = updateURLParameter(newUrl, 'text', encodeURIComponent(text));
+    newUrl = updateURLParameter(newUrl, 'lang', getSelectedLang().textContent);
+    newUrl = updateURLParameter(newUrl, 's', getSelectedSex().textContent.charAt(0));
     
     // Change the URL in the address bar
     setNewUrl(newUrl);
@@ -275,6 +450,16 @@ function setNewUrl(newUrl) {
     }
 }
 
+// Show/hide buttons for language selection
+function toggleLangs() {
+    var currentLang = getSelectedLang();
+    
+    var langs = document.getElementsByClassName('button-lang');
+    for (var i = 0; i < langs.length; i++) {
+        if (!langs[i].classList.contains('selected-lang')) langs[i].classList.toggle('is-hidden');
+    }
+}
+
 // Handle textarea input
 function handleTextInput(e) {
     var textarea = e.currentTarget;
@@ -283,8 +468,8 @@ function handleTextInput(e) {
     if (textarea.value) {
         textarea.style.height = textarea.scrollHeight + 'px';
     } else {
-        textarea.style.height = '100px';
-        textarea.scrollHeight = 100;
+        textarea.style.height = textarea.style.minHeight;
+        textarea.scrollHeight = textarea.offsetHeight;
     }
     
     // Count characters used
@@ -293,17 +478,25 @@ function handleTextInput(e) {
 
 // Generate URL to TTS output
 function generateTTSUrl() {
-    const voice = document.getElementById('voice');
-    const api = voice.options[voice.selectedIndex].dataset.api;
+    const voice = getSelectedVoice();
+    const api = voice.dataset.api;
     const text = document.getElementById('text').value.trim() || 'Please enter some text.';
     var url = ttsServices[api].url;
 
-    if (api === 'Polly') {
+    // Change the URL parameters
+    changeUrl(voice);
+
+    // Send request to the server if it needs proxying to get around CORS issues
+    if (ttsServices[api].needsProxy) {
+        // Show a loading spinner while the proxy sends/receives the request
+        document.getElementById('playbutton').classList.add('is-loading');
+
+        // Send request to our proxy script
         var xhr = new XMLHttpRequest();
         xhr.onload = function () {
             var response = JSON.parse(xhr.responseText);
             if (xhr.readyState == 4 && xhr.status == '200') {
-                console.log(response);
+                //console.log(response);
                 if (response.success === true) {
                     showAudioPlayer(response.speak_url);
                 } else if (response.error) {
@@ -312,25 +505,26 @@ function generateTTSUrl() {
             } else {
                 console.error(response);
             }
+
+            // Remove loading spinner
+            document.getElementById('playbutton').classList.remove('is-loading');
         }
-        xhr.open('POST', 'proxy.php', true);    // Use our own proxy to get around CORS issues
+        xhr.open('POST', 'proxy.php', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.send('voice=' + encodeURIComponent(voice.value) + '&text=' + encodeURIComponent(text));
-    } else if (api === 'Google Translate') {
+        xhr.send('service=' + encodeURIComponent(api) + '&voice=' + encodeURIComponent(voice.dataset.vid) + '&text=' + encodeURIComponent(text));
+    } else {
+        // No need to proxy we can just replace some URL parameters
+
+        // Google's default speed is 1, iSpeech uses 0, no other service has such a variable
+        var speed = (api === 'Google Translate') ? 1 : 0;
+
+        // Perform possible rext replacements for this api
         url = url.replace('__LEN__', text.length);
         url = url.replace('__TEXT__', encodeURIComponent(text));
-        url = url.replace('__LOCALE__', voice.value);
-        url = url.replace('__SPEED__', 1);
-        showAudioPlayer(url);
-    } else if (api === 'IBM Watson') {
-        url = url.replace('__TEXT__', encodeURIComponent(text));
-        url = url.replace('__VOICE__', voice.value);
-        showAudioPlayer(url);
-    }
-     else if (api === 'iSpeech') {
-        url = url.replace('__TEXT__', encodeURIComponent(text));
-        url = url.replace('__VOICE__', voice.value);
-        url = url.replace('__SPEED__', 0);
+        url = url.replace('__LOCALE__', voice.dataset.vid);
+        url = url.replace('__VOICE__', voice.dataset.vid);
+        url = url.replace('__SPEED__', speed);
+
         showAudioPlayer(url);
     }
 }
@@ -341,9 +535,6 @@ function showAudioPlayer(ttsUrl) {
     document.getElementById('tts-player').innerHTML = audioHtml;
     document.getElementById('tts-player').classList.remove('is-hidden');
     document.getElementById('copylinkbutton').classList.remove('is-hidden');
-    
-    // Update the URL in the address bar with the text to be spoken
-    setNewUrl(updateURLParameter(window.location.href, 'text', encodeURIComponent(document.getElementById('text').value.trim())));
 }
 
 // Show error message
@@ -352,7 +543,7 @@ function showErrorMessage(message) {
     document.getElementById('tts-error').classList.remove('is-hidden');
     setTimeout(() => {
         document.getElementById('tts-error').classList.add('is-hidden');
-    }, 2500);
+    }, 5000);
 }
 
 // Copy audio link to clipboard
@@ -406,8 +597,7 @@ function copyToClipboard() {
 
 // Set character limit on textarea
 function setCharLimit() {
-    const voice = document.getElementById('voice');
-    const selectedVoice = voice.options[voice.selectedIndex];
+    const selectedVoice = getSelectedVoice();
     const newCharLimit = selectedVoice.dataset.charlimit;
     document.getElementById('text').maxLength = newCharLimit;
     document.getElementById('charlimit').innerHTML = newCharLimit;
@@ -418,13 +608,13 @@ function setCharLimit() {
 function characterCount(textarea) {
     // Some services count bytes rather than characters
     const thisText = textarea.value;
-    const voice = document.getElementById('voice');
-    const api = voice.options[voice.selectedIndex].dataset.api;
+    const voice = getSelectedVoice();
+    const api = voice.dataset.api;
     const curLength = ttsServices[api].countBytes === true ? byteCount(thisText.trim()) : thisText.trim().length;
     document.getElementById('chars').innerHTML = curLength;
 
     // if current length is near the max length change colour to red
-    if (curLength > (this.maxLength - 10)) {
+    if (curLength > (textarea.maxLength - 10)) {
         document.getElementById('character-count').classList.add('has-text-danger');
     } else {
         document.getElementById('character-count').classList.remove('has-text-danger');
@@ -435,6 +625,20 @@ function characterCount(textarea) {
 // https://stackoverflow.com/a/12203648/403476
 function byteCount(s) {
     return encodeURI(s).split(/%..|./).length - 1;
+}
+
+// Convert gender letter to Emoji
+function genderLetterToEmoji(voice) {
+    if (voice.sex == 'M') {
+        return '\u2642';
+    } else if (voice.sex == 'F') {
+        return '\u2640';
+    } else if (voice.sex == 'N') {
+        if (voice.customEmoji) return voice.customEmoji;
+        return '\u2753';
+    }
+
+    return '\u2753';
 }
 
 // Convert country code (ISO 3166-1 alpha-2) to emoji flag

@@ -1,0 +1,44 @@
+.textarea {
+    min-height: 150px;
+}
+.no-hover, .no-hover:hover {
+    color: #4a4a4a !important;
+    border-color: #dbdbdb !important;
+    z-index: 0 !important;
+}
+.voice-sex {
+    width: 16px;
+}
+.button-heading {
+    cursor: default !important;
+    border: 0 !important;
+    justify-content: left !important;
+}
+.button-voice {
+    font-size: 0.9rem;
+    justify-content: space-between !important;
+}
+@media (max-width: 639.98px) {
+    .button-voice {
+        width: 100%;
+    }
+}
+@media (min-width: 640px) and (max-width: 1023.98px) {
+    .button-voice {
+        width: 290px;
+    }
+}
+@media (min-width: 1024px) {
+    .button-voice {
+        width: 300px;
+    }
+    .textarea {
+        min-height: 190px;
+    }
+}
+@media (min-width: 1280px) and (max-width: 1407px) {
+    .column-voices {
+        flex: none;
+        width: 60% !important;
+    }
+}
