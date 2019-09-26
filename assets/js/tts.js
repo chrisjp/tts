@@ -608,7 +608,7 @@ function characterCount(textarea) {
     document.getElementById('chars').innerHTML = curLength;
 
     // if current length is near the max length change colour to red
-    if (curLength > (this.maxLength - 10)) {
+    if (curLength > (textarea.maxLength - 10)) {
         document.getElementById('character-count').classList.add('has-text-danger');
     } else {
         document.getElementById('character-count').classList.remove('has-text-danger');
