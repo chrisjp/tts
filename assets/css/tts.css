@@ -42,3 +42,7 @@
         width: 60% !important;
     }
 }
+.tabs.is-toggle li.is-active a {
+    background-color: hsl(141, 71%, 48%);
+    border-color: hsl(141, 71%, 48%);
+}
