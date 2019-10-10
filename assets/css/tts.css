@@ -6,6 +6,10 @@
     border-color: #dbdbdb !important;
     z-index: 0 !important;
 }
+.voice-flag {
+    font-size: 24px;
+    line-height: 0;
+}
 .voice-sex {
     width: 16px;
 }
