@@ -10,7 +10,7 @@ $postData = [
             'text'  => $_REQUEST['text'],
             ];
 
-if ($postData['service'] === 'Polly') {    
+if ($postData['service'] === 'Polly') {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, 'https://streamlabs.com/polly/speak');
     curl_setopt($ch, CURLOPT_POST, 1);
@@ -18,6 +18,6 @@ if ($postData['service'] === 'Polly') {
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $response = curl_exec($ch);
     curl_close($ch);
-    
+
     exit($response);
 }

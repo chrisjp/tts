@@ -218,19 +218,19 @@ var selApi = !urlParamApi || urlParamApi == 'All' ? ' is-active' : '';
 var filterApiHtml = '<li class="tab tab-api has-text-weight-bold' + selApi + '" id="tab-All"><a>All</a></li>';
 for (var voiceGroup in ttsServices) {
     var voices = ttsServices[voiceGroup].voices;
-    
+
     // Add a tab for this API
     selApi = urlParamApi == voiceGroup ? ' is-active' : '';
     filterApiHtml += '<li class="tab tab-api' + selApi +'" id="tab-' + voiceGroup.replace(' ', '') + '"><a>' + voiceGroup + '</a></li>';
-    
+
     // Add a button to act as a heading for this API's voices
     buttonsHtml += '<a class="button button-voice button-heading has-background-lighter has-text-left has-text-weight-bold is-fullwidth no-hover" data-api="' + voiceGroup + '">' + voiceGroup + '</a>' + "\n";
-    
+
     // Loop through this API's voices
-    for (var i = 0; i < voices.length; i++) { 
+    for (var i = 0; i < voices.length; i++) {
         // Add button
         selVoice = ((urlParamVoice == voices[i].vid) && (urlParamApi == voiceGroup)) || ( (!urlParamApi || !urlParamVoice) && (defaultVoice == voices[i].vid) && (defaultApi == voiceGroup) ) ? ' is-success selected-voice' : '';
-        buttonsHtml += '<button type="button" class="button button-voice is-light is-rounded' + selVoice + '" data-vid="' + voices[i].vid + '" data-api="' + voiceGroup + '" data-lang="' + voices[i].lang + '" data-sex="' + voices[i].sex + '" data-charlimit="' + ttsServices[voiceGroup].charLimit + '">' + 
+        buttonsHtml += '<button type="button" class="button button-voice is-light is-rounded' + selVoice + '" data-vid="' + voices[i].vid + '" data-api="' + voiceGroup + '" data-lang="' + voices[i].lang + '" data-sex="' + voices[i].sex + '" data-charlimit="' + ttsServices[voiceGroup].charLimit + '">' +
                       '<span class="voice-flag">' + countryCodeToEmoji(voices[i].flag) + '</span><span class="voice-name">' + voices[i].name +
                       '</span><span class="voice-sex">' + genderLetterToEmoji(voices[i]) + '</span></button>' + "\n";
 
@@ -244,7 +244,7 @@ for (var voiceGroup in ttsServices) {
 // Loop through languages
 langs.sort();
 var selLang = urlParamLang == 'All' ? ' is-success selected-lang' : ' is-light is-hidden';
-var langHtml = '<button type="button" class="button button-lang is-light is-rounded has-text-weight-bold' + selLang + '" data-lang="All">All</button>' + "\n"; 
+var langHtml = '<button type="button" class="button button-lang is-light is-rounded has-text-weight-bold' + selLang + '" data-lang="All">All</button>' + "\n";
 for (var i = 0; i < langs.length; i++) {
     selLang = (urlParamLang == langs[i]) || ( !urlParamLang && (defaultLang == langs[i]) ) ? ' is-success selected-lang' : ' is-light is-hidden';
     langHtml += '<button type="button" class="button button-lang is-light is-rounded' + selLang + '" data-lang="' + langs[i] + '">' + langs[i] + '</button>' + "\n";
@@ -309,35 +309,35 @@ if (urlParamText !== null && decodeURIComponent(urlParamText).trim().length > 0)
 }
 
 
-/** 
+/**
  * HELPER FUNCTIONS
  */
 
 // Return the currently selected voice element
 function getSelectedVoice() {
     var selVoice = document.querySelectorAll('.button-voice.selected-voice')[0];
-    
+
     return selVoice ? selVoice : document.getElementsByClassName('button-voice')[0];    // Return first voice as a fallback
 }
 
 // Return the currently selected api element
 function getSelectedApi() {
     var selApi = document.querySelectorAll('.tab-api.is-active')[0];
-    
+
     return selApi ? selApi : document.getElementById('tab-Polly');      // Return Polly as a fallback
 }
 
 // Return the currently selected api element
 function getSelectedSex() {
     var selSex = document.querySelectorAll('.tab-sex.is-active')[0];
-    
+
     return selSex ? selSex : document.getElementById('tab-A');          // Return All as a fallback
 }
 
 // Return the currently selected lang element
 function getSelectedLang() {
     var selLang = document.querySelectorAll('.button-lang.selected-lang')[0];
-    
+
     return selLang ? selLang : document.getElementsByClassName('button-lang')[0];    // Return All as a fallback
 }
 
@@ -347,10 +347,10 @@ function selectApi(e, tabName) {
     for (var i = 0; i < tabs.length; i++) {
         tabs[i].classList.remove("is-active");
     }
-    
+
     var activeTab = e !== null ? e.currentTarget : document.getElementById("tab-" + tabName);
     activeTab.classList.add("is-active");
-    
+
     updateVoiceList();
 }
 
@@ -360,10 +360,10 @@ function selectSex(e, tabName) {
     for (var i = 0; i < tabs.length; i++) {
         tabs[i].classList.remove("is-active");
     }
-    
+
     var activeTab = e !== null ? e.currentTarget : document.getElementById("tab-" + tabName);
     activeTab.classList.add("is-active");
-    
+
     updateVoiceList();
 }
 
@@ -375,12 +375,12 @@ function selectLang(e, tabName) {
         buttons[i].classList.remove("selected-lang");
         buttons[i].classList.add("is-light");
     }
-    
+
     var activeTab = e !== null ? e.currentTarget : document.querySelectorAll("button[data-lang='" + tabName + "']")[0];
     activeTab.classList.add("selected-lang");
     activeTab.classList.add("is-success");
     activeTab.classList.remove("is-light");
-    
+
     updateVoiceList();
 }
 
@@ -389,13 +389,13 @@ function updateVoiceList() {
     const api = getSelectedApi().textContent;
     const sex = getSelectedSex().textContent.charAt(0);
     const lang = getSelectedLang().innerHTML;
-        
+
     // Get all the buttons
     var b = document.querySelectorAll('.button-voice');
-    
+
     // Loop through buttons and unhide any that match our filters, hide the rest
     for (var i = 0; i < b.length; i++) {
-        if ( 
+        if (
             ((lang != 'All' && b[i].getAttribute('data-lang') == lang) || lang == 'All' || b[i].getAttribute('data-lang') == null)
             && ((api != 'All' && b[i].getAttribute('data-api') == api) || api == 'All')
             && ((sex != 'A' && b[i].getAttribute('data-sex') == sex) || sex == 'A' || b[i].getAttribute('data-sex') == null)
@@ -410,7 +410,7 @@ function updateVoiceList() {
 // When selecting a voice from the dropdown, set new char limit and URL
 function selectVoice(e) {
     const selVoice = e ? e.currentTarget : getSelectedVoice();
-    
+
     // Remove active state from all buttons
     var buttons = document.querySelectorAll('button.button-voice');
     for (var i = 0; i < buttons.length; i++) {
@@ -422,7 +422,7 @@ function selectVoice(e) {
     selVoice.classList.add('selected-voice');
     selVoice.classList.add('is-success');
     selVoice.classList.remove('is-light');
-    
+
     // Set character limit on textarea
     setCharLimit();
 }
@@ -431,13 +431,13 @@ function selectVoice(e) {
 function changeUrl(selVoice, text) {
     selVoice = selVoice ? selVoice : getSelectedVoice();
     text = text ? text : document.getElementById('text').value.trim();
-    
+
     var newUrl = updateURLParameter(window.location.href, 'voice', selVoice.dataset.vid);
     newUrl = updateURLParameter(newUrl, 'service', selVoice.dataset.api);
     newUrl = updateURLParameter(newUrl, 'text', encodeURIComponent(text));
     newUrl = updateURLParameter(newUrl, 'lang', getSelectedLang().textContent);
     newUrl = updateURLParameter(newUrl, 's', getSelectedSex().textContent.charAt(0));
-    
+
     // Change the URL in the address bar
     setNewUrl(newUrl);
 }
@@ -453,7 +453,7 @@ function setNewUrl(newUrl) {
 // Show/hide buttons for language selection
 function toggleLangs() {
     var currentLang = getSelectedLang();
-    
+
     var langs = document.getElementsByClassName('button-lang');
     for (var i = 0; i < langs.length; i++) {
         if (!langs[i].classList.contains('selected-lang')) langs[i].classList.toggle('is-hidden');
@@ -463,7 +463,7 @@ function toggleLangs() {
 // Handle textarea input
 function handleTextInput(e) {
     var textarea = e.currentTarget;
-    
+
     // Autogrow the textarea, or reset if emptied
     if (textarea.value) {
         textarea.style.height = textarea.scrollHeight + 'px';
@@ -471,7 +471,7 @@ function handleTextInput(e) {
         textarea.style.height = textarea.style.minHeight;
         textarea.scrollHeight = textarea.offsetHeight;
     }
-    
+
     // Count characters used
     characterCount(textarea);
 }
@@ -684,7 +684,7 @@ function updateURLParameter(url, param, paramVal)
     var additionalURL = tempArray[1];
     var temp = "";
 
-    if (additionalURL) 
+    if (additionalURL)
     {
         var tmpAnchor = additionalURL.split("#");
         var TheParams = tmpAnchor[0];
@@ -701,7 +701,7 @@ function updateURLParameter(url, param, paramVal)
                 newAdditionalURL += temp + tempArray[i];
                 temp = "&";
             }
-        }        
+        }
     }
     else
     {
