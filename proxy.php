@@ -21,6 +21,80 @@ if ($postData['service'] === 'Polly') {
 
     exit($response);
 }
+else if ($postData['service'] === 'CereProc') {
+    $json = [];
+    $audioFormat = 'mp3';           // valid types: mp3, ogg, wav
+    $sampleRate = 48000;            // Sample rate in hz, defaults to 48000 which is this best so no need to change it. Valid values: 8000, 11025, 16000, 22050, 32000, 44100, 48000
+    $accountId = 1;                 // Assuming this extra digit is the account ID, 1 seems to be used for their demo.
+
+    // Before we send a request to CereProc we can check if the audio file already exists
+    // because we know the format of the resulting URL
+    $resultUrl = 'https://cerevoice.s3.amazonaws.com/' . $postData['voice'] . $sampleRate . $accountId . md5($postData['text']) . '.' . $audioFormat;
+
+    // Check for existence of file (200 response)
+    $ch = curl_init($resultUrl);
+    curl_setopt($ch, CURLOPT_NOBODY, true);
+    curl_exec($ch);
+    $retcode = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+    curl_close($ch);
+
+    // If we get a 200 response the file exists so we can simply return this URL in the JSON
+    if ($retcode == 200) {
+        $json = [
+            'success' => true,
+            'speak_url' => $resultUrl,
+            'info' => 'Audio file already existed.'
+        ];
+        exit(json_encode($json));
+    }
+
+    // If not then we'll generate a request to send to their server
+    mt_srand(date('Ymd'));
+    $cookieKey = base_convert(mt_rand(), 10, 16);       // this can be anything as long as the value sent with the XML matches the value in the cookie
+                                                        // they generate in JS with Math.random().toString(36).substr(2) - this PHP is equivalent for emulating a similar value
+    $xmlData = '<speakExtended key=\'' . $cookieKey . '\'><voice>' . $postData['voice'] . '</voice><text>' . $postData['text'] . '</text><audioFormat>' . $audioFormat . '</audioFormat>' . "\n" . '</speakExtended>';
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, 'https://www.cereproc.com/livedemo.php');
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlData);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [  'content-type: text/plain;charset=UTF-8',
+                                            'user-agent: ' . $_SERVER['HTTP_USER_AGENT'],
+                                            'cookie: Drupal.visitor.liveDemo=' . $cookieKey,
+                                            'referer: https://www.cereproc.com/',
+                                            'origin: https://www.cereproc.com',
+                                        ]);
+    $response = curl_exec($ch);
+    $info = curl_getinfo($ch);
+    curl_close($ch);
+
+    // $response will be in XML format, but since we can't access the name of the root element
+    // which is either <url> or <error>, from a SimpleXMLElement object, we have to manually check
+    $xml = simplexml_load_string($response);
+
+    if ($info['http_code'] == 200) {
+        if (strpos($response, "<url>") > 0) {
+            $json = [
+                    'success' => true,
+                    'speak_url' => (string)$xml,
+                    'info' => 'Audio file generated successfully.'
+            ];
+        } else {
+            $json = [
+                    'success' => false,
+                    'error' => (string)$xml
+            ];
+        }
+    } else {
+        $json = [
+                'success' => false,
+                'error' => $info['http_code'] . ' error.'
+        ];
+    }
+
+    exit(json_encode($json));
+}
 else if ($postData['service'] == 'Oddcast') {
     // IDs used by their demo site
     $accountID = 5883747;
