@@ -57,3 +57,59 @@ else if ($postData['service'] == 'Oddcast') {
 
     exit(json_encode($json));
 }
+else if ($postData['service'] == 'Acapela') {
+    // Get session vars
+    $get = curl_init();
+    curl_setopt($get, CURLOPT_URL, 'https://www.acapela-group.com/www/static/website/demoOptionsDef_voicedemo.php');
+    curl_setopt($get, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($get, CURLOPT_HTTPHEADER, [  'User-Agent: ' . $_SERVER['HTTP_USER_AGENT'],
+                                            'Referer: https://www.acapela-group.com/demos/',
+                                            'Origin: https://www.acapela-group.com/demos/',
+                                        ]);
+    $response = curl_exec($get);
+    curl_close($get);
+
+    $response = str_replace(['var vaasOptions = ', '};'], ['', '}'], $response);    // the JSON is returned as a JavaScript variable
+    $vaasOptions = json_decode($response);
+
+    // construct POST data from the vaasOptions
+    $postFields = [
+        'cl_login' => $vaasOptions->login,
+        'cl_app' => $vaasOptions->app,
+        'session_start' => $vaasOptions->session->start,
+        'session_time' => $vaasOptions->session->time,
+        'session_key' => $vaasOptions->session->key,
+        'req_voice' => $postData['voice'],
+        'req_text' => $postData['text'],
+    ];
+
+    // Now we can make the request
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $vaasOptions->json_service_url);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postFields));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [  'Content-Type: application/x-www-form-urlencoded;charset=UTF-8',
+                                            'User-Agent: ' . $_SERVER['HTTP_USER_AGENT'],
+                                            'Referer: https://www.acapela-group.com/demos/',
+                                            'Origin: https://www.acapela-group.com/demos/',
+                                        ]);
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    $res = json_decode($response);
+    if ($res->res == 'NOK') {
+        $json = [
+                'success' => false,
+                'error' => $res->err_code . ': ' . urldecode($res->err_msg),
+        ];
+    } elseif ($res->res == 'OK') {
+        $json = [
+                'success' => true,
+                'speak_url' => $res->snd_url,
+        ];
+    }
+
+    exit(json_encode($json));
+}
