@@ -1030,8 +1030,8 @@ function showErrorMessage(message) {
 }
 
 // Copy audio link to clipboard
-function copyToClipboard() {
-    var audioUrl = document.getElementById('audioplayer').src;
+function copyToClipboard(e, copyBtn, textToCopy) {
+    var audioUrl = typeof textToCopy === 'undefined' ? document.getElementById('audioplayer').src : textToCopy;
 
     // Create a temporary text <input> to contain the URL of the audio clip, which we can then select and copy
     var tempInput = document.createElement('input');
@@ -1067,7 +1067,8 @@ function copyToClipboard() {
     document.body.removeChild(tempInput);
 
     // Tell user the good news!
-    var copyBtn = document.getElementById('copylinkbutton');
+    copyBtn = typeof copyBtn === 'undefined' ? document.getElementById('copylinkbutton') : copyBtn;
+
     const origText = copyBtn.textContent;
     copyBtn.textContent = 'Copied!';
     copyBtn.classList.add('is-success');
@@ -1076,6 +1077,9 @@ function copyToClipboard() {
         copyBtn.textContent = origText;
         copyBtn.classList.remove('is-success');
     }, 2000);
+
+    // Add to recents if this was triggered by an event (clicking the main copy link URL button)
+    if (e !== null) addToRecentShares();
 }
 
 // Set character limit on textarea
@@ -1201,4 +1205,109 @@ function updateURLParameter(url, param, paramVal)
 
     var rows_txt = temp + "" + param + "=" + paramVal;
     return baseURL + "?" + newAdditionalURL + rows_txt;
+}
+
+
+// Web Storage
+
+// On page load make sure recent shares is populated if there are any
+updateRecentShares();
+
+// Update the recent shares div with what's in our storage
+function updateRecentShares() {
+    if (typeof(Storage) !== "undefined") {
+        var currentData = localStorage.getItem('recentShares');
+        var recentHtml = '', audioHtml = '';
+        var recentContainer = document.getElementById('recentTTS');
+
+        if (currentData) {
+            currentData = JSON.parse(currentData);
+            const now = new Date();
+            const tooOld = (now.getTime() / 1000) - (3600 * 48);   // 48 hours ago
+            var deletions = false;
+
+            for (var i = 0; i < currentData.length; i++) {
+                // Remove this item if it's too old
+                if ((currentData[i].time / 1000) < tooOld) {
+                    currentData.splice(i, 1);
+                    deletions = true;
+                    i--;
+                } else {
+                    audioHtml = '<audio controls preload="metadata" src="' + currentData[i].audio + '" title="TTS Audio Clip"><p>Your browser does not support the <code>audio</code> element.</p></audio>';
+                    recentHtml += '<div class="columns recent">' +
+                    '<div class="column is-one-fifth"><span class="recent-voice has-text-weight-bold">' + currentData[i].voiceName + '</span><br/>' +
+                    '<span class="recent-time is-size-7 has-text-grey">' + timeSince(now, new Date(currentData[i].time)) + '</span></div>' +
+                    '<div class="column"><span class="recent-message is-italic">"' + (currentData[i].message.length > 250 ? currentData[i].message.substring(0, 250) + ' [...]' : currentData[i].message ) + '"</span></div>' +
+                    '<div class="column is-two-fifths">' + audioHtml +
+                    ' <button type="button" class="button is-small is-outlined" onclick="copyToClipboard(null, this, \'' + currentData[i].audio + '\');">copy URL</button>' +
+                    ' <button type="button" class="button is-small is-danger" onclick="removeShare(' + i + ');">remove</button>' + '</div>' +
+                    '</div>';
+                }
+            }
+
+            // If we removed any entries update localStorage
+            if (deletions) localStorage.setItem('recentShares', JSON.stringify(currentData));
+        } else {
+            recentHtml = '<em>No links copied yet!</em>';
+        }
+        recentContainer.innerHTML = recentHtml;
+    }
+}
+
+// Add the data of the TTS we just copied to our recent shares
+function addToRecentShares() {
+    if (typeof(Storage) !== "undefined") {
+        const now = new Date();
+        var currentData = localStorage.getItem('recentShares');
+        var voice = getSelectedVoice();
+        var dataArray = [];
+
+        var newData = {
+            'time': now.getTime(),
+            'voiceName': voice.dataset.vid,
+            'message': document.getElementById('text').value.trim(),
+            'audio': document.getElementById('audioplayer').src
+        };
+
+        // If we've already got some data, unshift our new object to the beginning of the array
+        // else we'll start it off at index 0, obviously.
+        if (currentData) {
+            dataArray = JSON.parse(currentData);
+            dataArray.unshift(newData);
+        } else {
+            dataArray[0] = newData;
+        }
+
+        localStorage.setItem('recentShares', JSON.stringify(dataArray));
+        updateRecentShares();
+    }
+}
+
+// Clear local storage of all shares
+function clearShares() {
+    localStorage.removeItem('recentShares');
+    updateRecentShares();
+}
+
+// Remove a share from storage
+function removeShare(index) {
+    var currentData = JSON.parse(localStorage.getItem('recentShares'));
+    currentData.splice(index, 1);
+
+    localStorage.setItem('recentShares', JSON.stringify(currentData));
+    updateRecentShares();
+}
+
+// Relative time
+function timeSince(thisDate, pastDate) {
+    var secondsPast = (thisDate.getTime() - pastDate.getTime()) / 1000;
+    if(secondsPast < 60){
+        return parseInt(secondsPast) + ' seconds ago';
+    }
+    if(secondsPast < 3600){
+        return parseInt(secondsPast/60) + ' minutes ago';
+    }
+    else {
+        return parseInt(secondsPast/3600) + ' hours ago';
+    }
 }
