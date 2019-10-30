@@ -1,10 +1,8 @@
+.toggle-style {
+    cursor: pointer;
+}
 .textarea {
     min-height: 150px;
-}
-.no-hover, .no-hover:hover {
-    color: #4a4a4a !important;
-    border-color: #dbdbdb !important;
-    z-index: 0 !important;
 }
 .voice-flag {
     font-size: 24px;
@@ -46,7 +44,87 @@
         width: 60% !important;
     }
 }
-.tabs.is-toggle li.is-active a {
+
+/* LIGHT MODE SPRECIFICS */
+.mode-light .no-hover, .mode-light .no-hover:hover {
+    color: #4a4a4a !important;
+    background-color: hsl(0, 0%, 96%) !important;
+    border-color: #dbdbdb !important;
+    z-index: 0 !important;
+    cursor: default;
+}
+.mode-light .tabs.is-toggle li.is-active a {
     background-color: hsl(141, 71%, 48%);
     border-color: hsl(141, 71%, 48%);
+}
+
+/* DARK MODE SPECIFICS */
+.mode-dark .no-hover, .mode-dark .no-hover:hover {
+    color: #eee !important;
+    background-color: hsl(0, 0%, 21%) !important;
+    border-color: #444444 !important;
+    z-index: 0 !important;
+    cursor: default;
+}
+.mode-dark a {
+    color: #dc6805;
+}
+.mode-dark a:hover {
+    color: #ff8b25;
+}
+.mode-dark .footer {
+    background-color: hsl(0, 0%, 7%);
+}
+.mode-dark .title {
+    color: hsl(0, 0%, 96%);
+}
+.mode-dark .subtitle {
+    color: hsl(0, 0%, 90%);
+}
+.mode-dark .box {
+    background-color: hsl(0, 0%, 14%);
+    color: hsl(0, 0%, 96%);
+}
+.mode-dark .is-success {
+    background-color: #dc6805;
+}
+.mode-dark .is-success:active, .mode-dark .is-success:hover {
+    background-color: #ff7500;
+}
+.mode-dark .is-success:focus:not(:active) {
+    box-shadow: 0 0 0 0.125em rgba(209, 119, 35, 0.25);
+}
+.mode-dark hr {
+    background-color: hsl(0, 0%, 28%);
+}
+.mode-dark .tabs a, .mode-dark .tabs.is-toggle a {
+    color: #eee;
+    border-color: #444444;
+}
+.mode-dark .tabs.is-toggle a:hover {
+    background-color: hsl(0, 0%, 21%);
+}
+.mode-dark .tabs.is-toggle li.is-active a {
+    background-color: #dc6805;
+    border-color: #dc6805;
+}
+.mode-dark .textarea {
+    background-color: hsl(0, 0%, 28%);
+    border-color: hsl(0, 0%, 42%);
+    color: hsl(0, 0%, 96%);
+}
+.mode-dark .textarea::placeholder {
+    color: hsl(0, 0%, 49%);
+}
+.mode-dark .textarea::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: hsl(0, 0%, 49%);
+}
+.mode-dark .textarea::-moz-placeholder { /* Firefox 19+ */
+    color: hsl(0, 0%, 49%);
+}
+.mode-dark .textarea:-ms-input-placeholder { /* IE 10+ */
+    color: hsl(0, 0%, 49%);
+}
+.mode-dark .textarea:-moz-placeholder { /* Firefox 18- */
+    color: hsl(0, 0%, 49%);
 }

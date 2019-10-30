@@ -669,6 +669,87 @@ const ttsServices = {
     },
 };
 
+// Return an object containing CSS class names depending on if we're displaying light mode or dark mode
+function styleClasses(mode) {
+    var styles = {};
+    mode = (mode == 'mode-dark') ? 'mode-dark' : 'mode-light';
+
+    if (mode == 'mode-dark') {
+        styles = {
+            html_bg: 'has-background-black-bis',
+            button_fg: 'is-dark',
+            button_bg: 'has-background-darker',
+        };
+    } else {
+        styles = {
+            html_bg: 'has-background-white-bis',
+            button_fg: 'is-light',
+            button_bg: 'has-background-lighter',
+        };
+    }
+
+    return styles;
+}
+
+// Toggle between light mode and dark mode, if manually toggling we'll set a cookie
+// to remember the user's preference
+function toggleStyleMode(clicked) {
+    var htmlTag = document.getElementsByTagName('html')[0];
+    var curMode = htmlTag.classList[0];
+    var newMode = curMode == 'mode-dark' ? 'mode-light' : 'mode-dark';
+    var newStyles = styleClasses(newMode);
+
+    htmlTag.classList.remove(curMode, styles.html_bg);
+    htmlTag.classList.add(newMode, newStyles.html_bg);
+
+    // Swap out all the button classes
+    var buttonsVoice = document.querySelectorAll('.button-voice');
+    var buttonsCopyandLang = document.querySelectorAll('.button-copy, .button-lang, #toggleLangs');
+
+    for (var i = 0; i < buttonsVoice.length; i++) {
+        buttonsVoice[i].classList.remove(styles.button_bg, styles.button_fg);
+        buttonsVoice[i].classList.add(newStyles.button_bg, newStyles.button_fg);
+    }
+    for (var i = 0; i < buttonsCopyandLang.length; i++) {
+        buttonsCopyandLang[i].classList.remove(styles.button_fg);
+        buttonsCopyandLang[i].classList.add(newStyles.button_fg);
+    }
+
+    styles = newStyles;
+
+    // Set cookie if toggle was manually clicked
+    if (clicked) {
+        var d = new Date();
+        d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
+        document.cookie = "style=" + newMode + ";expires=" + d.toUTCString() + ";path=/;secure";
+    }
+}
+
+// Get the user's preferred style mode. Order or preference:
+// 1. cookie value
+// 2. prefers-color-scheme set to 'dark' via the OS
+// 3. fall back to light mode
+function getStyleMode() {
+    // Check for cookie first
+    var value = "; " + document.cookie;
+    var parts = value.split("; style=");
+    if (parts.length == 2) {
+        return parts.pop().split(";").shift();
+    } else {
+        // Check for OS dark mode
+        if(matchMedia('(prefers-color-scheme: dark)').matches) {
+            return 'mode-dark';
+        }
+    }
+    // otherwise use light mode
+    return 'mode-light';
+}
+
+// Load css classes
+var styles = styleClasses();
+// If we detect the user wants dark mode we'll switch to that
+if (getStyleMode() == 'mode-dark') toggleStyleMode();
+
 // Current URL paramaters
 const url = new URL(window.location.href);
 var urlParamVoice = url.searchParams.get('voice');
@@ -693,7 +774,7 @@ for (var voiceGroup in ttsServices) {
     filterApiHtml += '<li class="tab tab-api' + selApi +'" id="tab-' + voiceGroup.replace(' ', '') + '"><a>' + voiceGroup + '</a></li>';
 
     // Add a button to act as a heading for this API's voices
-    buttonsHtml += '<a class="button button-voice button-heading has-background-lighter has-text-left has-text-weight-bold is-fullwidth no-hover" data-api="' + voiceGroup + '">' + voiceGroup + '</a>' + "\n";
+    buttonsHtml += '<a class="button button-voice button-heading ' + styles.button_bg + ' ' + styles.button_fg + ' has-text-left has-text-weight-bold is-fullwidth no-hover" data-api="' + voiceGroup + '">' + voiceGroup + '</a>' + "\n";
 
     // Loop through this API's voices
     for (var i = 0; i < voices.length; i++) {
@@ -713,8 +794,8 @@ for (var voiceGroup in ttsServices) {
         }
         // Add button
         selVoice = ((urlParamVoice == voices[i].vid) && (urlParamApi == voiceGroup)) || ( (!urlParamApi || !urlParamVoice) && (defaultVoice == voices[i].vid) && (defaultApi == voiceGroup) ) ? ' is-success selected-voice' : '';
-        buttonsHtml += '<button type="button" class="button button-voice is-light is-rounded' + selVoice + '" data-vid="' + voices[i].vid + '" data-api="' + voiceGroup + '" data-lang="' + voices[i].lang + '" data-sex="' + voices[i].sex + '" data-charlimit="' + ttsServices[voiceGroup].charLimit + '">' +
-                      '<span class="voice-flag">' + countryCodeToEmoji(voices[i].flag) + '</span><span class="voice-name">' + voiceName +
+        buttonsHtml += '<button type="button" class="button button-voice ' + styles.button_fg + ' is-rounded' + selVoice + '" data-vid="' + voices[i].vid + '" data-api="' + voiceGroup + '" data-lang="' + voices[i].lang + '" data-sex="' + voices[i].sex + '" data-charlimit="' + ttsServices[voiceGroup].charLimit + '">' +
+                      '<span class="voice-flag">' + countryCodeToEmoji(voices[i].flag) + '</span><span class="voice-name">' + voices[i].name +
                       '</span><span class="voice-sex">' + genderLetterToEmoji(voices[i]) + '</span></button>' + "\n";
 
         // Add language to array if necessary
@@ -726,11 +807,11 @@ for (var voiceGroup in ttsServices) {
 
 // Loop through languages
 langs.sort();
-var selLang = urlParamLang == 'All' ? ' is-success selected-lang' : ' is-light is-hidden';
-var langHtml = '<button type="button" class="button button-lang is-light is-rounded has-text-weight-bold' + selLang + '" data-lang="All">All</button>' + "\n";
+var selLang = urlParamLang == 'All' ? ' is-success selected-lang' : ' ' + styles.button_fg + ' is-hidden';
+var langHtml = '<button type="button" class="button button-lang ' + styles.button_fg + ' is-rounded has-text-weight-bold' + selLang + '" data-lang="All">All</button>' + "\n";
 for (var i = 0; i < langs.length; i++) {
     selLang = (urlParamLang == langs[i]) || ( !urlParamLang && (defaultLang == langs[i]) ) ? ' is-success selected-lang' : ' is-light is-hidden';
-    langHtml += '<button type="button" class="button button-lang is-light is-rounded' + selLang + '" data-lang="' + langs[i] + '">' + langs[i] + '</button>' + "\n";
+    langHtml += '<button type="button" class="button button-lang ' + styles.button_fg + ' is-rounded' + selLang + '" data-lang="' + langs[i] + '">' + langs[i] + '</button>' + "\n";
 }
 
 // Sexes
@@ -743,12 +824,12 @@ for (var i = 0; i < sexes.length; i++) {
 }
 
 // Insert API and Sex filters
-document.getElementById('filter-api').innerHTML = '<ul><li class="tab"><a class="has-text-weight-bold has-background-grey-lighter no-hover" disabled>API</a></li>' + filterApiHtml + '</ul>';
-document.getElementById('filter-sex').innerHTML = '<ul><li class="tab"><a class="has-text-weight-bold has-background-grey-lighter no-hover" disabled>Sex</a></li>' + filterSexHtml + '</ul>';
+document.getElementById('filter-api').innerHTML = '<ul><li class="tab"><a class="has-text-weight-bold no-hover" disabled>API</a></li>' + filterApiHtml + '</ul>';
+document.getElementById('filter-sex').innerHTML = '<ul><li class="tab"><a class="has-text-weight-bold no-hover" disabled>Sex</a></li>' + filterSexHtml + '</ul>';
 
 // Insert buttons
 document.getElementById('voice-selection').innerHTML = buttonsHtml;
-document.getElementById('lang-selection').innerHTML = '<button id="toggleLangs" class="button has-background-grey-lighter has-text-weight-bold is-outlined" onclick="toggleLangs();">Language (show/hide)</button>' + langHtml;
+document.getElementById('lang-selection').innerHTML = '<button id="toggleLangs" class="button ' + styles.button_fg + ' has-text-weight-bold" onclick="toggleLangs();">Language (show/hide)</button>' + langHtml;
 
 // Show exact voice count
 document.getElementById('voicecount').innerHTML = voiceCount;
@@ -879,9 +960,9 @@ function updateVoiceList() {
     // Loop through buttons and unhide any that match our filters, hide the rest
     for (var i = 0; i < b.length; i++) {
         if (
-            ((lang != 'All' && b[i].getAttribute('data-lang') == lang) || lang == 'All' || b[i].getAttribute('data-lang') == null)
-            && ((api != 'All' && b[i].getAttribute('data-api') == api) || api == 'All')
-            && ((sex != 'A' && b[i].getAttribute('data-sex') == sex) || sex == 'A' || b[i].getAttribute('data-sex') == null)
+            ((lang != 'All' && b[i].getAttribute('data-lang') == lang) || lang == 'All' || b[i].getAttribute('data-lang') == null) &&
+            ((api != 'All' && b[i].getAttribute('data-api') == api) || api == 'All') &&
+            ((sex != 'A' && b[i].getAttribute('data-sex') == sex) || sex == 'A' || b[i].getAttribute('data-sex') == null)
         ) {
             b[i].classList.remove('is-hidden');
         } else {
@@ -991,7 +1072,7 @@ function generateTTSUrl() {
 
             // Remove loading spinner
             document.getElementById('playbutton').classList.remove('is-loading');
-        }
+        };
         xhr.open('POST', 'proxy.php', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.send('service=' + encodeURIComponent(api) + '&voice=' + encodeURIComponent(voice.dataset.vid) + '&text=' + encodeURIComponent(text));
@@ -1239,7 +1320,7 @@ function updateRecentShares() {
                     '<span class="recent-time is-size-7 has-text-grey">' + timeSince(now, new Date(currentData[i].time)) + '</span></div>' +
                     '<div class="column"><span class="recent-message is-italic">"' + (currentData[i].message.length > 250 ? currentData[i].message.substring(0, 250) + ' [...]' : currentData[i].message ) + '"</span></div>' +
                     '<div class="column is-two-fifths">' + audioHtml +
-                    ' <button type="button" class="button is-small is-outlined" onclick="copyToClipboard(null, this, \'' + currentData[i].audio + '\');">copy URL</button>' +
+                    ' <button type="button" class="button button-copy is-small ' + styles.button_fg + '" onclick="copyToClipboard(null, this, \'' + currentData[i].audio + '\');">copy URL</button>' +
                     ' <button type="button" class="button is-small is-danger" onclick="removeShare(' + i + ');">remove</button>' + '</div>' +
                     '</div>';
                 }
