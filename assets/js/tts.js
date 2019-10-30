@@ -795,7 +795,7 @@ for (var voiceGroup in ttsServices) {
         // Add button
         selVoice = ((urlParamVoice == voices[i].vid) && (urlParamApi == voiceGroup)) || ( (!urlParamApi || !urlParamVoice) && (defaultVoice == voices[i].vid) && (defaultApi == voiceGroup) ) ? ' is-success selected-voice' : '';
         buttonsHtml += '<button type="button" class="button button-voice ' + styles.button_fg + ' is-rounded' + selVoice + '" data-vid="' + voices[i].vid + '" data-api="' + voiceGroup + '" data-lang="' + voices[i].lang + '" data-sex="' + voices[i].sex + '" data-charlimit="' + ttsServices[voiceGroup].charLimit + '">' +
-                      '<span class="voice-flag">' + countryCodeToEmoji(voices[i].flag) + '</span><span class="voice-name">' + voices[i].name +
+                      '<span class="voice-flag">' + countryCodeToEmoji(voices[i].flag) + '</span><span class="voice-name">' + voiceName +
                       '</span><span class="voice-sex">' + genderLetterToEmoji(voices[i]) + '</span></button>' + "\n";
 
         // Add language to array if necessary
@@ -1345,7 +1345,7 @@ function addToRecentShares() {
 
         var newData = {
             'time': now.getTime(),
-            'voiceName': voice.dataset.vid,
+            'voiceName': voice.getElementsByClassName('voice-name')[0].innerText,
             'message': document.getElementById('text').value.trim(),
             'audio': document.getElementById('audioplayer').src
         };
