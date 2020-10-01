@@ -54,7 +54,7 @@ else if ($postData['service'] === 'CereProc') {
                                                         // they generate in JS with Math.random().toString(36).substr(2) - this PHP is equivalent for emulating a similar value
     $xmlData = '<speakExtended key=\'' . $cookieKey . '\'><voice>' . $postData['voice'] . '</voice><text>' . $postData['text'] . '</text><audioFormat>' . $audioFormat . '</audioFormat>' . "\n" . '</speakExtended>';
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, 'https://www.cereproc.com/livedemo.php');
+    curl_setopt($ch, CURLOPT_URL, 'https://www.cereproc.com/support/live_demo');
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlData);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
