@@ -383,7 +383,7 @@ const ttsServices = {
             {vid: '1-4-4', name: 'Felix', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'M'},
             {vid: '2-4-4', name: 'Julie', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'F'},
             {vid: '2-3-4', name: 'Leo', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'M'},
-            {vid: '1-2-15', name: 'Carmela', flag: 'ES', lang: 'Galician', accent: '', sex: 'F'},
+            {vid: '1-2-15', name: 'Carmela', flag: 'ES-GA', lang: 'Galician', accent: '', sex: 'F'},
             {vid: '3-4-3', name: 'Anna', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
             {vid: '3-2-3', name: 'Katrin', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
             {vid: '1-3-3', name: 'Lena', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
@@ -523,7 +523,7 @@ const ttsServices = {
             {vid: 'French (Canadian) - male', name: '', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'M'},
             {vid: 'French (Canadian) - female', name: '', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'F'},
             {vid: 'Frisian - male', name: '', flag: 'NL', lang: 'Frisian', accent: '', sex: 'M'},
-            {vid: 'Galician - female', name: '', flag: 'ES', lang: 'Galician', accent: '', sex: 'F'},
+            {vid: 'Galician - female', name: '', flag: 'ES-GA', lang: 'Galician', accent: '', sex: 'F'},
             {vid: 'German - male', name: '', flag: 'DE', lang: 'German', accent: '', sex: 'M'},
             {vid: 'German - female', name: '', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
             {vid: 'Greek - female', name: '', flag: 'GR', lang: 'Greek', accent: '', sex: 'F'},
@@ -1216,7 +1216,7 @@ function countryCodeToEmoji(countryCode) {
     // There are also some edge cases for languages without a flag emoji (Arabic, Catalan, Basque...)
 
     var emoji = '\ud83c\udff3\ufe0f';   // white flag (default)
-    var noFlag = (countryCode == 'ARAB' || countryCode == 'ES-CA' || countryCode == 'ES-EU' || countryCode == 'ESPER');   // "country" codes with no flag emoji
+    var noFlag = (countryCode == 'ARAB' || countryCode == 'ES-CA' || countryCode == 'ES-GA' || countryCode == 'ES-EU' || countryCode == 'ESPER');   // "country" codes with no flag emoji
     var isWin = navigator.platform.indexOf('Win') > -1;     // check if user is on Windows
 
     if ((isWin || noFlag) && countryCode.length != 0) {
