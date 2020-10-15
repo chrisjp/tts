@@ -128,30 +128,40 @@ const ttsServices = {
     },
     'IBM Watson':
     {
-        url: 'https://text-to-speech-demo.ng.bluemix.net/api/v1/synthesize?text=__TEXT__&voice=__VOICE__&accept=audio%2Fmp3',
+        url: 'https://www.ibm.com/demos/live/tts-demo/api/tts/synthesize',
         charLimit: 5000,
         countBytes: false,
+        needsProxy: true,
         voices: [
-            {vid: 'en-GB_KateVoice', name: 'Kate', flag: 'GB', lang: 'English', accent: 'British', sex: 'F'},
-            {vid: 'en-US_AllisonVoice', name: 'Allison', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'en-US_AllisonV2Voice', name: 'Allison V2', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'en-US_LisaVoice', name: 'Lisa', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'en-US_LisaV2Voice', name: 'Lisa V2', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'en-US_MichaelVoice', name: 'Michael', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'en-US_MichaelV2Voice', name: 'Michael V2', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'fr-FR_ReneeVoice', name: 'Renee', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'de-DE_BirgitVoice', name: 'Birgit', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            {vid: 'de-DE_BirgitV2Voice', name: 'Birgit V2', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            {vid: 'de-DE_DieterVoice', name: 'Dieter', flag: 'DE', lang: 'German', accent: '', sex: 'M'},
-            {vid: 'de-DE_DieterV2Voice', name: 'Dieter V2', flag: 'DE', lang: 'German', accent: '', sex: 'M'},
-            {vid: 'it-IT_FrancescaVoice', name: 'Francesca', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
-            {vid: 'it-IT_FrancescaV2Voice', name: 'Francesca V2', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
-            {vid: 'ja-JP_EmiVoice', name: 'Emi', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
-            {vid: 'pt-BR_IsabelaVoice', name: 'Isabela', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'F'},
-            {vid: 'es-ES_EnriqueVoice', name: 'Enrique', flag: 'ES', lang: 'Spanish', accent: 'European', sex: 'M'},
-            {vid: 'es-ES_LauraVoice', name: 'Laura', flag: 'ES', lang: 'Spanish', accent: 'European', sex: 'F'},
-            {vid: 'es-LA_SofiaVoice', name: 'Sofia', flag: 'MX', lang: 'Spanish', accent: 'Latin American', sex: 'F'},
-            {vid: 'es-US_SofiaVoice', name: 'Sofia', flag: 'US', lang: 'Spanish', accent: 'American', sex: 'F'},
+            {vid: 'en-GB_CharlotteV3Voice', name: 'Charlotte', flag: 'GB', lang: 'English', accent: 'British', sex: 'F'},
+            {vid: 'en-GB_JamesV3Voice', name: 'James', flag: 'GB', lang: 'English', accent: 'British', sex: 'M'},
+            {vid: 'en-GB_KateV3Voice', name: 'Kate', flag: 'GB', lang: 'English', accent: 'British', sex: 'F'},
+            {vid: 'en-US_AllisonV3Voice', name: 'Allison', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
+            {vid: 'en-US_EmilyVoice', name: 'Emily', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
+            {vid: 'en-US_HenryV3Voice', name: 'Henry', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
+            {vid: 'en-US_KevinV3Voice', name: 'Kevin', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
+            {vid: 'en-US_LisaV3Voice', name: 'Lisa', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
+            {vid: 'en-US_MichaelV3Voice', name: 'Michael', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
+            {vid: 'en-US_OliviaV3Voice', name: 'Olivia', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
+            {vid: 'ar-AR_OmarVoice', name: 'Omar', flag: 'ARAB', lang: 'Arabic', accent: '', sex: 'M'},
+            {vid: 'zh-CN_LiNaVoice', name: 'LiNa', flag: 'CN', lang: 'Chinese', accent: '', sex: 'F'},
+            {vid: 'zh-CN_WangWeiVoice', name: 'WangWei', flag: 'CN', lang: 'Chinese', accent: '', sex: 'M'},
+            {vid: 'zh-CN_ZhangJingVoice', name: 'ZhangJing', flag: 'CN', lang: 'Chinese', accent: '', sex: 'F'},
+            {vid: 'nl-NL_EmmaVoice', name: 'Emma', flag: 'NL', lang: 'Dutch', accent: '', sex: 'M'},
+            {vid: 'nl-NL_LiamVoice', name: 'Liam', flag: 'NL', lang: 'Dutch', accent: '', sex: 'M'},
+            {vid: 'fr-FR_NicolasV3Voice', name: 'Nicolas', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
+            {vid: 'fr-FR_ReneeV3Voice', name: 'Renee', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
+            {vid: 'de-DE_DieterV3Voice', name: 'Dieter', flag: 'DE', lang: 'German', accent: '', sex: 'M'},
+            {vid: 'de-DE_ErikaV3Voice', name: 'Erika', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
+            {vid: 'it-IT_FrancescaV3Voice', name: 'Francesca', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
+            {vid: 'ja-JP_EmiV3Voice', name: 'Emi', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
+            {vid: 'ko-KR_YoungmiVoice', name: 'Youngmi', flag: 'KR', lang: 'Korean', accent: '', sex: 'F'},
+            {vid: 'ko-KR_YunaVoice', name: 'Yuna', flag: 'KR', lang: 'Korean', accent: '', sex: 'F'},
+            {vid: 'pt-BR_IsabelaV3Voice', name: 'Isabela', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'F'},
+            {vid: 'es-ES_EnriqueV3Voice', name: 'Enrique', flag: 'ES', lang: 'Spanish', accent: 'Castilian', sex: 'M'},
+            {vid: 'es-ES_LauraV3Voice', name: 'Laura', flag: 'ES', lang: 'Spanish', accent: 'Castilian', sex: 'F'},
+            {vid: 'es-LA_SofiaV3Voice', name: 'Sofia', flag: 'MX', lang: 'Spanish', accent: 'Latin American', sex: 'F'},
+            {vid: 'es-US_SofiaV3Voice', name: 'Sofia', flag: 'US', lang: 'Spanish', accent: 'American', sex: 'F'},
         ],
     },
     'Acapela':
@@ -1083,7 +1093,7 @@ function generateTTSUrl() {
         // Google's default speed is 1, iSpeech uses 0, no other service has such a variable
         var speed = (api === 'Google Translate') ? 1 : 0;
 
-        // Perform possible rext replacements for this api
+        // Perform possible text replacements for this API
         url = url.replace('__LEN__', text.length);
         url = url.replace('__TEXT__', encodeURIComponent(text));
         url = url.replace('__LOCALE__', voice.dataset.vid);

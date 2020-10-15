@@ -1,7 +1,7 @@
 # Text-to-Speech (TTS) Demo App
 A simple web app demonstrating how text sounds in different TTS voices.
 
-This web app will convert your text to speech using voices provided by a variety of TTS services including [Amazon Polly](https://aws.amazon.com/polly/), [CereProc](https://cereproc.com/), [IBM Watson](https://www.ibm.com/watson/services/text-to-speech/), [Acapela](https://www.acapela-group.com/demos/), [Oddcast](https://www.oddcast.com/ttsdemo/index.php), [ReadSpeaker](https://www.readspeaker.com/), [Google Translate](https://translate.google.com/), [iSpeech](https://ispeech.org/).
+This web app will convert your text to speech using voices provided by a variety of TTS services including [Amazon Polly](https://aws.amazon.com/polly/), [CereProc](https://cereproc.com/), [IBM Watson](https://www.ibm.com/cloud/watson-text-to-speech), [Acapela](https://www.acapela-group.com/demos/), [Oddcast](https://www.oddcast.com/ttsdemo/index.php), [ReadSpeaker](https://www.readspeaker.com/), [Google Translate](https://translate.google.com/), [iSpeech](https://ispeech.org/).
 
 NOTE: [Streamlabs'](https://streamlabs.com/) (unofficial) API is used to process TTS with Amazon Polly voices (called via the proxy.php file to work around CORS restrictions and provide some additional features). This can be used to emulate how messages will sound when donating to [Twitch.tv](https://twitch.tv) streamers who have the feature enabled. ![FeelsGoodMan](https://cdn.frankerfacez.com/emoticon/109777/1)
 

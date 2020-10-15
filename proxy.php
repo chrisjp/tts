@@ -95,6 +95,46 @@ else if ($postData['service'] === 'CereProc') {
 
     exit(json_encode($json));
 }
+else if ($postData['service'] == 'IBM Watson') {
+    // construct POST data to be json_encode()'d
+    $postFields = [
+        'voice' => $postData['voice'],
+        'text' => $postData['text'],
+        'optOut' => 'false',
+    ];
+
+    // Make the request
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, 'https://www.ibm.com/demos/live/tts-demo/api/tts/synthesize');
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postFields));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [  'Content-Type: application/json;charset=UTF-8',
+                                            'User-Agent: ' . $_SERVER['HTTP_USER_AGENT'],
+                                            'Referer: https://www.ibm.com/demos/live/tts-demo/self-service/home',
+                                        ]);
+    $audioData = curl_exec($ch);
+    curl_close($ch);
+
+    /*
+        There isn't a nice efficient/quick way to check for an error here.
+        If a request is invalid for whatever reason (e.g. a non-existent voice ID)
+        their server won't return any data and will simply timeout.
+        For now, we'll assume the request is always successful.
+
+        Another issue is that raw audio data is returned rather than a URL.
+        Unless we save it locally the easiest way to deal with this is to return
+        a data URI with the audio data base64 encoded.
+    */
+
+    $json = [
+        'success' => true,
+        'speak_url' => "data:audio/mp3;base64," . base64_encode($audioData)
+    ];
+
+    exit(json_encode($json));
+}
 else if ($postData['service'] == 'Oddcast') {
     // IDs used by their demo site
     $accountID = 5883747;
