@@ -54,7 +54,7 @@ else if ($postData['service'] === 'CereProc') {
                                                         // they generate in JS with Math.random().toString(36).substr(2) - this PHP is equivalent for emulating a similar value
     $xmlData = '<speakExtended key=\'' . $cookieKey . '\'><voice>' . $postData['voice'] . '</voice><text>' . $postData['text'] . '</text><audioFormat>' . $audioFormat . '</audioFormat>' . "\n" . '</speakExtended>';
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, 'https://www.cereproc.com/support/live_demo');
+    curl_setopt($ch, CURLOPT_URL, 'https://www.cereproc.com/themes/benchpress/livedemo.php');
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlData);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -62,7 +62,7 @@ else if ($postData['service'] === 'CereProc') {
     curl_setopt($ch, CURLOPT_HTTPHEADER, [  'content-type: text/plain;charset=UTF-8',
                                             'user-agent: ' . $_SERVER['HTTP_USER_AGENT'],
                                             'cookie: Drupal.visitor.liveDemo=' . $cookieKey,
-                                            'referer: https://www.cereproc.com/',
+                                            'referer: https://www.cereproc.com/support/live_demo',
                                             'origin: https://www.cereproc.com',
                                         ]);
     $response = curl_exec($ch);
@@ -95,7 +95,7 @@ else if ($postData['service'] === 'CereProc') {
 
     exit(json_encode($json));
 }
-else if ($postData['service'] == 'IBM Watson') {
+else if ($postData['service'] === 'IBM Watson') {
     // construct POST data to be json_encode()'d
     $postFields = [
         'voice' => $postData['voice'],

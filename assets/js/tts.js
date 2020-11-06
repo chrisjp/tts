@@ -68,7 +68,7 @@ const ttsServices = {
     },
     'CereProc':
     {
-        url: 'https://www.cereproc.com/support/live_demo',
+        url: 'https://www.cereproc.com/themes/benchpress/livedemo.php',
         charLimit: 2000,
         countBytes: true,
         needsProxy: true,
