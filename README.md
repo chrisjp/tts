@@ -18,12 +18,11 @@ Many of the services used aren't intended for professional/commercial use or are
 
 #### Polly via Streamlabs
 - 550 byte limit for TTS processing with Amazon Polly voices
-- TTS is outputted in ogg vorbis which is unsupported in web browsers on iOS, though can be played in third-party apps
-- TTS URLs are valid for only 5 minutes.
+- TTS URLs are valid for only 5 minutes (but you have the option to save these locally on your server by using the `config.php` file - _see `config.php.dist` for sample values_)
 #### CereProc
 - 2000 byte limit
 #### IBM Watson
-- None?
+- Generated audio is served as a data URL rather than an mp3 file (but you have the option to save as an mp3 locally on your server by using the `config.php` file - _see `config.php.dist` for sample values_)
 #### Acapela
 - 2000 character limit
 - Light background music plays throughout
@@ -35,11 +34,12 @@ Many of the services used aren't intended for professional/commercial use or are
 - Light background music plays throughout
 #### Google Translate
 - 200 character limit
-- TTS URLs are _not_ served over https; the secure URLs require a valid token, which while technically possible to generate, is not something I want to spend time on just for a simple demo app
+- TTS URLs are _not_ served over https; the secure URLs require a valid token, which while technically possible to generate, is not something I want to spend time on just for a simple demo app. Do note that some browsers will refuse to load files served over http.
 #### iSpeech
 - 150 byte limit (sometimes, and seemingly randomly, it's even less for languages such as Japanese and Chinese)
 - Voice will always say "Powered by iSpeech" at the end
 
 
 ## Demo
-Can be found at [**LazyPy.ro/tts**](https://lazypy.ro/tts)
+Demo website for testing can be found at [**LazyPy.ro/tts**](https://lazypy.ro/tts)  
+_NOTE: Please be patient when testing Polly and IBM voices — both providers have (unsurprisingly) throttled traffic from my server's IP address._
