@@ -91,7 +91,6 @@ const ttsServices = {
             {vid: 'Robot', name: 'Robot', flag: 'GB', lang: 'English', accent: 'England', sex: 'N', customEmoji: '\uD83E\uDD16'},
             {vid: 'Sarah', name: 'Sarah', flag: 'GB', lang: 'English', accent: 'England', sex: 'F'},
             {vid: 'William', name: 'William', flag: 'GB', lang: 'English', accent: 'England', sex: 'M'},
-            {vid: 'Claire', name: 'Claire', flag: 'GB', lang: 'English', accent: 'Lancashire', sex: 'F'},
             {vid: 'Goblin', name: 'Goblin', flag: 'GB', lang: 'English', accent: 'Black Country', sex: 'N', customEmoji: '\uD83D\uDC7A'},
             {vid: 'Sue', name: 'Sue', flag: 'GB', lang: 'English', accent: 'Black Country', sex: 'F'},
             {vid: 'Caitlin', name: 'Caitlin', flag: 'IE', lang: 'English', accent: 'Ireland', sex: 'F'},
