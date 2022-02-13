@@ -1,15 +1,30 @@
 <?php
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') exit;
+// Only accept POST requests
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') exit();
 
 // We'll always return JSON from this script
 header('Content-Type: application/json');
 
+// Load configuration
+if (file_exists('config.php')) {
+    include 'config.php';
+}
+// Defaults - see config.php for adjusting these variables
+if (!defined('SAVE_LOCALLY'))   define('SAVE_LOCALLY', false);
+if (!defined('AUDIO_DIR'))      define('AUDIO_DIR', 'assets/audio/');
+if (!defined('HOURS_TO_KEEP'))  define('HOURS_TO_KEEP', 24);
+if (!defined('SAVE_TXT'))       define('SAVE_TXT', false);
+
+$referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+
+// Build postData array
 $postData = [
             'service' => $_REQUEST['service'],
             'voice' => $_REQUEST['voice'],
             'text'  => $_REQUEST['text'],
             ];
 
+// Handle output based on service selected
 if ($postData['service'] === 'Polly') {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, 'https://streamlabs.com/polly/speak');
@@ -18,6 +33,45 @@ if ($postData['service'] === 'Polly') {
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $response = curl_exec($ch);
     curl_close($ch);
+
+    if (SAVE_LOCALLY) {
+        $json = json_decode($response);
+        if ($json->success === true) {
+            // TTS was successful - generate a filename
+            $audioFileName = $postData['service'] . $postData['voice'] . md5($postData['text']) . ".mp3";
+            $audioFileUrl = 'https://' . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/') + 1) . AUDIO_DIR . $audioFileName;
+
+            // First we'll check if the file already exists locally
+            if (file_exists(AUDIO_DIR . $audioFileName)) {
+                $json->speak_url = $audioFileUrl;
+            } else {
+                // We need to download the file
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $json->speak_url);
+                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_VERBOSE, 1);
+                $audioData = curl_exec($ch);
+                curl_close($ch);
+
+                if ($audioData) {
+                    $put = file_put_contents(AUDIO_DIR . $audioFileName, $audioData);
+                    if ($put) $json->speak_url = $audioFileUrl;
+
+                    if (SAVE_TXT) $putTxt = file_put_contents(AUDIO_DIR . str_replace('.mp3', '.txt', $audioFileName), $postData['text'] . "\n\nReferer: " . $referer);
+                }
+            }
+        }
+        $response = json_encode($json);
+
+        // Delete old files
+        $fileSystemIterator = new FilesystemIterator(AUDIO_DIR);
+        $now = time();
+        foreach ($fileSystemIterator as $file) {
+            // delete files older than HOURS_TO_KEEP hours
+            if ($now - $file->getCTime() >= 60 * 60 * HOURS_TO_KEEP) @unlink(AUDIO_DIR . $file->getFilename());
+        }
+    }
 
     exit($response);
 }
@@ -103,35 +157,64 @@ else if ($postData['service'] === 'IBM Watson') {
         'optOut' => 'false',
     ];
 
-    // Make the request
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, 'https://www.ibm.com/demos/live/tts-demo/api/tts/synthesize');
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postFields));
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLINFO_HEADER_OUT, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [  'Content-Type: application/json;charset=UTF-8',
-                                            'User-Agent: ' . $_SERVER['HTTP_USER_AGENT'],
-                                            'Referer: https://www.ibm.com/demos/live/tts-demo/self-service/home',
-                                        ]);
-    $audioData = curl_exec($ch);
-    curl_close($ch);
+    // generate a filename
+    $audioFileName = 'IBM' . $postData['voice'] . md5($postData['text']) . ".mp3";
+    $audioFileUrl = 'https://' . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/') + 1) . AUDIO_DIR . $audioFileName;
 
-    /*
-        There isn't a nice efficient/quick way to check for an error here.
-        If a request is invalid for whatever reason (e.g. a non-existent voice ID)
-        their server won't return any data and will simply timeout.
-        For now, we'll assume the request is always successful.
+    // First we'll check if the file already exists locally
+    if (file_exists(AUDIO_DIR . $audioFileName)) {
+        $json = [
+            'success' => true,
+            'speak_url' => $audioFileUrl
+        ];
+    }
+    else {
+        // Now we can make the request
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://www.ibm.com/demos/live/tts-demo/api/tts/synthesize');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postFields));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [  'Content-Type: application/json;charset=UTF-8',
+                                                'User-Agent: ' . $_SERVER['HTTP_USER_AGENT'],
+                                                'Referer: https://www.ibm.com/demos/live/tts-demo/self-service/home',
+                                            ]);
+        $audioData = curl_exec($ch);
+        curl_close($ch);
 
-        Another issue is that raw audio data is returned rather than a URL.
-        Unless we save it locally the easiest way to deal with this is to return
-        a data URI with the audio data base64 encoded.
-    */
+        /*
+            There isn't a nice efficient/quick way to check for an error here.
+            If a request is invalid for whatever reason (e.g. a non-existent voice ID)
+            their server won't return any data and will simply timeout.
+            For now, we'll assume the request is always successful.
 
-    $json = [
-        'success' => true,
-        'speak_url' => "data:audio/mp3;base64," . base64_encode($audioData)
-    ];
+            Another issue is that raw audio data is returned rather than a URL.
+            Unless we save it locally the easiest way to deal with this is to return
+            a data URI with the audio data base64 encoded.
+        */
+
+        $json = [
+            'success' => true,
+            'speak_url' => "data:audio/mp3;base64," . base64_encode($audioData)
+        ];
+
+        if (SAVE_LOCALLY) {
+            // We need to write the data to a file
+            $put = file_put_contents(AUDIO_DIR . $audioFileName, $audioData);
+            if ($put) $json['speak_url'] = $audioFileUrl;
+
+            if (SAVE_TXT) $putTxt = file_put_contents(AUDIO_DIR . str_replace('.mp3', '.txt', $audioFileName), $postData['text'] . "\n\nReferer: " . $referer);
+        }
+    }
+
+    // Delete old files
+    $fileSystemIterator = new FilesystemIterator(AUDIO_DIR);
+    $now = time();
+    foreach ($fileSystemIterator as $file) {
+        // delete files older than HOURS_TO_KEEP hours
+        if ($now - $file->getCTime() >= 60 * 60 * HOURS_TO_KEEP) @unlink(AUDIO_DIR . $file->getFilename());
+    }
 
     exit(json_encode($json));
 }

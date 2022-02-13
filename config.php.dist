@@ -1,0 +1,18 @@
+<?php
+// Rename this file to `config.php` and edit the values below to have them take effect.
+
+// Set to true to save the generated audio file locally
+// could be useful as Polly Streamlabs links expire after just 5 minutes
+define('SAVE_LOCALLY', true);
+
+// Directory to save locally saved audio files (relative)
+// NOTE: you will need to create this and ensure it has write permissions
+define('AUDIO_DIR', 'assets/audio/');
+
+// Hours to keep files for (whenever a new file is saved files older than this will be removed)
+define('HOURS_TO_KEEP', 24);
+
+// Save a textual transcription of the audio too? Likely only of use for debugging purposes
+// NOTE: This will save a .txt file containing the user's text input in addition to the .mp3 of the audio that was generated.
+//       Filenames will be identical other than extension
+define('SAVE_TXT', false);
