@@ -1,3 +1,7 @@
+# project files
+config.php
+assets/audio/*
+
 # Generic OS files to ignore
 
 # General
