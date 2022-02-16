@@ -5,68 +5,89 @@ var currentPos = -1;
 // Current URL paramaters
 //const url = new URL(window.location.href);
 var urlParamVoices = url.searchParams.get('voices');
+var urlParamTracks = url.searchParams.get('tracks');
 
-// Iterate over each group of voices
-var voiceSelectHTML = '';
 
-for (var voiceGroup in ttsServices) {
-    var voices = ttsServices[voiceGroup].voices;
+// playlist
+if (urlParamTracks !== null) {
+    // recreate full URLs of the audio clips
+    var tracks = urlParamTracks.split(',');
 
-    // Add an optgroup for this API
-    voiceSelectHTML += '<optgroup label="' + voiceGroup + '" data-charlimit="' + ttsServices[voiceGroup].charLimit + '">';
+    // loop through each TTS URL and only leave the filename to keep URLs as short as possible
+    for (var i = 0; i < tracks.length; i++) {
+        var trackUrl = tracks[i].replace('P__', window.location.origin + '/tts/assets/audio/Polly');
+        trackUrl = trackUrl.replace('Cere__', 'https://cerevoice.s3.amazonaws.com/');
+        trackUrl += '.mp3';
+        playlistArray.push(trackUrl);
+    }
 
-    // Add options for each voice
-    for (var i = 0; i < voices.length; i++) {
-        // Set voice name
-        voiceName = voices[i].name;
-        if (voiceName.length == 0) {
-            // If the voice is not named, use the language
-            voiceName = voices[i].lang;
-            // Include accent/region if applicable
-            if (voices[i].accent.length > 0) {
-                voiceName += ' (' +  voices[i].accent + ')';
+    addPlaylistToDOM();
+    playPlaylist();
+}
+// make conversation
+else {
+    // Iterate over each group of voices
+    var voiceSelectHTML = '';
+
+    for (var voiceGroup in ttsServices) {
+        var voices = ttsServices[voiceGroup].voices;
+
+        // Add an optgroup for this API
+        voiceSelectHTML += '<optgroup label="' + voiceGroup + '" data-charlimit="' + ttsServices[voiceGroup].charLimit + '">';
+
+        // Add options for each voice
+        for (var i = 0; i < voices.length; i++) {
+            // Set voice name
+            voiceName = voices[i].name;
+            if (voiceName.length == 0) {
+                // If the voice is not named, use the language
+                voiceName = voices[i].lang;
+                // Include accent/region if applicable
+                if (voices[i].accent.length > 0) {
+                    voiceName += ' (' +  voices[i].accent + ')';
+                }
+            } else {
+                // Append language and accent/region if applicable
+                voiceAccent = voices[i].accent.length > 0 ? ', ' + voices[i].accent : '';
+                voiceName += ' (' + voices[i].lang + voiceAccent + ')';
             }
-        } else {
-            // Append language and accent/region if applicable
-            voiceAccent = voices[i].accent.length > 0 ? ', ' + voices[i].accent : '';
-            voiceName += ' (' + voices[i].lang + voiceAccent + ')';
+
+            var voiceId = voiceGroup + '__' + voices[i].vid;
+            voiceSelectHTML += '<option value="' + voiceId + '" data-desc="' + voiceName + '">' + voiceName + '</option>';
         }
 
-        var voiceId = voiceGroup + '__' + voices[i].vid;
-        voiceSelectHTML += '<option value="' + voiceId + '" data-desc="' + voiceName + '">' + voiceName + '</option>';
+        // Close optgroup
+        voiceSelectHTML += '</optgroup>';
+    }
+    // Insert options
+    document.getElementById('voice_1').innerHTML = '<option value="">-- None --</option>' + voiceSelectHTML;
+    document.getElementById('voice_2').innerHTML = '<option value="">-- None --</option>' + voiceSelectHTML;
+    document.getElementById('voice_3').innerHTML = '<option value="">-- None --</option>' + voiceSelectHTML;
+
+    // Pre-select voices if we have URL params
+    if (urlParamVoices) {
+        var selVoices = [];
+        selVoices = urlParamVoices.split(',');
+        for (var i = 1; i <= selVoices.length; i++) {
+            var selectId = 'voice_' + i;
+            if (selVoices[i-1]) document.getElementById(selectId).value = selVoices[i-1];
+        }
+        updateSelectedVoices();
     }
 
-    // Close optgroup
-    voiceSelectHTML += '</optgroup>';
-}
-// Insert options
-document.getElementById('voice_1').innerHTML = '<option value="">-- None --</option>' + voiceSelectHTML;
-document.getElementById('voice_2').innerHTML = '<option value="">-- None --</option>' + voiceSelectHTML;
-document.getElementById('voice_3').innerHTML = '<option value="">-- None --</option>' + voiceSelectHTML;
-
-// Pre-select voices if we have URL params
-var urlVoices = url.searchParams.get('voices[]');
-
-if (urlVoices) {
-    var selVoices = [];
-    selVoices = urlVoices.split(',');
-    for (var i = 1; i <= selVoices.length; i++) {
-        var selectId = 'voice_' + i;
-        if (selVoices[i-1]) document.getElementById(selectId).value = selVoices[i-1];
-    }
-    updateSelectedVoices();
+    // Add Event Listeners
+    document.getElementById('voice_1').addEventListener('change', updateSelectedVoices);
+    document.getElementById('voice_2').addEventListener('change', updateSelectedVoices);
+    document.getElementById('voice_3').addEventListener('change', updateSelectedVoices);
 }
 
-// Add Event Listeners
-document.getElementById('voice_1').addEventListener('change', updateSelectedVoices);
-document.getElementById('voice_2').addEventListener('change', updateSelectedVoices);
-document.getElementById('voice_3').addEventListener('change', updateSelectedVoices);
 
+// Functions
 
 // Generate URL with currently selected voices
 function updateSelectedVoices() {
     var selectedVoices = [document.getElementById('voice_1').value, document.getElementById('voice_2').value, document.getElementById('voice_3').value];
-    var newUrl = updateURLParameter(window.location.href, 'voices[]', selectedVoices);
+    var newUrl = updateURLParameter(window.location.href, 'voices', selectedVoices);
 
     // Change the URL in the address bar
     setNewUrl(newUrl);
@@ -249,8 +270,10 @@ function addPlaylistToDOM() {
     if (playlistArray.length > 0) {
         var playlistHtml = '';
         for (var i = 0; i < playlistArray.length; i++) {
-            playlistHtml += '<audio controls preload="metadata" src="' + playlistArray[i] + '" title="TTS Audio Clip" data-track-number="' + (i+1) + '" id="playlist-track-' + (i+1) + '"><p>Your browser does not support the <code>audio</code> element.</p></audio>';
+            playlistHtml += '<audio controls preload="metadata" src="' + playlistArray[i] + '" title="TTS Audio Clip" data-track-number="' + (i+1) + '" id="playlist-track-' + (i+1) + '"><p>Your browser does not support the <code>audio</code> element.</p></audio><br />';
         }
+        playlistHtml += '<br /><br /><button id="btn-copy-playlist-url" type="button" class="button is-success" onclick="copyPlaylistUrl(this)">Copy Playlist URL</button>';
+
         document.getElementById('tts-playlist').innerHTML = playlistHtml;
     }
 }
@@ -260,7 +283,6 @@ function playPlaylist() {
     var audioElements = document.querySelectorAll("audio[data-track-number]");
 
     for (var i = 0; i < audioElements.length; i++) {
-        console.log('adding event listeners');
         audioElements[i].addEventListener('playing', function(e) {
             console.log('Audio playback started on track ' + e.target.dataset.trackNumber + ' at ' + e.target.currentTime + ' seconds.');
         });
@@ -273,8 +295,31 @@ function playPlaylist() {
     audioElements[0].play();
 }
 
+// play the next track
 function playNext(nextTrackNo) {
     console.log('attempting to play track ' + nextTrackNo);
     var nextTrack = document.getElementById('playlist-track-' + nextTrackNo);
     if (nextTrack !== null) nextTrack.play();
+}
+
+// generate shareable playlist link
+function generatePlaylistUrl() {
+    var playlistFilenames = [];
+    var filename = '';
+
+    // loop through each TTS URL and only leave the filename to keep URLs as short as possible
+    for (var i = 0; i < playlistArray.length; i++) {
+        filename = playlistArray[i].replace(window.location.origin + '/tts/assets/audio/Polly', 'P__');
+        filename = filename.replace('https://cerevoice.s3.amazonaws.com/', 'Cere__');
+        filename = filename.replace('.mp3', '');
+        playlistFilenames.push(filename);
+    }
+
+    return window.location.origin + '/tts/playlist.php?tracks=' + playlistFilenames.toString();
+}
+
+function copyPlaylistUrl(e) {
+    var textToCopy = generatePlaylistUrl();
+
+    copyToClipboard(null, e, textToCopy);
 }
