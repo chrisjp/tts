@@ -5,7 +5,7 @@
         <title>Text-to-Speech (TTS) StreamElements Demo Simulator Emulator Generator Tool Thing</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css" integrity="sha512-IgmDkwzs96t4SrChW29No3NXBIBv8baW490zk5aXvhCD8vuZM3yUSkbyTBcXohkySecyzIrUwiF/qV0cuPcL3Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link rel="stylesheet" href="assets/css/tts.css">
+        <link rel="stylesheet" href="assets/css/tts.css?v=1.12">
         <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -21,29 +21,40 @@
                 <p>What if there was no need to imagine it?</p>
                 <p>What if that was actually possible?</p>
                 <p>Pick some voices...</p>
+
+                <br />
+                <button id="btn-add-voice" type="button" class="button is-success" onclick="addVoiceSelect()">Add Voice</button>
                 <hr />
 
-                <div class="columns">
+                <div id="voice-selects" class="columns is-multiline">
 
-                    <div class="column">
-                        Voice 1
-                        <div class="select is-rounded">
-                            <select id="voice_1" name="voice_1">
-                            </select>
+                    <div class="column is-one-third">
+                        <div class="field">
+                            <label class="label" for="voice_1">Voice 1</label>
+                            <div class="control select is-rounded">
+                                <select id="voice_1" name="voice[]">
+                                </select>
+                            </div>
                         </div>
                     </div>
-                    <div class="column">
-                        Voice 2
-                        <div class="select is-rounded">
-                            <select id="voice_2" name="voice_2">
-                            </select>
+
+                    <div class="column is-one-third">
+                        <div class="field">
+                            <label class="label" for="voice_2">Voice 2</label>
+                            <div class="control select is-rounded">
+                                <select id="voice_2" name="voice[]">
+                                </select>
+                            </div>
                         </div>
                     </div>
-                    <div class="column">
-                        Voice 3
-                        <div class="select is-rounded">
-                            <select id="voice_3" name="voice_3">
-                            </select>
+
+                    <div class="column is-one-third">
+                        <div class="field">
+                            <label class="label" for="voice_3">Voice 3</label>
+                            <div class="control select is-rounded">
+                                <select id="voice_3" name="voice[]">
+                                </select>
+                            </div>
                         </div>
                     </div>
 
@@ -90,7 +101,7 @@
         </div>
     </footer>
     <!-- JS -->
-    <script src="assets/js/tts.js?v=1.06"></script>
-    <script src="assets/js/conversations.js?v=1.06"></script>
+    <script src="assets/js/tts.js?v=1.12"></script>
+    <script src="assets/js/conversations.js?v=1.12"></script>
     </body>
 </html>

@@ -1,14 +1,14 @@
 // Global variables
 var playlistArray = [];
 var currentPos = -1;
+var voiceSelectHTML = '<option value="">-- None --</option>';
 
-// Current URL paramaters
-//const url = new URL(window.location.href);
+// Current URL paramaters (var url is defined in tts.js
 var urlParamVoices = url.searchParams.get('voices');
 var urlParamTracks = url.searchParams.get('tracks');
 
 
-// playlist
+// playlist page
 if (urlParamTracks !== null) {
     // recreate full URLs of the audio clips
     var tracks = urlParamTracks.split(',');
@@ -24,11 +24,35 @@ if (urlParamTracks !== null) {
     addPlaylistToDOM();
     playPlaylist();
 }
-// make conversation
+// make conversation page
 else {
-    // Iterate over each group of voices
-    var voiceSelectHTML = '';
 
+    // Generate HTML <option>s for the voice <select>s and add it to the DOM
+    generateSelectHtml();
+    populateSelects(null);
+
+    // Pre-select voices if we have URL params
+    if (urlParamVoices) {
+        var selVoices = [];
+        selVoices = urlParamVoices.split(',');
+        for (var i = 1; i <= selVoices.length; i++) {
+            var selectId = 'voice_' + i;
+            if (selVoices[i-1]) {
+                if (document.getElementById(selectId) === null) addVoiceSelect();
+                document.getElementById(selectId).value = selVoices[i-1];
+            }
+        }
+        updateSelectedVoices();
+    }
+}
+
+
+// Functions
+
+// Generate HTML for the voice <select>'s
+function generateSelectHtml() {
+
+    // Iterate over each group of voices
     for (var voiceGroup in ttsServices) {
         var voices = ttsServices[voiceGroup].voices;
 
@@ -59,40 +83,62 @@ else {
         // Close optgroup
         voiceSelectHTML += '</optgroup>';
     }
-    // Insert options
-    document.getElementById('voice_1').innerHTML = '<option value="">-- None --</option>' + voiceSelectHTML;
-    document.getElementById('voice_2').innerHTML = '<option value="">-- None --</option>' + voiceSelectHTML;
-    document.getElementById('voice_3').innerHTML = '<option value="">-- None --</option>' + voiceSelectHTML;
 
-    // Pre-select voices if we have URL params
-    if (urlParamVoices) {
-        var selVoices = [];
-        selVoices = urlParamVoices.split(',');
-        for (var i = 1; i <= selVoices.length; i++) {
-            var selectId = 'voice_' + i;
-            if (selVoices[i-1]) document.getElementById(selectId).value = selVoices[i-1];
-        }
-        updateSelectedVoices();
-    }
-
-    // Add Event Listeners
-    document.getElementById('voice_1').addEventListener('change', updateSelectedVoices);
-    document.getElementById('voice_2').addEventListener('change', updateSelectedVoices);
-    document.getElementById('voice_3').addEventListener('change', updateSelectedVoices);
+    // voiceSelectHTML is a global variable so no need to return it
 }
 
+// Insert <option> tags to our voice <select>s, or a specific given <select> element
+// Also add event listener
+function populateSelects(e) {
+    if (e !== null) {
+        e.innerHTML = voiceSelectHTML;
+        e.addEventListener('change', updateSelectedVoices);
+    } else {
+        var allVoiceSelects = document.getElementsByName('voice[]');
+        for (var i = 0; i < allVoiceSelects.length; i++) {
+            allVoiceSelects[i].innerHTML = voiceSelectHTML;
+            allVoiceSelects[i].addEventListener('change', updateSelectedVoices);
+        }
+    }
+}
 
-// Functions
+// Add another voice <select>
+function addVoiceSelect() {
+    var voiceCount = document.getElementsByName('voice[]').length;
+    var nextVoiceNo = voiceCount + 1;
+
+    var selectHtml = '<div class="column is-one-third"><div class="field"><label for="voice_' + nextVoiceNo + '" class="label">Voice ' + nextVoiceNo + '</label><div class="control select is-rounded"><select id="voice_' + nextVoiceNo + '" name="voice[]"></select></div></div></div>';
+
+    // Create a div element and add the above HTML in it
+    var uselessDiv = document.createElement('div');
+    uselessDiv.innerHTML = selectHtml;
+
+    divContainer = document.getElementById('voice-selects');
+
+    // Loop through each child element of the useless div and append them to our container
+    // this avoids using innerHTML which would remove all elements (and user entered text with it) and recreate them
+    while (uselessDiv.firstChild) {
+        divContainer.appendChild(uselessDiv.firstChild);
+    }
+
+    // add <options> and event listener
+    populateSelects(document.getElementById('voice_' + nextVoiceNo));
+}
 
 // Generate URL with currently selected voices
 function updateSelectedVoices() {
-    var selectedVoices = [document.getElementById('voice_1').value, document.getElementById('voice_2').value, document.getElementById('voice_3').value];
-    var newUrl = updateURLParameter(window.location.href, 'voices', selectedVoices);
+    var allVoiceSelects = document.getElementsByName('voice[]');
+    var selectedVoices = [];
+
+    for (var i = 0; i < allVoiceSelects.length; i++) {
+        selectedVoices.push(allVoiceSelects[i].value);
+    }
 
     // Change the URL in the address bar
+    var newUrl = updateURLParameter(window.location.href, 'voices', selectedVoices);
     setNewUrl(newUrl);
 
-    var voiceCount = 0;
+    var voiceCount = 0; // actually selected voices, not "None"
     for (i = 0; i < selectedVoices.length; i++) {
         if (selectedVoices[i]) voiceCount++;
     }
@@ -114,8 +160,8 @@ function updateSelectedVoices() {
 
 function addDialogueBox() {
     // HTML we want to add
-    var conVoiceDropdown = '<div class="select is-rounded"><select name="con-voice[]"></select></div>';
-    var conTextInput = '<div class="control"><textarea name="con-text[]" rows="3" cols="80" maxlength="550" class="textarea" style="min-height:100px !important" placeholder="Enter some text here..."></textarea></div>';
+    var conVoiceDropdown = '<div class="control select is-rounded"><select name="con-voice[]"></select></div>';
+    var conTextInput = '<div class="control"><textarea name="con-text[]" rows="3" cols="80" maxlength="550" class="textarea dialogue" placeholder="Enter some text here..."></textarea></div>';
     var divBox = '<div class="box">' + conVoiceDropdown + conTextInput + '</div>';
 
     // Create a div element and add the above HTML in it
@@ -125,7 +171,7 @@ function addDialogueBox() {
     divContainer = document.getElementById('con-voice-and-text-input');
 
     // Loop through each child element of the useless div and append them to our container
-    // this avoids oestructively calling innerHTML which would remove all elements (and user entered text with it) and recreate them
+    // this avoids using innerHTML which would remove all elements (and user entered text with it) and recreate them
     while (uselessDiv.firstChild) {
         divContainer.appendChild(uselessDiv.firstChild);
     }
@@ -143,21 +189,21 @@ function addDialogueBox() {
 
 function generateOptionTags() {
     // Populate the <select> with our chosen voices
+    var voiceSelects = document.getElementsByName('voice[]');
     var chosenVoices = [];
     var optionHtml = '';
-    for (var i = 1; i <= 3; i++) {
-        var selectId = 'voice_' + i;
-        var chosenVoice = document.getElementById(selectId);
+    for (var i = 0; i < voiceSelects.length; i++) {
+        var selectId = 'voice_' + (i + 1);
         var ttsService = document.querySelector('#' + selectId + ' option:checked').parentElement;
 
         var charLimit = ttsService.dataset.charlimit;
         var serviceName = ttsService.label;
-        var voiceId = chosenVoice.value;
+        var voiceId = voiceSelects[i].value;
 
         //var uniqueVoiceSelector = serviceName + '___' + voiceId + '___' + charLimit;
         //console.log(uniqueVoiceSelector);
         var thisVoiceName = voiceId.split('__');
-        optionHtml += '<option value="' + voiceId + '">' + thisVoiceName[1] + '</option>';
+        if (voiceId) optionHtml += '<option value="' + voiceId + '">' + thisVoiceName[1] + '</option>';
     }
 
     return optionHtml;
