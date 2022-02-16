@@ -45,7 +45,7 @@
     }
 }
 
-/* LIGHT MODE SPRECIFICS */
+/* LIGHT MODE SPECIFICS */
 .mode-light .no-hover, .mode-light .no-hover:hover {
     color: #4a4a4a !important;
     background-color: hsl(0, 0%, 96%) !important;
@@ -108,7 +108,7 @@
     background-color: #dc6805;
     border-color: #dc6805;
 }
-.mode-dark .textarea {
+.mode-dark .textarea, .mode-dark .select select {
     background-color: hsl(0, 0%, 28%);
     border-color: hsl(0, 0%, 42%);
     color: hsl(0, 0%, 96%);
@@ -127,4 +127,10 @@
 }
 .mode-dark .textarea:-moz-placeholder { /* Firefox 18- */
     color: hsl(0, 0%, 49%);
+}
+.mode-dark .textarea.dialogue {
+    min-height: 100px !important;
+}
+.mode-dark .label {
+    color: #eee;
 }
