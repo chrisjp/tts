@@ -17,7 +17,8 @@
             <h1 class="title is-2">Text-to-Speech Simulator</h1>
             <p class="subtitle is-4">A simple web app demonstrating how text sounds in different TTS voices.</p>
             <div class="box">
-                <p>Here, listen to this...</p><br/><br/>
+                <p>Listen to this TTS conversation <span id="cnvrstn-people">...</span></p>
+                <p><span id="cnvrstn-duration">&nbsp;</span></p><br/><br/>
 
                 <div class="columns">
 

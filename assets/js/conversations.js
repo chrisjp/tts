@@ -27,7 +27,10 @@ if (urlParamTracks !== null) {
     }
 
     addPlaylistToDOM();
-    playPlaylist();
+    setTimeout(function () {
+        setPlaylistMetadata();
+        playPlaylist();
+    }, 1000);
 }
 // make conversation page
 else {
@@ -240,6 +243,7 @@ function generateConversation() {
         document.getElementById('progress-bar').value = 0;
         document.getElementById('tts-playlist').innerHTML = '';
         playlistArray = [];
+        playlistVoiceArray = [];
 
     }
 
@@ -359,6 +363,30 @@ function addPlaylistToDOM() {
 
         document.getElementById('tts-playlist').innerHTML = playlistHtml;
     }
+}
+
+// calculate full duration of playlist
+function playlistDuration() {
+    var audioElements = document.querySelectorAll("audio[data-track-number]");
+    var duration = 0;
+
+    for (var i = 0; i < audioElements.length; i++) {
+        duration += isNaN(audioElements[i].duration) ? 0 : audioElements[i].duration;
+    }
+
+    var fmtDuration = new Date(duration * 1000).toISOString().substring(14, 19);
+    document.getElementById('cnvrstn-duration').innerHTML = 'Duration: ' + fmtDuration;
+    //console.log('Duration: ' + duration + ' or formatted as: ' + fmtDuration);
+}
+
+// add playlist metadata to page
+function setPlaylistMetadata() {
+    // Show the total duration
+    playlistDuration();
+
+    // Show the participants (voice names)
+    var uniqueNames = new Set(playlistVoiceArray);
+    document.getElementById('cnvrstn-people').innerHTML = 'featuring ' + Array.from(uniqueNames).join(", ");
 }
 
 // play the playlist
