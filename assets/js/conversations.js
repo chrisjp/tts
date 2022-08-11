@@ -143,8 +143,8 @@ function updateSelectedVoices() {
         if (selectedVoices[i]) voiceCount++;
     }
 
-    // If we have at least 2 voices selected, enable the add dialogue button
-    document.getElementById('btn-add-con').disabled = voiceCount > 1 ? false : true;
+    // If we have at least 1 voice selected, enable the add dialogue button
+    document.getElementById('btn-add-con').disabled = voiceCount > 0 ? false : true;
 
     // If we already have <select>s added we should update them all now
     var allSelects = document.getElementsByName('con-voice[]');
@@ -161,8 +161,9 @@ function updateSelectedVoices() {
 function addDialogueBox() {
     // HTML we want to add
     var conVoiceDropdown = '<div class="control select is-rounded"><select name="con-voice[]"></select></div>';
+    var conBtnRemove = '<div class="control"><button type="button" class="button is-danger" onclick="removeDialogueBox(this)">X</button></div>';
     var conTextInput = '<div class="control"><textarea name="con-text[]" rows="3" cols="80" maxlength="550" class="textarea dialogue" placeholder="Enter some text here..."></textarea></div>';
-    var divBox = '<div class="box">' + conVoiceDropdown + conTextInput + '</div>';
+    var divBox = '<div class="box"><div class="field is-grouped">' + conVoiceDropdown + conBtnRemove + '</div><div class="field">' + conTextInput + '</div></div>';
 
     // Create a div element and add the above HTML in it
     var uselessDiv = document.createElement('div');
@@ -185,6 +186,14 @@ function addDialogueBox() {
     // At this point we'll have at least 1 dialogue box on the page so we can
     // enable to the speak button
     document.getElementById('btn-speak-con').disabled = false;
+}
+
+function removeDialogueBox(e) {
+    e.parentNode.parentNode.parentNode.remove();
+
+    // recount dialogue boxes and disable TTS generation if 0
+    var voiceCount = document.getElementsByName('con-text[]').length;
+    if (voiceCount === 0) document.getElementById('btn-speak-con').disabled = true;
 }
 
 function generateOptionTags() {
