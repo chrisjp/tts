@@ -22,15 +22,8 @@ if (urlParamTracks !== null) {
         playlistArray.push(trackUrl);
 
         // Retrieve voice name out of the URL so we can show who is speaking
-        var filename = trackUrl.substring(trackUrl.lastIndexOf('/') + 1);
-        var matchCere = filename.match(/([a-zA-Z]+)480001([a-z0-9]{32}).mp3/);
-        if (matchCere !== null) {
-            playlistVoiceArray.push(matchCere[1]);
-        }
-        else {
-            var matchPolly = filename.match(/Polly([a-zA-Z]+)([a-z0-9]{32}).mp3/);
-            playlistVoiceArray.push(matchPolly[1]);
-        }
+        var voiceName = getVoiceNameFromFilename(trackUrl);
+        playlistVoiceArray.push(voiceName);
     }
 
     addPlaylistToDOM();
@@ -320,8 +313,27 @@ function fetchTTSUrl(api, voice, text) {
 function addAudioTagToArray(ttsUrl) {
     playlistArray.push(ttsUrl);
 
+    var voiceName = getVoiceNameFromFilename(ttsUrl);
+    playlistVoiceArray.push(voiceName);
+
     // Call generateConversation() again to continue going through the input
     generateConversation();
+}
+
+function getVoiceNameFromFilename(trackUrl) {
+    // Retrieve voice name out of the URL so we can show who is speaking
+    var filename = trackUrl.substring(trackUrl.lastIndexOf('/') + 1);
+    var matchCere = filename.match(/([a-zA-Z]+)480001([a-z0-9]{32}).mp3/);
+    if (matchCere !== null) {
+        return matchCere[1];
+    }
+
+    var matchPolly = filename.match(/Polly([a-zA-Z]+)([a-z0-9]{32}).mp3/);
+    if (matchPolly !== null) {
+        return matchPolly[1];
+    }
+
+    return 'Unknown';
 }
 
 // Update HTML progress bar
