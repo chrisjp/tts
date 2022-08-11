@@ -259,7 +259,9 @@ function generateConversation() {
 
         updateProgress(currentPos, count);
 
-        fetchTTSUrl(api, voice, text);
+        // If the text isn't empty we'll generate a TTS URL, otherwise just call this again to skip it.
+        if (text.length > 0) fetchTTSUrl(api, voice, text);
+        else generateConversation();
     } else {
         // we've finished generating the audio clips
         currentPos = -1;
