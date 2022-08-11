@@ -1,5 +1,6 @@
 // Global variables
 var playlistArray = [];
+var playlistVoiceArray = [];
 var currentPos = -1;
 var voiceSelectHTML = '<option value="">-- None --</option>';
 
@@ -19,6 +20,17 @@ if (urlParamTracks !== null) {
         trackUrl = trackUrl.replace('Cere__', 'https://cerevoice.s3.amazonaws.com/');
         trackUrl += '.mp3';
         playlistArray.push(trackUrl);
+
+        // Retrieve voice name out of the URL so we can show who is speaking
+        var filename = trackUrl.substring(trackUrl.lastIndexOf('/') + 1);
+        var matchCere = filename.match(/([a-zA-Z]+)480001([a-z0-9]{32}).mp3/);
+        if (matchCere !== null) {
+            playlistVoiceArray.push(matchCere[1]);
+        }
+        else {
+            var matchPolly = filename.match(/Polly([a-zA-Z]+)([a-z0-9]{32}).mp3/);
+            playlistVoiceArray.push(matchPolly[1]);
+        }
     }
 
     addPlaylistToDOM();
@@ -325,7 +337,9 @@ function addPlaylistToDOM() {
     if (playlistArray.length > 0) {
         var playlistHtml = '';
         for (var i = 0; i < playlistArray.length; i++) {
-            playlistHtml += '<audio controls preload="metadata" src="' + playlistArray[i] + '" title="TTS Audio Clip" data-track-number="' + (i+1) + '" id="playlist-track-' + (i+1) + '"><p>Your browser does not support the <code>audio</code> element.</p></audio><br />';
+            playlistHtml += '<div class="field is-grouped"><div class="control">' + playlistVoiceArray[i] + '</div><div class="control">';
+            playlistHtml += '<audio controls preload="metadata" src="' + playlistArray[i] + '" title="TTS Audio Clip" data-track-number="' + (i+1) + '" id="playlist-track-' + (i+1) + '"><p>Your browser does not support the <code>audio</code> element.</p></audio>';
+            playlistHtml += '</div></div>';
         }
         playlistHtml += '<br /><br /><button id="btn-copy-playlist-url" type="button" class="button is-success" onclick="copyPlaylistUrl(this)">Copy Playlist URL</button>';
 
