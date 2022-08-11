@@ -382,7 +382,14 @@ function playPlaylist() {
 function playNext(nextTrackNo) {
     console.log('attempting to play track ' + nextTrackNo);
     var nextTrack = document.getElementById('playlist-track-' + nextTrackNo);
-    if (nextTrack !== null) nextTrack.play();
+    if (nextTrack !== null) {
+        nextTrack.play().catch(function() {
+            console.log('Failed to play track ' + nextTrackNo);
+            console.log('Skipping to next track...');
+            nextTrackNo++;
+            playNext(nextTrackNo);
+        });
+    }
 }
 
 // generate shareable playlist link
