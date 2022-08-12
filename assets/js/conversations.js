@@ -1,36 +1,35 @@
 // Global variables
-var playlistArray = [];
-var playlistVoiceArray = [];
-var currentPos = -1;
-var voiceSelectHTML = '<option value="">-- None --</option>';
+let objConversation = {};
+let arrPlaylistVoices = [];
+let arrPlaylistDialogue = [];
+let currentPos = -1;
+let voiceSelectHTML = '<option value="">-- None --</option>';
 
-// Current URL paramaters (var url is defined in tts.js
-var urlParamVoices = url.searchParams.get('voices');
-var urlParamTracks = url.searchParams.get('tracks');
+// Current URL paramaters (const url is defined in tts.js
+const urlParamVoices = url.searchParams.get('voices');
+const urlParamPls = url.searchParams.get('pls');
 
 
 // playlist page
-if (urlParamTracks !== null) {
-    // recreate full URLs of the audio clips
-    var tracks = urlParamTracks.split(',');
-
-    // loop through each TTS URL and only leave the filename to keep URLs as short as possible
-    for (var i = 0; i < tracks.length; i++) {
-        var trackUrl = tracks[i].replace('P__', window.location.origin + '/tts/assets/audio/Polly');
-        trackUrl = trackUrl.replace('Cere__', 'https://cerevoice.s3.amazonaws.com/');
-        trackUrl += '.mp3';
-        playlistArray.push(trackUrl);
-
-        // Retrieve voice name out of the URL so we can show who is speaking
-        var voiceName = getVoiceNameFromFilename(trackUrl);
-        playlistVoiceArray.push(voiceName);
-    }
-
-    addPlaylistToDOM();
-    setTimeout(function () {
-        setPlaylistMetadata();
-        playPlaylist();
-    }, 1000);
+if (urlParamPls !== null) {
+    // Load in the JSON (via playlist.php for security and validation)
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'playlist.php?json=' + urlParamPls, true);
+    xhr.onload = function () {
+        if (xhr.readyState == 4 && xhr.status == '200') {
+            objConversation = JSON.parse(xhr.responseText);
+            arrPlaylistDialogue = objConversation.dialogue;
+            arrPlaylistVoices = objConversation.voices;
+            addPlaylistToDOM();
+            setTimeout(function () {
+                setPlaylistMetadata();
+                playPlaylist();
+            }, 1000);
+        } else {
+            //console.error(xhr.response);
+        }
+    };
+    xhr.send();
 }
 // make conversation page
 else {
@@ -41,10 +40,10 @@ else {
 
     // Pre-select voices if we have URL params
     if (urlParamVoices) {
-        var selVoices = [];
+        let selVoices = [];
         selVoices = urlParamVoices.split(',');
-        for (var i = 1; i <= selVoices.length; i++) {
-            var selectId = 'voice_' + i;
+        for (let i = 1; i <= selVoices.length; i++) {
+            const selectId = 'voice_' + i;
             if (selVoices[i-1]) {
                 if (document.getElementById(selectId) === null) addVoiceSelect();
                 document.getElementById(selectId).value = selVoices[i-1];
@@ -61,14 +60,14 @@ else {
 function generateSelectHtml() {
 
     // Iterate over each group of voices
-    for (var voiceGroup in ttsServices) {
-        var voices = ttsServices[voiceGroup].voices;
+    for (const voiceGroup in ttsServices) {
+        const voices = ttsServices[voiceGroup].voices;
 
         // Add an optgroup for this API
         voiceSelectHTML += '<optgroup label="' + voiceGroup + '" data-charlimit="' + ttsServices[voiceGroup].charLimit + '">';
 
         // Add options for each voice
-        for (var i = 0; i < voices.length; i++) {
+        for (let i = 0; i < voices.length; i++) {
             // Set voice name
             voiceName = voices[i].name;
             if (voiceName.length == 0) {
@@ -84,7 +83,7 @@ function generateSelectHtml() {
                 voiceName += ' (' + voices[i].lang + voiceAccent + ')';
             }
 
-            var voiceId = voiceGroup + '__' + voices[i].vid;
+            const voiceId = voiceGroup + '__' + voices[i].vid;
             voiceSelectHTML += '<option value="' + voiceId + '" data-desc="' + voiceName + '">' + voiceName + '</option>';
         }
 
@@ -102,8 +101,8 @@ function populateSelects(e) {
         e.innerHTML = voiceSelectHTML;
         e.addEventListener('change', updateSelectedVoices);
     } else {
-        var allVoiceSelects = document.getElementsByName('voice[]');
-        for (var i = 0; i < allVoiceSelects.length; i++) {
+        let allVoiceSelects = document.getElementsByName('voice[]');
+        for (let i = 0; i < allVoiceSelects.length; i++) {
             allVoiceSelects[i].innerHTML = voiceSelectHTML;
             allVoiceSelects[i].addEventListener('change', updateSelectedVoices);
         }
@@ -112,13 +111,13 @@ function populateSelects(e) {
 
 // Add another voice <select>
 function addVoiceSelect() {
-    var voiceCount = document.getElementsByName('voice[]').length;
-    var nextVoiceNo = voiceCount + 1;
+    const voiceCount = document.getElementsByName('voice[]').length;
+    const nextVoiceNo = voiceCount + 1;
 
-    var selectHtml = '<div class="column is-one-third"><div class="field"><label for="voice_' + nextVoiceNo + '" class="label">Voice ' + nextVoiceNo + '</label><div class="control select is-rounded"><select id="voice_' + nextVoiceNo + '" name="voice[]"></select></div></div></div>';
+    const selectHtml = '<div class="column is-one-third"><div class="field"><label for="voice_' + nextVoiceNo + '" class="label">Voice ' + nextVoiceNo + '</label><div class="control select is-rounded"><select id="voice_' + nextVoiceNo + '" name="voice[]"></select></div></div></div>';
 
     // Create a div element and add the above HTML in it
-    var uselessDiv = document.createElement('div');
+    let uselessDiv = document.createElement('div');
     uselessDiv.innerHTML = selectHtml;
 
     divContainer = document.getElementById('voice-selects');
@@ -135,19 +134,19 @@ function addVoiceSelect() {
 
 // Generate URL with currently selected voices
 function updateSelectedVoices() {
-    var allVoiceSelects = document.getElementsByName('voice[]');
-    var selectedVoices = [];
+    const allVoiceSelects = document.getElementsByName('voice[]');
+    let selectedVoices = [];
 
-    for (var i = 0; i < allVoiceSelects.length; i++) {
+    for (let i = 0; i < allVoiceSelects.length; i++) {
         selectedVoices.push(allVoiceSelects[i].value);
     }
 
     // Change the URL in the address bar
-    var newUrl = updateURLParameter(window.location.href, 'voices', selectedVoices);
+    const newUrl = updateURLParameter(window.location.href, 'voices', selectedVoices);
     setNewUrl(newUrl);
 
-    var voiceCount = 0; // actually selected voices, not "None"
-    for (i = 0; i < selectedVoices.length; i++) {
+    let voiceCount = 0; // actually selected voices, not "None"
+    for (let i = 0; i < selectedVoices.length; i++) {
         if (selectedVoices[i]) voiceCount++;
     }
 
@@ -155,11 +154,11 @@ function updateSelectedVoices() {
     document.getElementById('btn-add-con').disabled = voiceCount > 0 ? false : true;
 
     // If we already have <select>s added we should update them all now
-    var allSelects = document.getElementsByName('con-voice[]');
+    let allSelects = document.getElementsByName('con-voice[]');
     if (voiceCount > 1 && allSelects.length > 0) {
-        var optionHtml = generateOptionTags();
-        for (i = 0; i < allSelects.length; i++) {
-            var selectedId = allSelects[i].selectedIndex;
+        const optionHtml = generateOptionTags();
+        for (let i = 0; i < allSelects.length; i++) {
+            const selectedId = allSelects[i].selectedIndex;
             allSelects[i].innerHTML = optionHtml;
             allSelects[i].selectedIndex = selectedId;   // set selected index back to what it was
         }
@@ -168,13 +167,13 @@ function updateSelectedVoices() {
 
 function addDialogueBox() {
     // HTML we want to add
-    var conVoiceDropdown = '<div class="control select is-rounded"><select name="con-voice[]"></select></div>';
-    var conBtnRemove = '<div class="control"><button type="button" class="button is-danger" onclick="removeDialogueBox(this)">X</button></div>';
-    var conTextInput = '<div class="control"><textarea name="con-text[]" rows="3" cols="80" maxlength="550" class="textarea dialogue" placeholder="Enter some text here..."></textarea></div>';
-    var divBox = '<div class="box"><div class="field is-grouped">' + conVoiceDropdown + conBtnRemove + '</div><div class="field">' + conTextInput + '</div></div>';
+    const conVoiceDropdown = '<div class="control select is-rounded"><select name="con-voice[]"></select></div>';
+    const conBtnRemove = '<div class="control"><button type="button" class="button is-danger" onclick="removeDialogueBox(this)">X</button></div>';
+    const conTextInput = '<div class="control"><textarea name="con-text[]" rows="3" cols="80" maxlength="550" class="textarea dialogue" placeholder="Enter some text here..."></textarea></div>';
+    const divBox = '<div class="box"><div class="field is-grouped">' + conVoiceDropdown + conBtnRemove + '</div><div class="field">' + conTextInput + '</div></div>';
 
     // Create a div element and add the above HTML in it
-    var uselessDiv = document.createElement('div');
+    const uselessDiv = document.createElement('div');
     uselessDiv.innerHTML = divBox;
 
     divContainer = document.getElementById('con-voice-and-text-input');
@@ -185,41 +184,43 @@ function addDialogueBox() {
         divContainer.appendChild(uselessDiv.firstChild);
     }
 
-    var optionHtml = generateOptionTags();
+    const optionHtml = generateOptionTags();
 
     // Get all our <select>s
-    var allSelects = document.getElementsByName('con-voice[]');
+    const allSelects = document.getElementsByName('con-voice[]');
     allSelects[allSelects.length-1].innerHTML = optionHtml;
 
     // At this point we'll have at least 1 dialogue box on the page so we can
     // enable to the speak button
     document.getElementById('btn-speak-con').disabled = false;
+
+    selectedVoicesToArray();
 }
 
 function removeDialogueBox(e) {
     e.parentNode.parentNode.parentNode.remove();
 
     // recount dialogue boxes and disable TTS generation if 0
-    var voiceCount = document.getElementsByName('con-text[]').length;
-    if (voiceCount === 0) document.getElementById('btn-speak-con').disabled = true;
+    const dialogueCount = document.getElementsByName('con-text[]').length;
+    if (dialogueCount === 0) document.getElementById('btn-speak-con').disabled = true;
 }
 
 function generateOptionTags() {
     // Populate the <select> with our chosen voices
-    var voiceSelects = document.getElementsByName('voice[]');
-    var chosenVoices = [];
-    var optionHtml = '';
-    for (var i = 0; i < voiceSelects.length; i++) {
-        var selectId = 'voice_' + (i + 1);
-        var ttsService = document.querySelector('#' + selectId + ' option:checked').parentElement;
+    const voiceSelects = document.getElementsByName('voice[]');
+    let chosenVoices = [];
+    let optionHtml = '';
+    for (let i = 0; i < voiceSelects.length; i++) {
+        const selectId = 'voice_' + (i + 1);
+        const ttsService = document.querySelector('#' + selectId + ' option:checked').parentElement;
 
-        var charLimit = ttsService.dataset.charlimit;
-        var serviceName = ttsService.label;
-        var voiceId = voiceSelects[i].value;
+        const charLimit = ttsService.dataset.charlimit;
+        const serviceName = ttsService.label;
+        const voiceId = voiceSelects[i].value;
 
-        //var uniqueVoiceSelector = serviceName + '___' + voiceId + '___' + charLimit;
+        //const uniqueVoiceSelector = serviceName + '___' + voiceId + '___' + charLimit;
         //console.log(uniqueVoiceSelector);
-        var thisVoiceName = voiceId.split('__');
+        const thisVoiceName = voiceId.split('__');
         if (voiceId) optionHtml += '<option value="' + voiceId + '">' + thisVoiceName[1] + '</option>';
     }
 
@@ -228,9 +229,9 @@ function generateOptionTags() {
 
 function generateConversation() {
     // Loop through each textarea and its respective voice selection
-    var arrayVoices = document.getElementsByName('con-voice[]');
-    var arrayTexts = document.getElementsByName('con-text[]');
-    var count = arrayTexts.length;
+    const arrayVoices = document.getElementsByName('con-voice[]');
+    const arrayTexts = document.getElementsByName('con-text[]');
+    const count = arrayTexts.length;
 
     currentPos++;
 
@@ -242,22 +243,23 @@ function generateConversation() {
         document.getElementById('progress-bar').classList.remove('is-success');
         document.getElementById('progress-bar').value = 0;
         document.getElementById('tts-playlist').innerHTML = '';
-        playlistArray = [];
-        playlistVoiceArray = [];
-
+        arrPlaylistDialogue = [];
     }
 
     if (currentPos < count) {
-        var voiceInfo = arrayVoices[currentPos].value.split('__');
+        const voiceInfo = arrayVoices[currentPos].value.split('__');
         // set variables
-        var text = arrayTexts[currentPos].value.trim();
-        var api = voiceInfo[0];
-        var voice = voiceInfo[1];
+        const text = arrayTexts[currentPos].value.trim();
+        const api = voiceInfo[0];
+        const voice = voiceInfo[1];
+        let extras = new Object;
+        extras.cnvIdx = currentPos;
+        extras.selectedVoice = arrayVoices[currentPos].value;
 
         updateProgress(currentPos, count);
 
         // If the text isn't empty we'll generate a TTS URL, otherwise just call this again to skip it.
-        if (text.length > 0) fetchTTSUrl(api, voice, text);
+        if (text.length > 0) fetchTTSUrl(api, voice, text, extras);
         else generateConversation();
     } else {
         // we've finished generating the audio clips
@@ -269,22 +271,25 @@ function generateConversation() {
     }
 }
 
-function fetchTTSUrl(api, voice, text) {
+function fetchTTSUrl(api, voice, text, extras) {
     // this is based on the generateTTSUrl() function but with UI stuff changed for playlist building
 
-    var url = ttsServices[api].url;
+    const url = ttsServices[api].url;
+
+    // We need to send some extra information to the server, so that we can access it in the request response
+    extras = JSON.stringify(extras);
 
     // Send request to the server if it needs proxying to get around CORS issues
     if (ttsServices[api].needsProxy) {
 
         // Send request to our proxy script
-        var xhr = new XMLHttpRequest();
+        const xhr = new XMLHttpRequest();
         xhr.onload = function () {
-            var response = JSON.parse(xhr.responseText);
+            const response = JSON.parse(xhr.responseText);
             if (xhr.readyState == 4 && xhr.status == '200') {
                 //console.log(response);
                 if (response.success === true) {
-                    addAudioTagToArray(response.speak_url);
+                    dialogueToArray(response);
                 } else if (response.error) {
                     //showErrorMessage(response.error);
                 }
@@ -295,12 +300,12 @@ function fetchTTSUrl(api, voice, text) {
         };
         xhr.open('POST', 'proxy.php', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.send('service=' + encodeURIComponent(api) + '&voice=' + encodeURIComponent(voice) + '&text=' + encodeURIComponent(text));
+        xhr.send('service=' + encodeURIComponent(api) + '&voice=' + encodeURIComponent(voice) + '&text=' + encodeURIComponent(text) + '&extras=' + encodeURIComponent(extras));
     } else {
         // No need to proxy we can just replace some URL parameters
 
         // Google's default speed is 1, iSpeech uses 0, no other service has such a variable
-        var speed = (api === 'Google Translate') ? 1 : 0;
+        const speed = (api === 'Google Translate') ? 1 : 0;
 
         // Perform possible text replacements for this API
         url = url.replace('__LEN__', text.length);
@@ -313,37 +318,10 @@ function fetchTTSUrl(api, voice, text) {
     }
 }
 
-// Add <audio> HTML to array
-function addAudioTagToArray(ttsUrl) {
-    playlistArray.push(ttsUrl);
-
-    var voiceName = getVoiceNameFromFilename(ttsUrl);
-    playlistVoiceArray.push(voiceName);
-
-    // Call generateConversation() again to continue going through the input
-    generateConversation();
-}
-
-function getVoiceNameFromFilename(trackUrl) {
-    // Retrieve voice name out of the URL so we can show who is speaking
-    var filename = trackUrl.substring(trackUrl.lastIndexOf('/') + 1);
-    var matchCere = filename.match(/([a-zA-Z]+)480001([a-z0-9]{32}).mp3/);
-    if (matchCere !== null) {
-        return matchCere[1];
-    }
-
-    var matchPolly = filename.match(/Polly([a-zA-Z]+)([a-z0-9]{32}).mp3/);
-    if (matchPolly !== null) {
-        return matchPolly[1];
-    }
-
-    return 'Unknown';
-}
-
 // Update HTML progress bar
 function updateProgress(currentPos, count) {
-    var num = currentPos+1;
-    var progressPct = Math.floor((currentPos / count) * 100);
+    const num = currentPos+1;
+    const progressPct = Math.floor((currentPos / count) * 100);
     document.getElementById('progress-msg').innerHTML = 'Processing TTS audio: <span class="has-text-weight-bold">' + num + '/' + count + '</span>';
     document.getElementById('progress-bar').classList.add('is-success');
     document.getElementById('progress-bar').classList.remove('is-dark');
@@ -352,30 +330,29 @@ function updateProgress(currentPos, count) {
 
 // Loop through playlistArray and add each <audio> element to the DOM
 function addPlaylistToDOM() {
-    if (playlistArray.length > 0) {
-        var playlistHtml = '';
-        for (var i = 0; i < playlistArray.length; i++) {
-            playlistHtml += '<div class="field is-grouped"><div class="control">' + playlistVoiceArray[i] + '</div><div class="control">';
-            playlistHtml += '<audio controls preload="metadata" src="' + playlistArray[i] + '" title="TTS Audio Clip" data-track-number="' + (i+1) + '" id="playlist-track-' + (i+1) + '"><p>Your browser does not support the <code>audio</code> element.</p></audio>';
-            playlistHtml += '</div></div>';
-        }
-        playlistHtml += '<br /><br /><button id="btn-copy-playlist-url" type="button" class="button is-success" onclick="copyPlaylistUrl(this)">Copy Playlist URL</button>';
+    let playlistHtml = '';
 
-        document.getElementById('tts-playlist').innerHTML = playlistHtml;
+    for (let i = 0; i < arrPlaylistDialogue.length; i++) {
+        playlistHtml += '<div class="field is-grouped"><div class="control">' + arrPlaylistDialogue[i].voice.name + '</div><div class="control">';
+        playlistHtml += '<audio controls preload="metadata" src="' + arrPlaylistDialogue[i].audio_url + '" title="TTS Audio - ' + arrPlaylistDialogue[i].voice.name + '" data-track-number="' + (i+1) + '" id="playlist-track-' + (i+1) + '"><p>Your browser does not support the <code>audio</code> element.</p></audio>';
+        playlistHtml += '</div></div>';
     }
+    playlistHtml += '<br /><br /><button id="btn-copy-playlist-url" type="button" class="button is-success" onclick="sharePlaylist(this)">Share Playlist</button>';
+
+    document.getElementById('tts-playlist').innerHTML = playlistHtml;
 }
 
 // calculate full duration of playlist
 function playlistDuration() {
-    var audioElements = document.querySelectorAll("audio[data-track-number]");
-    var duration = 0;
+    const audioElements = document.querySelectorAll("audio[data-track-number]");
+    let duration = 0;
 
-    for (var i = 0; i < audioElements.length; i++) {
+    for (let i = 0; i < audioElements.length; i++) {
         duration += isNaN(audioElements[i].duration) ? 0 : audioElements[i].duration;
     }
 
-    var fmtDuration = new Date(duration * 1000).toISOString().substring(14, 19);
-    document.getElementById('cnvrstn-duration').innerHTML = 'Duration: ' + fmtDuration;
+    const fmtDuration = new Date(duration * 1000).toISOString().substring(14, 19);
+    document.getElementById('cnvrstn-duration').innerHTML = 'Duration: ~' + fmtDuration;
     //console.log('Duration: ' + duration + ' or formatted as: ' + fmtDuration);
 }
 
@@ -384,16 +361,21 @@ function setPlaylistMetadata() {
     // Show the total duration
     playlistDuration();
 
+    // Get the names of voices used
+    const voiceNames = [];
+    for (let i = 0; i < arrPlaylistVoices.length; i++) {
+        voiceNames.push(arrPlaylistVoices[i].name);
+    }
+
     // Show the participants (voice names)
-    var uniqueNames = new Set(playlistVoiceArray);
-    document.getElementById('cnvrstn-people').innerHTML = 'featuring ' + Array.from(uniqueNames).join(", ");
+    document.getElementById('cnvrstn-people').innerHTML = 'featuring ' + Array.from(voiceNames).join(", ");
 }
 
 // play the playlist
 function playPlaylist() {
-    var audioElements = document.querySelectorAll("audio[data-track-number]");
+    let audioElements = document.querySelectorAll("audio[data-track-number]");
 
-    for (var i = 0; i < audioElements.length; i++) {
+    for (let i = 0; i < audioElements.length; i++) {
         audioElements[i].addEventListener('playing', function(e) {
             console.log('Audio playback started on track ' + e.target.dataset.trackNumber + ' at ' + e.target.currentTime + ' seconds.');
         });
@@ -409,7 +391,7 @@ function playPlaylist() {
 // play the next track
 function playNext(nextTrackNo) {
     console.log('attempting to play track ' + nextTrackNo);
-    var nextTrack = document.getElementById('playlist-track-' + nextTrackNo);
+    const nextTrack = document.getElementById('playlist-track-' + nextTrackNo);
     if (nextTrack !== null) {
         nextTrack.play().catch(function() {
             console.log('Failed to play track ' + nextTrackNo);
@@ -420,24 +402,75 @@ function playNext(nextTrackNo) {
     }
 }
 
-// generate shareable playlist link
-function generatePlaylistUrl() {
-    var playlistFilenames = [];
-    var filename = '';
 
-    // loop through each TTS URL and only leave the filename to keep URLs as short as possible
-    for (var i = 0; i < playlistArray.length; i++) {
-        filename = playlistArray[i].replace(window.location.origin + '/tts/assets/audio/Polly', 'P__');
-        filename = filename.replace('https://cerevoice.s3.amazonaws.com/', 'Cere__');
-        filename = filename.replace('.mp3', '');
-        playlistFilenames.push(filename);
+// Creates an object containing information on the voices the user has selected for this conversation
+function selectedVoicesToArray() {
+    const voiceOptions = document.querySelector("select[name='con-voice[]']").options;
+
+    arrPlaylistVoices = [];
+    for (let i = 0; i < voiceOptions.length; i++) {
+        let voiceInfo = {};
+        voiceInfo.id = voiceOptions[i].value;
+        voiceInfo.name = voiceOptions[i].innerText;
+        arrPlaylistVoices[i] = voiceInfo;
     }
-
-    return window.location.origin + '/tts/playlist.php?tracks=' + playlistFilenames.toString();
 }
 
-function copyPlaylistUrl(e) {
-    var textToCopy = generatePlaylistUrl();
+// Creates/adds to an object containing information on the conversation dialogue
+// this includes its position in the playlist, the voice used, the text, and the URL of the audio
+// Only to be called via the XHR response
+function dialogueToArray(result) {
+    const playlistIndex = parseInt(result.extras.cnvIdx);
 
-    copyToClipboard(null, e, textToCopy);
+    let dialogue = {};
+    dialogue.voice = {}
+    dialogue.voice.id = result.extras.selectedVoice;
+    dialogue.voice.name = result.extras.voiceName;
+    dialogue.text = result.extras.originalText;
+    dialogue.audio_url = result.speak_url;
+
+    arrPlaylistDialogue[playlistIndex] = dialogue;
+
+    // Call generateConversation() again to continue going through the input
+    generateConversation();
+}
+
+// Convert all the conversation data to a JSON string ready for writing to a file.
+function conversationToJSON() {
+    objConversation = {};
+    objConversation.voices = arrPlaylistVoices;
+    objConversation.dialogue = arrPlaylistDialogue;
+
+    return JSON.stringify(objConversation);
+}
+
+// Saves all conversation data to a playlist (JSON file)
+// Returns shareable URL on success
+function sharePlaylist(e) {
+    // Generate a unique name
+    const now = new Date();
+    const dateString = now.toISOString().substring(0, 23).replace(/\D/g, '');   // only numeric characters
+    const filename = dateString + '_' + btoa(JSON.stringify(objConversation.voices));
+    const filecontents = conversationToJSON();
+
+    // Save the JSON data server side for sharing (we'll also validate the data there for security purposes)
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+        const response = JSON.parse(xhr.responseText);
+        if (xhr.readyState == 4 && xhr.status == '200') {
+            console.log(response);
+            if (response.success === true) {
+                // Copy playlist URL to clipboard
+                copyToClipboard(null, e, response.playlistUrl);
+            } else if (response.error) {
+                //showErrorMessage(response.error);
+            }
+        } else {
+            console.error(response);
+        }
+
+    };
+    xhr.open('POST', 'playlist.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send('save=1&name=' + encodeURIComponent(filename) + '&json=' + encodeURIComponent(filecontents));
 }
