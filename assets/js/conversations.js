@@ -9,29 +9,13 @@ let isShowingPlaylist = false;
 // Current URL paramaters (const url is defined in tts.js
 const urlParamVoices = url.searchParams.get('voices');
 const urlParamPls = url.searchParams.get('pls');
+const urlParamEdit = url.searchParams.get('edit');
 
 
 // playlist page
 if (urlParamPls !== null) {
     isShowingPlaylist = true;
-    // Load in the JSON (via playlist.php for security and validation)
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', 'playlist.php?json=' + urlParamPls, true);
-    xhr.onload = function () {
-        if (xhr.readyState == 4 && xhr.status == '200') {
-            objConversation = JSON.parse(xhr.responseText);
-            arrPlaylistDialogue = objConversation.dialogue;
-            arrPlaylistVoices = objConversation.voices;
-            addPlaylistToDOM();
-            setTimeout(function () {
-                setPlaylistMetadata();
-                playPlaylist();
-            }, 1000);
-        } else {
-            //console.error(xhr.response);
-        }
-    };
-    xhr.send();
+    getPlaylist(urlParamPls, true, false);
 }
 // make conversation page
 else {
@@ -53,10 +37,50 @@ else {
         }
         updateSelectedVoices();
     }
+
+    // Editing an existing playlist?
+    if (urlParamEdit !== null) {
+        getPlaylist(urlParamEdit, false, true);
+    }
 }
 
 
 // Functions
+// if addToDom is false we'll only update the objects/arrays with the playlist data and won't change the DOM.
+function getPlaylist(plsJSON, addToDom, editingPlaylist) {
+    // Load in the JSON (via playlist.php for security and validation)
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'playlist.php?json=' + plsJSON, true);
+    xhr.onload = function () {
+        if (xhr.readyState == 4 && xhr.status == '200') {
+            objConversation = JSON.parse(xhr.responseText);
+            arrPlaylistDialogue = objConversation.dialogue;
+            arrPlaylistVoices = objConversation.voices;
+
+            if (addToDom) {
+                addPlaylistToDOM();
+                setTimeout(function () {
+                    setPlaylistMetadata();
+                    playPlaylist();
+                }, 1000);
+            } else if (editingPlaylist) {
+                editPlaylist();
+            }
+        } else {
+            //console.error(xhr.response);
+        }
+    };
+    xhr.send();
+}
+
+function editPlaylist() {
+    // Loop through each dialogue and add form fields and set their values
+    for (let i = 0; i < arrPlaylistDialogue.length; i++) {
+        addDialogueBox();
+        document.getElementsByName('con-voice[]')[i].value = arrPlaylistDialogue[i].voice.id;
+        document.getElementsByName('con-text[]')[i].innerText = arrPlaylistDialogue[i].text;
+    }
+}
 
 // Generate HTML for the voice <select>'s
 function generateSelectHtml() {
@@ -343,7 +367,15 @@ function addPlaylistToDOM() {
         }
         playlistHtml += '</div></div>';
     }
-    playlistHtml += '<br /><br /><button id="btn-copy-playlist-url" type="button" class="button is-success" onclick="sharePlaylist(this)">Share Playlist</button>';
+    playlistHtml += '<br /><br /><div class="field is-grouped"><div class="control"><button id="btn-copy-playlist-url" type="button" class="button is-success" onclick="sharePlaylist(this)">Share Playlist</button></div>';
+    if (isShowingPlaylist) {
+        const voiceIds = [];
+        for (let v = 0; v < arrPlaylistVoices.length; v++) {
+            voiceIds.push(arrPlaylistVoices[v].id);
+        }
+        playlistHtml += '<div class="control"><a href="cnvrstn.php?voices=' + Array.from(voiceIds).join(",") + '&amp;edit=' + urlParamPls + '" id="btn-edit-playlist" class="button is-success">Edit This Playlist</a></div>';
+    }
+    playlistHtml += '</div>';
 
     document.getElementById('tts-playlist').innerHTML = playlistHtml;
 }
