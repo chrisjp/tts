@@ -1175,11 +1175,11 @@ function copyToClipboard(e, copyBtn, textToCopy) {
 
     const origText = copyBtn.textContent;
     copyBtn.textContent = 'Copied!';
-    copyBtn.classList.add('is-success');
+    //copyBtn.classList.add('is-success');
 
     setTimeout(() => {
         copyBtn.textContent = origText;
-        copyBtn.classList.remove('is-success');
+        //copyBtn.classList.remove('is-success');
     }, 2000);
 
     // Add to recents if this was triggered by an event (clicking the main copy link URL button)
