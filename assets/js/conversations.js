@@ -4,6 +4,7 @@ let arrPlaylistVoices = [];
 let arrPlaylistDialogue = [];
 let currentPos = -1;
 let voiceSelectHTML = '<option value="">-- None --</option>';
+let isShowingPlaylist = false;
 
 // Current URL paramaters (const url is defined in tts.js
 const urlParamVoices = url.searchParams.get('voices');
@@ -12,6 +13,7 @@ const urlParamPls = url.searchParams.get('pls');
 
 // playlist page
 if (urlParamPls !== null) {
+    isShowingPlaylist = true;
     // Load in the JSON (via playlist.php for security and validation)
     const xhr = new XMLHttpRequest();
     xhr.open('GET', 'playlist.php?json=' + urlParamPls, true);
@@ -335,6 +337,10 @@ function addPlaylistToDOM() {
     for (let i = 0; i < arrPlaylistDialogue.length; i++) {
         playlistHtml += '<div class="field is-grouped"><div class="control">' + arrPlaylistDialogue[i].voice.name + '</div><div class="control">';
         playlistHtml += '<audio controls preload="metadata" src="' + arrPlaylistDialogue[i].audio_url + '" title="TTS Audio - ' + arrPlaylistDialogue[i].voice.name + '" data-track-number="' + (i+1) + '" id="playlist-track-' + (i+1) + '"><p>Your browser does not support the <code>audio</code> element.</p></audio>';
+        if (isShowingPlaylist) {
+            playlistHtml += '<div class=""><p><a href="#" onclick="showTranscript(' + i + ')">Show transcript</a></p>';
+            playlistHtml += '<p class="is-hidden" id="transcript-' + i + '">' + arrPlaylistDialogue[i].text + '</p></div>';
+        }
         playlistHtml += '</div></div>';
     }
     playlistHtml += '<br /><br /><button id="btn-copy-playlist-url" type="button" class="button is-success" onclick="sharePlaylist(this)">Share Playlist</button>';
@@ -400,6 +406,11 @@ function playNext(nextTrackNo) {
             playNext(nextTrackNo);
         });
     }
+}
+
+// Show transscript of the audio
+function showTranscript(i) {
+    document.getElementById('transcript-' + i).classList.remove('is-hidden');
 }
 
 
