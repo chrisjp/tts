@@ -22,6 +22,7 @@ $postData = [
             'service' => $_REQUEST['service'],
             'voice' => $_REQUEST['voice'],
             'text'  => $_REQUEST['text'],
+            'extras' => $_REQUEST['extras'],
             ];
 
 // Handle output based on service selected
@@ -62,6 +63,9 @@ if ($postData['service'] === 'Polly') {
                 }
             }
         }
+        $json->extras = !empty($postData['extras']) ? json_decode($postData['extras']) : new StdClass();
+        $json->extras->originalText = $postData['text'];
+        $json->extras->voiceName = $postData['voice'];
         $response = json_encode($json);
 
         // Delete old files
@@ -97,9 +101,13 @@ else if ($postData['service'] === 'CereProc') {
         $json = [
             'success' => true,
             'speak_url' => $resultUrl,
-            'info' => 'Audio file already existed.'
+            'info' => 'Audio file already existed.',
+            'extras' => !empty($postData['extras']) ? json_decode($postData['extras']) : new StdClass()
         ];
-        exit(json_encode($json));
+        $json['extras']->originalText = $postData['text'];
+        $json['extras']->voiceName = $postData['voice'];
+        $json = json_encode($json);
+        exit($json);
     }
 
     // If not then we'll generate a request to send to their server
@@ -132,8 +140,11 @@ else if ($postData['service'] === 'CereProc') {
             $json = [
                     'success' => true,
                     'speak_url' => (string)$xml,
-                    'info' => 'Audio file generated successfully.'
+                    'info' => 'Audio file generated successfully.',
+                    'extras' => !empty($postData['extras']) ? json_decode($postData['extras']) : new StdClass()
             ];
+            $json['extras']->originalText = $postData['text'];
+            $json['extras']->voiceName = $postData['voice'];
         } else {
             $json = [
                     'success' => false,
