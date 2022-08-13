@@ -270,6 +270,7 @@ function generateConversation() {
         document.getElementById('progress-bar').value = 0;
         document.getElementById('tts-playlist').innerHTML = '';
         arrPlaylistDialogue = [];
+        arrPlaylistVoices = [];
     }
 
     if (currentPos < count) {
@@ -292,6 +293,7 @@ function generateConversation() {
         currentPos = -1;
         document.getElementById('progress-bar').value = 100;
         document.getElementById('progress-done').classList.remove('is-hidden');
+        selectedVoicesToArray();
         addPlaylistToDOM();
         playPlaylist();
     }
@@ -490,11 +492,13 @@ function conversationToJSON() {
 // Saves all conversation data to a playlist (JSON file)
 // Returns shareable URL on success
 function sharePlaylist(e) {
+    // Put the contents of our voice and dialogue arrays into a JSON string
+    const filecontents = conversationToJSON();
+
     // Generate a unique name
     const now = new Date();
     const dateString = now.toISOString().substring(0, 23).replace(/\D/g, '');   // only numeric characters
     const filename = dateString + '_' + btoa(JSON.stringify(objConversation.voices));
-    const filecontents = conversationToJSON();
 
     // Save the JSON data server side for sharing (we'll also validate the data there for security purposes)
     const xhr = new XMLHttpRequest();
