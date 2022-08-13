@@ -417,10 +417,10 @@ function playPlaylist() {
 
     for (let i = 0; i < audioElements.length; i++) {
         audioElements[i].addEventListener('playing', function(e) {
-            console.log('Audio playback started on track ' + e.target.dataset.trackNumber + ' at ' + e.target.currentTime + ' seconds.');
+            //console.log('Audio playback started on track ' + e.target.dataset.trackNumber + ' at ' + e.target.currentTime + ' seconds.');
         });
         audioElements[i].addEventListener('ended', function(e) {
-            console.log('Audio playback has ended on track ' + e.target.dataset.trackNumber);
+            //console.log('Audio playback has ended on track ' + e.target.dataset.trackNumber);
             playNext(parseInt(e.target.dataset.trackNumber) + 1);
         });
     }
@@ -430,7 +430,7 @@ function playPlaylist() {
 
 // play the next track
 function playNext(nextTrackNo) {
-    console.log('attempting to play track ' + nextTrackNo);
+    //console.log('attempting to play track ' + nextTrackNo);
     const nextTrack = document.getElementById('playlist-track-' + nextTrackNo);
     if (nextTrack !== null) {
         nextTrack.play().catch(function() {
@@ -505,7 +505,7 @@ function sharePlaylist(e) {
     xhr.onload = function () {
         const response = JSON.parse(xhr.responseText);
         if (xhr.readyState == 4 && xhr.status == '200') {
-            console.log(response);
+            //console.log(response);
             if (response.success === true) {
                 // Copy playlist URL to clipboard
                 copyToClipboard(null, e, response.playlistUrl);
