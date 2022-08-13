@@ -11,6 +11,15 @@ const urlParamVoices = url.searchParams.get('voices');
 const urlParamPls = url.searchParams.get('pls');
 const urlParamEdit = url.searchParams.get('edit');
 
+// For generating a random string
+const random = (length = 16) => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let str = '';
+    for (let i = 0; i < length; i++) {
+        str += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return str;
+}
 
 // playlist page
 if (urlParamPls !== null) {
@@ -498,7 +507,7 @@ function sharePlaylist(e) {
     // Generate a unique name
     const now = new Date();
     const dateString = now.toISOString().substring(0, 23).replace(/\D/g, '');   // only numeric characters
-    const filename = dateString + '_' + btoa(JSON.stringify(objConversation.voices));
+    const filename = dateString + '_' + random();
 
     // Save the JSON data server side for sharing (we'll also validate the data there for security purposes)
     const xhr = new XMLHttpRequest();
