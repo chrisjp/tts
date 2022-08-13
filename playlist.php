@@ -1,4 +1,5 @@
 <?php
+$v = '1.19';
 // Are we trying to save a playlist?
 if (($_SERVER['REQUEST_METHOD'] === 'POST' && $_REQUEST['save'] === '1') || ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_REQUEST['json']) && !empty($_REQUEST['json'])) ) {
     header('Content-Type: application/json');
@@ -60,7 +61,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' && $_REQUEST['save'] === '1') || ($_S
         <title>Text-to-Speech (TTS) StreamElements Demo Simulator Emulator Generator Tool Thing</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css" integrity="sha512-IgmDkwzs96t4SrChW29No3NXBIBv8baW490zk5aXvhCD8vuZM3yUSkbyTBcXohkySecyzIrUwiF/qV0cuPcL3Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link rel="stylesheet" href="assets/css/tts.css?v=1.15">
+        <link rel="stylesheet" href="assets/css/tts.css?v=<?php echo $v ?>">
         <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
@@ -78,7 +79,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' && $_REQUEST['save'] === '1') || ($_S
                 <div class="columns">
 
                     <div class="column">
-                        <div id="tts-playlist" class="block">
+                        <div id="tts-playlist" class="content">
                         </div>
                     </div>
 
@@ -103,7 +104,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' && $_REQUEST['save'] === '1') || ($_S
         </div>
     </footer>
     <!-- JS -->
-    <script src="assets/js/tts.js?v=1.15"></script>
-    <script src="assets/js/conversations.js?v=1.15"></script>
+    <script src="assets/js/tts.js?v=<?php echo $v ?>"></script>
+    <script src="assets/js/conversations.js?v=<?php echo $v ?>"></script>
     </body>
 </html>

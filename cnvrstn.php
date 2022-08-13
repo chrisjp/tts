@@ -1,5 +1,5 @@
 <?php
-$v = '1.18';
+$v = '1.19';
 ?>
 <!doctype html>
 <html lang="en" class="mode-light has-background-white-bis">

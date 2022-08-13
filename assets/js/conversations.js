@@ -4,7 +4,7 @@ let arrPlaylistVoices = [];
 let arrPlaylistDialogue = [];
 let currentPos = -1;
 let voiceSelectHTML = '<option value="">-- None --</option>';
-let isShowingPlaylist = false;
+let isPlaylistPage = false;
 
 // Current URL paramaters (const url is defined in tts.js
 const urlParamVoices = url.searchParams.get('voices');
@@ -23,7 +23,7 @@ const random = (length = 16) => {
 
 // playlist page
 if (urlParamPls !== null) {
-    isShowingPlaylist = true;
+    isPlaylistPage = true;
     getPlaylist(urlParamPls, true, false);
 }
 // make conversation page
@@ -203,7 +203,7 @@ function updateSelectedVoices() {
 function addDialogueBox() {
     // HTML we want to add
     const conVoiceDropdown = '<div class="control select is-rounded"><select name="con-voice[]"></select></div>';
-    const conBtnRemove = '<div class="control"><button type="button" class="button is-danger" onclick="removeDialogueBox(this)">X</button></div>';
+    const conBtnRemove = '<div class="control"><button type="button" class="delete has-background-danger-dark" onclick="removeDialogueBox(this)"></button></div>';
     const conTextInput = '<div class="control"><textarea name="con-text[]" rows="3" cols="80" maxlength="550" class="textarea dialogue" placeholder="Enter some text here..."></textarea></div>';
     const divBox = '<div class="box"><div class="field is-grouped">' + conVoiceDropdown + conBtnRemove + '</div><div class="field">' + conTextInput + '</div></div>';
 
@@ -365,21 +365,21 @@ function updateProgress(currentPos, count) {
     document.getElementById('progress-bar').value = progressPct;
 }
 
-// Loop through playlistArray and add each <audio> element to the DOM
+// Loop through arrPlaylistDialogue and add each <audio> element to the DOM
+// If isPlaylistPage is true, an expanded version will be shown with transcripts etc.
+// if it isn't, a small condensed version will be shown (for the conversation page).
 function addPlaylistToDOM() {
     let playlistHtml = '';
 
     for (let i = 0; i < arrPlaylistDialogue.length; i++) {
-        playlistHtml += '<div class="field is-grouped"><div class="control">' + arrPlaylistDialogue[i].voice.name + '</div><div class="control">';
+        playlistHtml += isPlaylistPage ? '<div class="box"><div class="columns"><div class="column is-one-fifth">' : '';
+        playlistHtml += '<strong>' + arrPlaylistDialogue[i].voice.name + '</strong><br/>';
+        playlistHtml += isPlaylistPage ? '<span id="btn-transcript-' + i + '" class="button is-small is-link" onclick="toggleTranscript(' + i + ')">Show transcript</span></div><div class="column">' : '';
         playlistHtml += '<audio controls preload="metadata" src="' + arrPlaylistDialogue[i].audio_url + '" title="TTS Audio - ' + arrPlaylistDialogue[i].voice.name + '" data-track-number="' + (i+1) + '" id="playlist-track-' + (i+1) + '"><p>Your browser does not support the <code>audio</code> element.</p></audio>';
-        if (isShowingPlaylist) {
-            playlistHtml += '<div class=""><p><a href="#" onclick="showTranscript(' + i + ')">Show transcript</a></p>';
-            playlistHtml += '<p class="is-hidden" id="transcript-' + i + '">' + arrPlaylistDialogue[i].text + '</p></div>';
-        }
-        playlistHtml += '</div></div>';
+        playlistHtml += isPlaylistPage ? '</div></div><blockquote class="is-hidden" id="transcript-' + i + '">' + arrPlaylistDialogue[i].text + '</blockquote></div>' : '<br/>';
     }
     playlistHtml += '<br /><br /><div class="field is-grouped"><div class="control"><button id="btn-copy-playlist-url" type="button" class="button is-success" onclick="sharePlaylist(this)">Share Playlist</button></div>';
-    if (isShowingPlaylist) {
+    if (isPlaylistPage) {
         const voiceIds = [];
         for (let v = 0; v < arrPlaylistVoices.length; v++) {
             voiceIds.push(arrPlaylistVoices[v].id);
@@ -451,9 +451,12 @@ function playNext(nextTrackNo) {
     }
 }
 
-// Show transscript of the audio
-function showTranscript(i) {
-    document.getElementById('transcript-' + i).classList.remove('is-hidden');
+// Show/hide transcript of the audio
+function toggleTranscript(i) {
+    const transcriptBox = document.getElementById('transcript-' + i);
+    const transcriptBtn = document.getElementById('btn-transcript-' + i);
+    transcriptBox.classList.toggle('is-hidden');
+    transcriptBox.classList.contains('is-hidden') ? transcriptBtn.innerHTML = 'Show transcript' : transcriptBtn.innerHTML = 'Hide transcript';
 }
 
 
@@ -501,32 +504,37 @@ function conversationToJSON() {
 // Saves all conversation data to a playlist (JSON file)
 // Returns shareable URL on success
 function sharePlaylist(e) {
-    // Put the contents of our voice and dialogue arrays into a JSON string
-    const filecontents = conversationToJSON();
+    if (isPlaylistPage) {
+        copyToClipboard(null, e, window.location.href);
+    }
+    else {
+        // Put the contents of our voice and dialogue arrays into a JSON string
+        const filecontents = conversationToJSON();
 
-    // Generate a unique name
-    const now = new Date();
-    const dateString = now.toISOString().substring(0, 23).replace(/\D/g, '');   // only numeric characters
-    const filename = dateString + '_' + random();
+        // Generate a unique name
+        const now = new Date();
+        const dateString = now.toISOString().substring(0, 23).replace(/\D/g, '');   // only numeric characters
+        const filename = dateString + '_' + random(6);
 
-    // Save the JSON data server side for sharing (we'll also validate the data there for security purposes)
-    const xhr = new XMLHttpRequest();
-    xhr.onload = function () {
-        const response = JSON.parse(xhr.responseText);
-        if (xhr.readyState == 4 && xhr.status == '200') {
-            //console.log(response);
-            if (response.success === true) {
-                // Copy playlist URL to clipboard
-                copyToClipboard(null, e, response.playlistUrl);
-            } else if (response.error) {
-                //showErrorMessage(response.error);
+        // Save the JSON data server side for sharing (we'll also validate the data there for security purposes)
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+            const response = JSON.parse(xhr.responseText);
+            if (xhr.readyState == 4 && xhr.status == '200') {
+                //console.log(response);
+                if (response.success === true) {
+                    // Copy playlist URL to clipboard
+                    copyToClipboard(null, e, response.playlistUrl);
+                } else if (response.error) {
+                    //showErrorMessage(response.error);
+                }
+            } else {
+                console.error(response);
             }
-        } else {
-            console.error(response);
-        }
 
-    };
-    xhr.open('POST', 'playlist.php', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.send('save=1&name=' + encodeURIComponent(filename) + '&json=' + encodeURIComponent(filecontents));
+        };
+        xhr.open('POST', 'playlist.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send('save=1&name=' + encodeURIComponent(filename) + '&json=' + encodeURIComponent(filecontents));
+    }
 }

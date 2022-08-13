@@ -134,3 +134,10 @@
 .mode-dark .label {
     color: #eee;
 }
+.mode-dark strong {
+    color: #eee !important;
+}
+.mode-dark .content blockquote {
+    background-color: #666666 !important;
+    border-left: 5px solid #444444 !important;
+}
