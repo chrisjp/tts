@@ -481,7 +481,7 @@ function dialogueToArray(result) {
     let dialogue = {};
     dialogue.voice = {}
     dialogue.voice.id = result.extras.selectedVoice;
-    dialogue.voice.name = result.extras.voiceName;
+    dialogue.voice.name = result.extras.service + ' - ' + result.extras.voiceName;
     dialogue.text = result.extras.originalText;
     dialogue.audio_url = result.speak_url;
 

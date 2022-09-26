@@ -66,6 +66,7 @@ if ($postData['service'] === 'Polly') {
         $json->extras = !empty($postData['extras']) ? json_decode($postData['extras']) : new StdClass();
         $json->extras->originalText = $postData['text'];
         $json->extras->voiceName = $postData['voice'];
+        $json->extras->service = $postData['service'];
         $response = json_encode($json);
 
         // Delete old files
@@ -106,6 +107,7 @@ else if ($postData['service'] === 'CereProc') {
         ];
         $json['extras']->originalText = $postData['text'];
         $json['extras']->voiceName = $postData['voice'];
+        $json['extras']->service = $postData['service'];
         $json = json_encode($json);
         exit($json);
     }
@@ -145,6 +147,7 @@ else if ($postData['service'] === 'CereProc') {
             ];
             $json['extras']->originalText = $postData['text'];
             $json['extras']->voiceName = $postData['voice'];
+            $json['extras']->service = $postData['service'];
         } else {
             $json = [
                     'success' => false,
@@ -177,6 +180,7 @@ else if ($postData['service'] === 'TikTok') {
         ];
         $json['extras']->originalText = $postData['text'];
         $json['extras']->voiceName = $postData['voice'];
+        $json['extras']->service = $postData['service'];
         $json = json_encode($json);
         exit($json);
     }
@@ -236,6 +240,7 @@ else if ($postData['service'] === 'TikTok') {
         $json->extras = !empty($postData['extras']) ? json_decode($postData['extras']) : new StdClass();
         $json->extras->originalText = $postData['text'];
         $json->extras->voiceName = $postData['voice'];
+        $json->extras->service = $postData['service'];
         $response = json_encode($json);
 
         // Delete old files
