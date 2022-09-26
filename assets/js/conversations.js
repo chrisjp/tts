@@ -383,7 +383,7 @@ function addPlaylistToDOM() {
         for (let v = 0; v < arrPlaylistVoices.length; v++) {
             voiceIds.push(arrPlaylistVoices[v].id);
         }
-        playlistHtml += '<div class="control"><a href="cnvrstn.php?voices=' + Array.from(voiceIds).join(",") + '&amp;edit=' + urlParamPls + '" id="btn-edit-playlist" class="button is-success">Edit This Playlist</a></div>';
+        playlistHtml += '<div class="control"><a href="conversation.php?voices=' + Array.from(voiceIds).join(",") + '&amp;edit=' + urlParamPls + '" id="btn-edit-playlist" class="button is-success">Edit This Playlist</a></div>';
     }
     playlistHtml += '</div>';
 
