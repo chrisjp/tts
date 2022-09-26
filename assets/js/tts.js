@@ -141,7 +141,7 @@ const ttsServices = {
     'TikTok':
     {
         url: 'https://api22-normal-c-useast1a.tiktokv.com/media/api/text/speech/invoke/',
-        charLimit: 2000,
+        charLimit: 300,
         countBytes: true,
         needsProxy: true,
         voices: [
