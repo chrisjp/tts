@@ -160,6 +160,95 @@ else if ($postData['service'] === 'CereProc') {
 
     exit(json_encode($json));
 }
+else if ($postData['service'] === 'TikTok') {
+    $json = [];
+
+    // Formulate filename and URL for the resulting voice file
+    $audioFileName = $postData['service'] . $postData['voice'] . md5($postData['text']) . ".mp3";
+    $audioFileUrl = 'https://' . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/') + 1) . AUDIO_DIR . $audioFileName;
+
+    // Before we send a request to TikTok we can check if the audio file already exists locally
+    if (SAVE_LOCALLY && file_exists(AUDIO_DIR . $audioFileName)) {
+        $json = [
+            'success' => true,
+            'speak_url' => $audioFileUrl,
+            'info' => 'Audio file already existed.',
+            'extras' => !empty($postData['extras']) ? json_decode($postData['extras']) : new StdClass()
+        ];
+        $json['extras']->originalText = $postData['text'];
+        $json['extras']->voiceName = $postData['voice'];
+        $json = json_encode($json);
+        exit($json);
+    }
+    else {
+        // Generate a request to send to their server
+
+        // construct POST data
+        $postFields = [
+            'speaker_map_type' => '0',
+            'aid' => '1233',
+            'text_speaker' => $postData['voice'],
+            'req_text' => $postData['text'],
+        ];
+
+        // Need to send a cookie with a valid session ID
+        // TODO: Obtain this programatically. Unsure how long these are valid for...
+        $sessionId = 'a297faf502b6b33c77c46846ece1a46b';
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://api22-normal-c-useast1a.tiktokv.com/media/api/text/speech/invoke/');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postFields));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [  'User-Agent: com.zhiliaoapp.musically/2022600030 (Linux; U; Android 7.1.2; es_ES; SM-G988N; Build/NRD90M;tt-ok/3.12.13.1)',
+                                                'Cookie: sessionid=' . $sessionId,
+                                            ]);
+        $response = curl_exec($ch);
+        $info = curl_getinfo($ch);
+        curl_close($ch);
+
+        $json = json_decode($response);
+
+        // Success
+        if ($json->status_code === 0) {
+
+            $audioData = $json->data->v_str;    // base64 encoded mp3 audio data from the server
+
+            if (SAVE_LOCALLY) {
+                // write the data to a file
+                if ($audioData) {
+                    $put = file_put_contents(AUDIO_DIR . $audioFileName, base64_decode($audioData));
+                    if ($put) $json->speak_url = $audioFileUrl;
+
+                    if (SAVE_TXT) $putTxt = file_put_contents(AUDIO_DIR . str_replace('.mp3', '.txt', $audioFileName), $postData['text'] . "\n\nReferer: " . $referer);
+                }
+            }
+            else {
+                $json->speak_url = "data:audio/mp3;base64," . $audioData;
+            }
+            $json->success = true;
+        } else {
+            $json->success = false;
+            $json->error = $json->status_msg;
+        }
+
+        $json->extras = !empty($postData['extras']) ? json_decode($postData['extras']) : new StdClass();
+        $json->extras->originalText = $postData['text'];
+        $json->extras->voiceName = $postData['voice'];
+        $response = json_encode($json);
+
+        // Delete old files
+        $fileSystemIterator = new FilesystemIterator(AUDIO_DIR);
+        $now = time();
+        foreach ($fileSystemIterator as $file) {
+            // delete files older than HOURS_TO_KEEP hours
+            if ($now - $file->getCTime() >= 60 * 60 * HOURS_TO_KEEP) @unlink(AUDIO_DIR . $file->getFilename());
+        }
+
+        exit($response);
+    }
+}
 else if ($postData['service'] === 'IBM Watson') {
     // construct POST data to be json_encode()'d
     $postFields = [

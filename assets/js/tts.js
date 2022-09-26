@@ -138,6 +138,66 @@ const ttsServices = {
             {vid: 'Ylva', name: 'Ylva', flag: 'SE', lang: 'Swedish', accent: '', sex: 'F'},
         ],
     },
+    'TikTok':
+    {
+        url: 'https://api22-normal-c-useast1a.tiktokv.com/media/api/text/speech/invoke/',
+        charLimit: 2000,
+        countBytes: true,
+        needsProxy: true,
+        voices: [
+            // ENGLISH
+            {vid: 'en_uk_001', name: 'UK Male 1', flag: 'GB', lang: 'English', accent: 'England', sex: 'M'},
+            {vid: 'en_uk_003', name: 'UK Male 2', flag: 'GB', lang: 'English', accent: 'England', sex: 'M'},
+            {vid: 'en_female_emotional', name: 'UK Female', flag: 'GB', lang: 'English', accent: 'England', sex: 'F'},
+            {vid: 'en_au_001', name: 'AU Female', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'F'},
+            {vid: 'en_au_002', name: 'AU Male', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'M'},
+            {vid: 'en_us_001', name: 'US Female 1', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
+            {vid: 'en_us_002', name: 'US Female 2', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
+            {vid: 'en_us_006', name: 'US Male 1', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
+            {vid: 'en_us_007', name: 'US Male 2', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
+            {vid: 'en_us_009', name: 'US Male 3', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
+            {vid: 'en_us_010', name: 'US Male 4', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
+            {vid: 'en_male_narration', name: 'US Male Narrator', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
+            {vid: 'en_male_funny', name: 'US Male Funny', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
+            // DISNEY
+            {vid: 'en_us_ghostface', name: 'Ghost Face', flag: 'US', lang: 'English', accent: 'American', sex: 'N', customEmoji: '\uD83D\uDC7B'},
+            {vid: 'en_us_chewbacca', name: 'Chewbacca', flag: '', lang: 'English', accent: '', sex: 'N', customEmoji: '\uD83D\uDC3B'},
+            {vid: 'en_us_c3po', name: 'C-3PO', flag: '', lang: 'English', accent: '', sex: 'N', customEmoji: '\uD83E\uDD16'},
+            {vid: 'en_us_stormtrooper', name: 'Stormtrooper', flag: 'US', lang: 'English', accent: 'American', sex: 'N', customEmoji: '\uD83D\uDC68\u200D\uD83D\uDE80'},
+            {vid: 'en_us_stitch', name: 'Stitch', flag: '', lang: 'English', accent: '', sex: 'N', customEmoji: '\uD83D\uDC28'},
+            {vid: 'en_us_rocket', name: 'Rocket', flag: 'US', lang: 'English', accent: 'American', sex: 'N', customEmoji: '\uD83E\uDD9D'},
+            // ENGLISH SINGING
+            {vid: 'en_female_f08_salut_damour', name: 'Song - Salut d\'amour', flag: 'US', lang: 'English', accent: '', sex: 'F'},
+            {vid: 'en_female_f08_warmy_breeze', name: 'Song - Warmy Breeze', flag: 'US', lang: 'English', accent: '', sex: 'F'},
+            {vid: 'en_male_m03_lobby', name: 'Song - Lobby', flag: 'US', lang: 'English', accent: '', sex: 'M'},
+            {vid: 'en_male_m03_sunshine_soon', name: 'Song - Sunshine Soon', flag: 'US', lang: 'English', accent: '', sex: 'M'},
+            // FRENCH
+            {vid: 'fr_001', name: 'French Male 1', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
+            {vid: 'fr_002', name: 'French Male 2', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
+            // GERMAN
+            {vid: 'de_001', name: 'German Female', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
+            {vid: 'de_002', name: 'German Male', flag: 'DE', lang: 'German', accent: '', sex: 'M'},
+            // INDONESIAN
+            {vid: 'id_001', name: 'Indonesian Female', flag: 'ID', lang: 'Indonesian', accent: '', sex: 'F'},
+            // JAPANESE
+            {vid: 'jp_001', name: 'Japanese Female 1', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
+            {vid: 'jp_003', name: 'Japanese Female 2', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
+            {vid: 'jp_005', name: 'Japanese Female 3', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
+            {vid: 'jp_006', name: 'Japanese Male', flag: 'JP', lang: 'Japanese', accent: '', sex: 'M'},
+            // KOREAN
+            {vid: 'kr_002', name: 'Korean Male', flag: 'KR', lang: 'Korean', accent: '', sex: 'M'},
+            {vid: 'kr_004', name: 'Korean Male', flag: 'KR', lang: 'Korean', accent: '', sex: 'M'},
+            {vid: 'kr_003', name: 'Korean Female', flag: 'KR', lang: 'Korean', accent: '', sex: 'F'},
+            // PORTUGUESE
+            //{vid: 'br_001', name: 'Brazilian Female 1', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'F'},
+            {vid: 'br_003', name: 'Brazilian Female 1', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'F'},
+            {vid: 'br_004', name: 'Brazilian Female 2', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'F'},
+            {vid: 'br_005', name: 'Brazilian Male', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'M'},
+            // SPANISH
+            {vid: 'es_002', name: 'Spanish Male', flag: 'ES', lang: 'Spanish', accent: 'Spain', sex: 'M'},
+            {vid: 'es_mx_002', name: 'Mexican Male', flag: 'MX', lang: 'Spanish', accent: 'Mexico', sex: 'M'},
+        ],
+    },
     'IBM Watson':
     {
         url: 'https://www.ibm.com/demos/live/tts-demo/api/tts/synthesize',
