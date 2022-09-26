@@ -141,3 +141,10 @@
     background-color: #666666 !important;
     border-left: 5px solid #444444 !important;
 }
+.mode-dark .message {
+    background-color: #666666 !important;
+}
+.mode-dark .message-body {
+    border-color: #444444 !important;
+    color: inherit !important;
+}
