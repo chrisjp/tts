@@ -202,15 +202,17 @@ function updateSelectedVoices() {
             const selectedId = allSelects[i].selectedIndex;
             allSelects[i].innerHTML = optionHtml;
             allSelects[i].selectedIndex = selectedId;   // set selected index back to what it was
+            updateTextareaAttributes(allSelects[i]);    // update the <select>'s corresponding textarea attributes
         }
     }
 }
 
+// Add a dialogue box (<select> with our chosen voices and corresponding <textrea>)
 function addDialogueBox() {
     // HTML we want to add
-    const conVoiceDropdown = '<div class="control select is-rounded"><select name="con-voice[]"></select></div>';
+    const conVoiceDropdown = '<div class="control select is-rounded"><select name="con-voice[]" onchange="updateTextareaAttributes(this)"></select></div>';
     const conBtnRemove = '<div class="control"><button type="button" class="delete has-background-danger-dark" onclick="removeDialogueBox(this)"></button></div>';
-    const conTextInput = '<div class="control"><textarea name="con-text[]" rows="3" cols="80" maxlength="550" class="textarea dialogue" placeholder="Enter some text here..."></textarea></div>';
+    const conTextInput = '<div class="control"><textarea name="con-text[]" rows="3" cols="80" maxlength="550" class="textarea dialogue" oninput="handleConvoInput(this)"  placeholder="Enter some text here..."></textarea><span class="is-pulled-right is-size-7 has-text-right"><span name="chars[]">0</span>/<span name="charlimit[]">-</span></span></div>';
     const divBox = '<div class="box"><div class="field is-grouped">' + conVoiceDropdown + conBtnRemove + '</div><div class="field">' + conTextInput + '</div></div>';
 
     // Create a div element and add the above HTML in it
@@ -230,6 +232,7 @@ function addDialogueBox() {
     // Get all our <select>s
     const allSelects = document.getElementsByName('con-voice[]');
     allSelects[allSelects.length-1].innerHTML = optionHtml;
+    updateTextareaAttributes(allSelects[allSelects.length-1]);  // set the <select>'s corresponding textarea attributes
 
     // At this point we'll have at least 1 dialogue box on the page so we can
     // enable to the speak button
@@ -238,6 +241,7 @@ function addDialogueBox() {
     selectedVoicesToArray();
 }
 
+// Remove a dialogue box
 function removeDialogueBox(e) {
     e.parentNode.parentNode.parentNode.remove();
 
@@ -246,6 +250,7 @@ function removeDialogueBox(e) {
     if (dialogueCount === 0) document.getElementById('btn-speak-con').disabled = true;
 }
 
+// Generate <option> tag HTML for the <select>'s with our chosen voices in the dialogue boxes
 function generateOptionTags() {
     // Populate the <select> with our chosen voices
     const voiceSelects = document.getElementsByName('voice[]');
@@ -261,12 +266,37 @@ function generateOptionTags() {
         const selIdx = voiceSelects[i].selectedIndex;
         const voiceName = voiceSelects[i].options[selIdx].label;
 
-        if (voiceId) optionHtml += '<option value="' + voiceId + '">' + voiceName + '</option>';
+        if (voiceId) optionHtml += '<option value="' + voiceId + '" data-charlimit="' + charLimit + '" data-api="' + serviceName + '">' + voiceName + '</option>';
     }
 
     return optionHtml;
 }
 
+// Show the user the current character count of this textarea
+function handleConvoInput(textarea) {
+    const thisDialogueVoice = textarea.parentNode.parentNode.parentNode.getElementsByTagName('select')[0];
+    const idxVoice = thisDialogueVoice.selectedIndex;
+    const voiceOptionTag = thisDialogueVoice.options[idxVoice];
+    const elChars = textarea.parentNode.getElementsByTagName('span')[1];
+    const elCharCount = textarea.parentNode.getElementsByTagName('span')[0];
+
+    // Count characters used
+    characterCount(textarea, elChars, elCharCount, voiceOptionTag.dataset.api);
+}
+
+// Set the correct maxlength based on the API being used and make this visible to users in span.character-count[]
+function updateTextareaAttributes(voiceSelect) {
+    const idxVoice = voiceSelect.selectedIndex;
+    const voiceOptionTag = voiceSelect.options[idxVoice];
+
+    const dialogueContainer = voiceSelect.parentNode.parentNode.parentNode;
+    const elCharCount = dialogueContainer.getElementsByTagName('span')[2];
+    const thisVoiceTextarea = dialogueContainer.getElementsByTagName('textarea')[0];
+    elCharCount.innerHTML = voiceOptionTag.dataset.charlimit;
+    thisVoiceTextarea.maxLength = voiceOptionTag.dataset.charlimit;
+}
+
+// Make all the calls to the TTS APIs and show user the progress
 function generateConversation() {
     // Loop through each textarea and its respective voice selection
     const arrayVoices = document.getElementsByName('con-voice[]');

@@ -1120,7 +1120,7 @@ function handleTextInput(e) {
     }
 
     // Count characters used
-    characterCount(textarea);
+    characterCount(textarea, document.getElementById('chars'), document.getElementById('character-count'));
 }
 
 // Generate URL to TTS output
@@ -1256,19 +1256,18 @@ function setCharLimit() {
 }
 
 // Show character count/limit
-function characterCount(textarea) {
+function characterCount(textarea, elChars, elCharCount, service) {
     // Some services count bytes rather than characters
     const thisText = textarea.value;
-    const voice = getSelectedVoice();
-    const api = voice.dataset.api;
+    const api = service == null ? getSelectedVoice().dataset.api : service;
     const curLength = ttsServices[api].countBytes === true ? byteCount(thisText.trim()) : thisText.trim().length;
-    document.getElementById('chars').innerHTML = curLength;
+    elChars.innerHTML = curLength;
 
     // if current length is near the max length change colour to red
     if (curLength > (textarea.maxLength - 10)) {
-        document.getElementById('character-count').classList.add('has-text-danger');
+        elCharCount.classList.add('has-text-danger');
     } else {
-        document.getElementById('character-count').classList.remove('has-text-danger');
+        elCharCount.classList.remove('has-text-danger');
     }
 }
 
