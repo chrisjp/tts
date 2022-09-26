@@ -252,11 +252,10 @@ function generateOptionTags() {
         const charLimit = ttsService.dataset.charlimit;
         const serviceName = ttsService.label;
         const voiceId = voiceSelects[i].value;
+        const selIdx = voiceSelects[i].selectedIndex;
+        const voiceName = voiceSelects[i].options[selIdx].label;
 
-        //const uniqueVoiceSelector = serviceName + '___' + voiceId + '___' + charLimit;
-        //console.log(uniqueVoiceSelector);
-        const thisVoiceName = voiceId.split('__');
-        if (voiceId) optionHtml += '<option value="' + voiceId + '">' + thisVoiceName[1] + '</option>';
+        if (voiceId) optionHtml += '<option value="' + voiceId + '">' + voiceName + '</option>';
     }
 
     return optionHtml;
