@@ -6,6 +6,9 @@ let currentPos = -1;
 let voiceSelectHTML = '<option value="">-- None --</option>';
 let isPlaylistPage = false;
 
+// Array of TTS Services we can select from for use in conversations
+const validServices = ['Polly', 'CereProc', 'TikTok'];
+
 // Current URL paramaters (const url is defined in tts.js
 const urlParamVoices = url.searchParams.get('voices');
 const urlParamPls = url.searchParams.get('pls');
@@ -98,32 +101,34 @@ function generateSelectHtml() {
     for (const voiceGroup in ttsServices) {
         const voices = ttsServices[voiceGroup].voices;
 
-        // Add an optgroup for this API
-        voiceSelectHTML += '<optgroup label="' + voiceGroup + '" data-charlimit="' + ttsServices[voiceGroup].charLimit + '">';
+        // Add an optgroup for this API if it's valid for conversations
+        if (validServices.includes(voiceGroup)) {
+            voiceSelectHTML += '<optgroup label="' + voiceGroup + '" data-charlimit="' + ttsServices[voiceGroup].charLimit + '">';
 
-        // Add options for each voice
-        for (let i = 0; i < voices.length; i++) {
-            // Set voice name
-            voiceName = voices[i].name;
-            if (voiceName.length == 0) {
-                // If the voice is not named, use the language
-                voiceName = voices[i].lang;
-                // Include accent/region if applicable
-                if (voices[i].accent.length > 0) {
-                    voiceName += ' (' +  voices[i].accent + ')';
+            // Add options for each voice
+            for (let i = 0; i < voices.length; i++) {
+                // Set voice name
+                voiceName = voices[i].name;
+                if (voiceName.length == 0) {
+                    // If the voice is not named, use the language
+                    voiceName = voices[i].lang;
+                    // Include accent/region if applicable
+                    if (voices[i].accent.length > 0) {
+                        voiceName += ' (' +  voices[i].accent + ')';
+                    }
+                } else {
+                    // Append language and accent/region if applicable
+                    voiceAccent = voices[i].accent.length > 0 ? ', ' + voices[i].accent : '';
+                    voiceName += ' (' + voices[i].lang + voiceAccent + ')';
                 }
-            } else {
-                // Append language and accent/region if applicable
-                voiceAccent = voices[i].accent.length > 0 ? ', ' + voices[i].accent : '';
-                voiceName += ' (' + voices[i].lang + voiceAccent + ')';
+
+                const voiceId = voiceGroup + '__' + voices[i].vid;
+                voiceSelectHTML += '<option value="' + voiceId + '" data-desc="' + voiceName + '">' + voiceName + '</option>';
             }
 
-            const voiceId = voiceGroup + '__' + voices[i].vid;
-            voiceSelectHTML += '<option value="' + voiceId + '" data-desc="' + voiceName + '">' + voiceName + '</option>';
+            // Close optgroup
+            voiceSelectHTML += '</optgroup>';
         }
-
-        // Close optgroup
-        voiceSelectHTML += '</optgroup>';
     }
 
     // voiceSelectHTML is a global variable so no need to return it

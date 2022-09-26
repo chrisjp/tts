@@ -1,5 +1,5 @@
 <?php
-$v = '1.19';
+$v = '1.22';
 // Are we trying to save a playlist?
 if (($_SERVER['REQUEST_METHOD'] === 'POST' && $_REQUEST['save'] === '1') || ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_REQUEST['json']) && !empty($_REQUEST['json'])) ) {
     header('Content-Type: application/json');
