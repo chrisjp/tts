@@ -5,6 +5,7 @@ let arrPlaylistDialogue = [];
 let currentPos = -1;
 let voiceSelectHTML = '<option value="">-- None --</option>';
 let isPlaylistPage = false;
+let lastTrackNo = -1;
 
 // Array of TTS Services we can select from for use in conversations
 const validServices = ['Polly', 'CereProc', 'TikTok'];
@@ -329,11 +330,7 @@ function fetchTTSUrl(api, voice, text, extras) {
             const response = JSON.parse(xhr.responseText);
             if (xhr.readyState == 4 && xhr.status == '200') {
                 //console.log(response);
-                if (response.success === true) {
-                    dialogueToArray(response);
-                } else if (response.error) {
-                    //showErrorMessage(response.error);
-                }
+                dialogueToArray(response);
             } else {
                 console.error(response);
             }
@@ -376,11 +373,14 @@ function addPlaylistToDOM() {
     let playlistHtml = '';
 
     for (let i = 0; i < arrPlaylistDialogue.length; i++) {
-        playlistHtml += isPlaylistPage ? '<div class="box"><div class="columns"><div class="column is-one-fifth">' : '';
-        playlistHtml += '<strong>' + arrPlaylistDialogue[i].voice.name + '</strong><br/>';
-        playlistHtml += isPlaylistPage ? '<span id="btn-transcript-' + i + '" class="button is-small is-link" onclick="toggleTranscript(' + i + ')">Show transcript</span></div><div class="column">' : '';
-        playlistHtml += '<audio controls preload="metadata" src="' + arrPlaylistDialogue[i].audio_url + '" title="TTS Audio - ' + arrPlaylistDialogue[i].voice.name + '" data-track-number="' + (i+1) + '" id="playlist-track-' + (i+1) + '"><p>Your browser does not support the <code>audio</code> element.</p></audio>';
-        playlistHtml += isPlaylistPage ? '</div></div><blockquote class="is-hidden" id="transcript-' + i + '">' + arrPlaylistDialogue[i].text + '</blockquote></div>' : '<br/>';
+        // Check this index isn't undefined (if it is it's probably audio we skipped over due to an error)
+        if (arrPlaylistDialogue[i] !== undefined) {
+            playlistHtml += isPlaylistPage ? '<div class="box"><div class="columns"><div class="column is-one-fifth">' : '';
+            playlistHtml += '<strong>' + arrPlaylistDialogue[i].voice.name + '</strong><br/>';
+            playlistHtml += isPlaylistPage ? '<span id="btn-transcript-' + i + '" class="button is-small is-link" onclick="toggleTranscript(' + i + ')">Show transcript</span></div><div class="column">' : '';
+            playlistHtml += '<audio controls preload="metadata" src="' + arrPlaylistDialogue[i].audio_url + '" title="TTS Audio - ' + arrPlaylistDialogue[i].voice.name + '" data-track-number="' + (i+1) + '" id="playlist-track-' + (i+1) + '"><p>Your browser does not support the <code>audio</code> element.</p></audio>';
+            playlistHtml += isPlaylistPage ? '</div></div><blockquote class="is-hidden" id="transcript-' + i + '">' + arrPlaylistDialogue[i].text + '</blockquote></div>' : '<br/>';
+        }
     }
     playlistHtml += '<br /><br /><div class="field is-grouped"><div class="control"><button id="btn-copy-playlist-url" type="button" class="button is-success" onclick="sharePlaylist(this)">Share Playlist</button></div>';
     if (isPlaylistPage) {
@@ -427,6 +427,7 @@ function setPlaylistMetadata() {
 // play the playlist
 function playPlaylist() {
     let audioElements = document.querySelectorAll("audio[data-track-number]");
+    lastTrackNo = parseInt(audioElements[audioElements.length - 1].dataset.trackNumber);
 
     for (let i = 0; i < audioElements.length; i++) {
         audioElements[i].addEventListener('playing', function(e) {
@@ -452,6 +453,10 @@ function playNext(nextTrackNo) {
             nextTrackNo++;
             playNext(nextTrackNo);
         });
+    } else if (nextTrackNo <= lastTrackNo) {
+        console.log('Track ' + nextTrackNo + ' is missing. Trying the next track...');
+        nextTrackNo++;
+        playNext(nextTrackNo);
     }
 }
 
@@ -481,16 +486,21 @@ function selectedVoicesToArray() {
 // this includes its position in the playlist, the voice used, the text, and the URL of the audio
 // Only to be called via the XHR response
 function dialogueToArray(result) {
-    const playlistIndex = parseInt(result.extras.cnvIdx);
+    if (result.success === true) {
+        const playlistIndex = parseInt(result.extras.cnvIdx);
 
-    let dialogue = {};
-    dialogue.voice = {}
-    dialogue.voice.id = result.extras.selectedVoice;
-    dialogue.voice.name = result.extras.service + ' - ' + result.extras.voiceName;
-    dialogue.text = result.extras.originalText;
-    dialogue.audio_url = result.speak_url;
+        let dialogue = {};
+        dialogue.voice = {}
+        dialogue.voice.id = result.extras.selectedVoice;
+        dialogue.voice.name = result.extras.service + ' - ' + result.extras.voiceName;
+        dialogue.text = result.extras.originalText;
+        dialogue.audio_url = result.speak_url;
 
-    arrPlaylistDialogue[playlistIndex] = dialogue;
+        arrPlaylistDialogue[playlistIndex] = dialogue;
+    } else {
+        // show an error?
+        console.log('Dialogue skipped. Reason: ' + result.error);
+    }
 
     // Call generateConversation() again to continue going through the input
     generateConversation();
