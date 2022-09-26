@@ -22,7 +22,7 @@ $postData = [
             'service' => $_REQUEST['service'],
             'voice' => $_REQUEST['voice'],
             'text'  => $_REQUEST['text'],
-            'extras' => $_REQUEST['extras'],
+            'extras' => isset($_REQUEST['extras']) ? $_REQUEST['extras'] : '',
             ];
 
 // Handle output based on service selected
