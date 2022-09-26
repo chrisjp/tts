@@ -86,7 +86,7 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' && $_REQUEST['save'] === '1') || ($_S
                 </div>
 
                 <p>
-                    <a href="cnvrstn.php" class="button is-success">Make Your Own</a>
+                    <a href="conversation.php" class="button is-success">Make Your Own</a>
                 </p>
             </div>
 
