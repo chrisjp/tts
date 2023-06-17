@@ -14,6 +14,7 @@ if (!defined('SAVE_LOCALLY'))   define('SAVE_LOCALLY', false);
 if (!defined('AUDIO_DIR'))      define('AUDIO_DIR', 'assets/audio/');
 if (!defined('HOURS_TO_KEEP'))  define('HOURS_TO_KEEP', 24);
 if (!defined('SAVE_TXT'))       define('SAVE_TXT', false);
+if (!defined('TIKTOK_SID'))     define('TIKTOK_SID', '');
 
 $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
 
@@ -195,10 +196,6 @@ else if ($postData['service'] === 'TikTok') {
             'req_text' => $postData['text'],
         ];
 
-        // Need to send a cookie with a valid session ID
-        // TODO: Obtain this programatically. Unsure how long these are valid for...
-        $sessionId = 'a297faf502b6b33c77c46846ece1a46b';
-
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://api22-normal-c-useast1a.tiktokv.com/media/api/text/speech/invoke/');
         curl_setopt($ch, CURLOPT_POST, 1);
@@ -206,7 +203,7 @@ else if ($postData['service'] === 'TikTok') {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLINFO_HEADER_OUT, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [  'User-Agent: com.zhiliaoapp.musically/2022600030 (Linux; U; Android 7.1.2; es_ES; SM-G988N; Build/NRD90M;tt-ok/3.12.13.1)',
-                                                'Cookie: sessionid=' . $sessionId,
+                                                'Cookie: sessionid=' . TIKTOK_SID,
                                             ]);
         $response = curl_exec($ch);
         $info = curl_getinfo($ch);
