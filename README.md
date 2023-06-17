@@ -11,18 +11,19 @@ Inspired by [Peter Cunha's](https://github.com/petercunha/tts) very similar tool
 - Over 500 different high-quality voices
 - Lightning fast
 - Copy link to TTS URL to clipboard for sharing with others
-- Simple HTML5 and JavaScript, with no dependencies, frameworks, libraries etc. required
+- Simple HTML5 and vanilla JavaScript (PHP required for full functionality)
+- Conversations - create a conversation using multiple TTS voices and share it as a playlist of TTS audio clips.
 
 ## Limitations
 Many of the services used aren't intended for professional/commercial use or are utilising a live demo, and as such they have limitations. As a reminder: You should only be using this to test how your text sounds in various voices. If you need to use TTS for commercial purposes please check out the services' respective websites linked above for more information.
 
 #### Polly via Streamlabs
 - 550 byte limit for TTS processing with Amazon Polly voices
-- TTS URLs are valid for only 5 minutes (but you have the option to save these locally on your server by using the `config.php` file - _see `config.php.dist` for sample values_)
+- TTS URLs are valid for only 5 minutes (but you have the option to save these locally on your server by using the `config.php` file - _see `config.php.dist` for sample values_
 #### CereProc
 - 2000 byte limit
 #### IBM Watson
-- Generated audio is served as a data URL rather than an mp3 file (but you have the option to save as an mp3 locally on your server by using the `config.php` file - _see `config.php.dist` for sample values_)
+- Generated audio is served as a data URL rather than an mp3 file (but you have the option to save as an mp3 locally on your server by using the `config.php` file - _see `config.php.dist` for sample values_
 #### Acapela
 - 2000 character limit
 - Light background music plays throughout
