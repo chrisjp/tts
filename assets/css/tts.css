@@ -20,6 +20,9 @@
     font-size: 0.9rem;
     justify-content: space-between !important;
 }
+#tab-container .tabs ul {
+    border-bottom: 0;
+}
 @media (max-width: 639.98px) {
     .button-voice {
         width: 100%;
@@ -45,7 +48,7 @@
     }
 }
 
-/* LIGHT MODE SPRECIFICS */
+/* LIGHT MODE SPECIFICS */
 .mode-light .no-hover, .mode-light .no-hover:hover {
     color: #4a4a4a !important;
     background-color: hsl(0, 0%, 96%) !important;
@@ -53,9 +56,18 @@
     z-index: 0 !important;
     cursor: default;
 }
-.mode-light .tabs.is-toggle li.is-active a {
+.mode-light #filters .tabs.is-toggle li.is-active a {
     background-color: hsl(141, 71%, 48%);
     border-color: hsl(141, 71%, 48%);
+}
+.mode-light #tab-container .tabs li a {
+    color: #485fc7;
+}
+.mode-light #tab-container .tabs li.is-active a {
+    background-color: #fff !important;
+}
+.mode-light #tab-container .tabs li a:hover {
+    background-color: hsl(0, 0%, 90%) !important;
 }
 
 /* DARK MODE SPECIFICS */
@@ -85,30 +97,37 @@
     background-color: hsl(0, 0%, 14%);
     color: hsl(0, 0%, 96%);
 }
+.mode-dark hr {
+    background-color: hsl(0, 0%, 28%);
+}
 .mode-dark .is-success {
     background-color: #dc6805;
 }
 .mode-dark .is-success:active, .mode-dark .is-success:hover {
-    background-color: #ff7500;
+    background-color: #ff7500 !important;
+}
+.mode-dark #tab-container .tabs li.is-active a {
+    background-color: hsl(0, 0%, 14%) !important;
+    color: #eee;
+}
+.mode-dark #tab-container .tabs li a:hover {
+    background-color: hsl(0, 0%, 20%) !important;
 }
 .mode-dark .is-success:focus:not(:active) {
     box-shadow: 0 0 0 0.125em rgba(209, 119, 35, 0.25);
 }
-.mode-dark hr {
-    background-color: hsl(0, 0%, 28%);
-}
-.mode-dark .tabs a, .mode-dark .tabs.is-toggle a {
+.mode-dark #filters .tabs a, .mode-dark #filters .tabs.is-toggle a {
     color: #eee;
     border-color: #444444;
 }
-.mode-dark .tabs.is-toggle a:hover {
+.mode-dark #filters .tabs.is-toggle a:hover {
     background-color: hsl(0, 0%, 21%);
 }
-.mode-dark .tabs.is-toggle li.is-active a {
+.mode-dark #filters .tabs.is-toggle li.is-active a {
     background-color: #dc6805;
     border-color: #dc6805;
 }
-.mode-dark .textarea {
+.mode-dark .textarea, .mode-dark .select select {
     background-color: hsl(0, 0%, 28%);
     border-color: hsl(0, 0%, 42%);
     color: hsl(0, 0%, 96%);
@@ -127,4 +146,24 @@
 }
 .mode-dark .textarea:-moz-placeholder { /* Firefox 18- */
     color: hsl(0, 0%, 49%);
+}
+.mode-dark .textarea.dialogue {
+    min-height: 100px !important;
+}
+.mode-dark .label {
+    color: #eee;
+}
+.mode-dark strong {
+    color: #eee !important;
+}
+.mode-dark .content blockquote {
+    background-color: #666666 !important;
+    border-left: 5px solid #444444 !important;
+}
+.mode-dark .message {
+    background-color: #666666 !important;
+}
+.mode-dark .message-body {
+    border-color: #444444 !important;
+    color: inherit !important;
 }

@@ -14,6 +14,7 @@ if (!defined('SAVE_LOCALLY'))   define('SAVE_LOCALLY', false);
 if (!defined('AUDIO_DIR'))      define('AUDIO_DIR', 'assets/audio/');
 if (!defined('HOURS_TO_KEEP'))  define('HOURS_TO_KEEP', 24);
 if (!defined('SAVE_TXT'))       define('SAVE_TXT', false);
+if (!defined('TIKTOK_SID'))     define('TIKTOK_SID', '');
 
 $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
 
@@ -22,6 +23,7 @@ $postData = [
             'service' => $_REQUEST['service'],
             'voice' => $_REQUEST['voice'],
             'text'  => $_REQUEST['text'],
+            'extras' => isset($_REQUEST['extras']) ? $_REQUEST['extras'] : '',
             ];
 
 // Handle output based on service selected
@@ -62,6 +64,10 @@ if ($postData['service'] === 'Polly') {
                 }
             }
         }
+        $json->extras = !empty($postData['extras']) ? json_decode($postData['extras']) : new StdClass();
+        $json->extras->originalText = $postData['text'];
+        $json->extras->voiceName = $postData['voice'];
+        $json->extras->service = $postData['service'];
         $response = json_encode($json);
 
         // Delete old files
@@ -97,9 +103,14 @@ else if ($postData['service'] === 'CereProc') {
         $json = [
             'success' => true,
             'speak_url' => $resultUrl,
-            'info' => 'Audio file already existed.'
+            'info' => 'Audio file already existed.',
+            'extras' => !empty($postData['extras']) ? json_decode($postData['extras']) : new StdClass()
         ];
-        exit(json_encode($json));
+        $json['extras']->originalText = $postData['text'];
+        $json['extras']->voiceName = $postData['voice'];
+        $json['extras']->service = $postData['service'];
+        $json = json_encode($json);
+        exit($json);
     }
 
     // If not then we'll generate a request to send to their server
@@ -132,8 +143,12 @@ else if ($postData['service'] === 'CereProc') {
             $json = [
                     'success' => true,
                     'speak_url' => (string)$xml,
-                    'info' => 'Audio file generated successfully.'
+                    'info' => 'Audio file generated successfully.',
+                    'extras' => !empty($postData['extras']) ? json_decode($postData['extras']) : new StdClass()
             ];
+            $json['extras']->originalText = $postData['text'];
+            $json['extras']->voiceName = $postData['voice'];
+            $json['extras']->service = $postData['service'];
         } else {
             $json = [
                     'success' => false,
@@ -148,6 +163,93 @@ else if ($postData['service'] === 'CereProc') {
     }
 
     exit(json_encode($json));
+}
+else if ($postData['service'] === 'TikTok') {
+    $json = [];
+
+    // Formulate filename and URL for the resulting voice file
+    $audioFileName = $postData['service'] . $postData['voice'] . md5($postData['text']) . ".mp3";
+    $audioFileUrl = 'https://' . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/') + 1) . AUDIO_DIR . $audioFileName;
+
+    // Before we send a request to TikTok we can check if the audio file already exists locally
+    if (SAVE_LOCALLY && file_exists(AUDIO_DIR . $audioFileName)) {
+        $json = [
+            'success' => true,
+            'speak_url' => $audioFileUrl,
+            'info' => 'Audio file already existed.',
+            'extras' => !empty($postData['extras']) ? json_decode($postData['extras']) : new StdClass()
+        ];
+        $json['extras']->originalText = $postData['text'];
+        $json['extras']->voiceName = $postData['voice'];
+        $json['extras']->service = $postData['service'];
+        $json = json_encode($json);
+        exit($json);
+    }
+    else {
+        // Generate a request to send to their server
+
+        // construct POST data
+        $postFields = [
+            'speaker_map_type' => '0',
+            'aid' => '1233',
+            'text_speaker' => $postData['voice'],
+            'req_text' => $postData['text'],
+        ];
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://api22-normal-c-useast1a.tiktokv.com/media/api/text/speech/invoke/');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postFields));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [  'User-Agent: com.zhiliaoapp.musically/2022600030 (Linux; U; Android 7.1.2; es_ES; SM-G988N; Build/NRD90M;tt-ok/3.12.13.1)',
+                                                'Cookie: sessionid=' . TIKTOK_SID,
+                                            ]);
+        $response = curl_exec($ch);
+        $info = curl_getinfo($ch);
+        curl_close($ch);
+
+        $json = json_decode($response);
+
+        // Success
+        if ($json->status_code === 0) {
+
+            $audioData = $json->data->v_str;    // base64 encoded mp3 audio data from the server
+
+            if (SAVE_LOCALLY) {
+                // write the data to a file
+                if ($audioData) {
+                    $put = file_put_contents(AUDIO_DIR . $audioFileName, base64_decode($audioData));
+                    if ($put) $json->speak_url = $audioFileUrl;
+
+                    if (SAVE_TXT) $putTxt = file_put_contents(AUDIO_DIR . str_replace('.mp3', '.txt', $audioFileName), $postData['text'] . "\n\nReferer: " . $referer);
+                }
+            }
+            else {
+                $json->speak_url = "data:audio/mp3;base64," . $audioData;
+            }
+            $json->success = true;
+        } else {
+            $json->success = false;
+            $json->error = $json->status_msg;
+        }
+
+        $json->extras = !empty($postData['extras']) ? json_decode($postData['extras']) : new StdClass();
+        $json->extras->originalText = $postData['text'];
+        $json->extras->voiceName = $postData['voice'];
+        $json->extras->service = $postData['service'];
+        $response = json_encode($json);
+
+        // Delete old files
+        $fileSystemIterator = new FilesystemIterator(AUDIO_DIR);
+        $now = time();
+        foreach ($fileSystemIterator as $file) {
+            // delete files older than HOURS_TO_KEEP hours
+            if ($now - $file->getCTime() >= 60 * 60 * HOURS_TO_KEEP) @unlink(AUDIO_DIR . $file->getFilename());
+        }
+
+        exit($response);
+    }
 }
 else if ($postData['service'] === 'IBM Watson') {
     // construct POST data to be json_encode()'d

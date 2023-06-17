@@ -16,3 +16,11 @@ define('HOURS_TO_KEEP', 24);
 // NOTE: This will save a .txt file containing the user's text input in addition to the .mp3 of the audio that was generated.
 //       Filenames will be identical other than extension
 define('SAVE_TXT', false);
+
+// TikTok Session ID
+// NOTE: These seem to expire randomly after an arbritrary amount of time. You'll need to update this every time it expires until a better solution is found.
+// To do this you will need to:
+// 1. Login to TikTok in your web browser
+// 2. Look for a cookie named "sessionid" - you may wish to use the Cookie Editor extension (https://cookie-editor.cgagnier.ca) for your browser to do this.
+// 3. Copy and paste the value below
+define('TIKTOK_SID', 'ReplaceThisWithARealSID');
