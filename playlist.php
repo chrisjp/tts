@@ -106,7 +106,13 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' && $_REQUEST['save'] === '1') || ($_S
         <div class="content has-text-centered">
             <p class="is-size-7-touch">
                 TTS Demo by <a href="https://chrisphillips.uk">Chris Phillips</a><br />
-                Powered by: <a href="https://aws.amazon.com/polly/">Amazon Polly</a> (via <a href="https://streamlabs.com/">Streamlabs</a> API) // <a href="https://cereproc.com/">CereProc</a> // <a href="https://www.ibm.com/cloud/watson-text-to-speech/">IBM Watson</a> // <a href="https://www.acapela-group.com/demos/">Acapela</a> // <a href="https://www.oddcast.com/ttsdemo/index.php">Oddcast</a> // <a href="https://www.readspeaker.com/">ReadSpeaker</a> // <a href="https://translate.google.com/">Google Translate</a> // <a href="https://ispeech.org">iSpeech</a>
+                Powered by: <a href="https://aws.amazon.com/polly/">Amazon Polly</a> (via <a href="https://streamlabs.com/">Streamlabs</a> API)
+                // <a href="https://cereproc.com/">CereProc</a>
+                // <a href="https://tiktok.com">TikTok</a>
+                // <a href="https://www.ibm.com/cloud/watson-text-to-speech/">IBM Watson</a>
+                // <a href="https://www.acapela-group.com/demos/">Acapela</a>
+                // <a href="https://www.oddcast.com/ttsdemo/index.php">Oddcast</a>
+                // <a href="https://translate.google.com/">Google Translate</a>
             </p>
             <p>
                 <a href="https://github.com/chrisjp/tts"><img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/github.svg" width="32" height="32" alt="GitHub" /></a>

@@ -1,7 +1,7 @@
 # Text-to-Speech (TTS) Demo App
 A simple web app demonstrating how text sounds in different TTS voices.
 
-This web app will convert your text to speech using voices provided by a variety of TTS services including [Amazon Polly](https://aws.amazon.com/polly/), [CereProc](https://cereproc.com/), [IBM Watson](https://www.ibm.com/cloud/watson-text-to-speech), [Acapela](https://www.acapela-group.com/demos/), [Oddcast](https://www.oddcast.com/ttsdemo/index.php), [ReadSpeaker](https://www.readspeaker.com/), [Google Translate](https://translate.google.com/), [iSpeech](https://ispeech.org/).
+This web app will convert your text to speech using voices provided by a variety of TTS services including [Amazon Polly](https://aws.amazon.com/polly/), [CereProc](https://cereproc.com/), [IBM Watson](https://www.ibm.com/cloud/watson-text-to-speech), [Acapela](https://www.acapela-group.com/demos/), [Oddcast](https://www.oddcast.com/ttsdemo/index.php), [Google Translate](https://translate.google.com/).
 
 NOTE: [Streamlabs'](https://streamlabs.com/) (unofficial) API is used to process TTS with Amazon Polly voices (called via the proxy.php file to work around CORS restrictions and provide some additional features). This can be used to emulate how messages will sound when donating to [Twitch.tv](https://twitch.tv) streamers who have the feature enabled. ![FeelsGoodMan](https://cdn.frankerfacez.com/emoticon/109777/1)
 
@@ -29,18 +29,10 @@ Many of the services used aren't intended for professional/commercial use or are
 - Light background music plays throughout
 #### Oddcast
 - 600 character limit
-#### ReadSpeaker
-- 250 character limit
-- Says "this is a demo" before or after your text
-- Light background music plays throughout
 #### Google Translate
 - 200 character limit
 - TTS URLs are _not_ served over https; the secure URLs require a valid token, which while technically possible to generate, is not something I want to spend time on just for a simple demo app. Do note that some browsers will refuse to load files served over http.
-#### iSpeech
-- 150 byte limit (sometimes, and seemingly randomly, it's even less for languages such as Japanese and Chinese)
-- Voice will always say "Powered by iSpeech" at the end
 
 
 ## Demo
 Demo website for testing can be found at [**LazyPy.ro/tts**](https://lazypy.ro/tts)  
-_NOTE: Please be patient when testing Polly and IBM voices — both providers have (unsurprisingly) throttled traffic from my server's IP address._
