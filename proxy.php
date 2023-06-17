@@ -43,7 +43,7 @@ if ($postData['service'] === 'Polly') {
         if ($json->success === true) {
             // TTS was successful - generate a filename
             $audioFileName = $postData['service'] . $postData['voice'] . md5($postData['text']) . ".mp3";
-            $audioFileUrl = 'https://' . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/') + 1) . AUDIO_DIR . $audioFileName;
+            $audioFileUrl = $requestScheme . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/') + 1) . AUDIO_DIR . $audioFileName;
 
             // First we'll check if the file already exists locally
             if (file_exists(AUDIO_DIR . $audioFileName)) {
@@ -171,7 +171,7 @@ else if ($postData['service'] === 'TikTok') {
 
     // Formulate filename and URL for the resulting voice file
     $audioFileName = $postData['service'] . $postData['voice'] . md5($postData['text']) . ".mp3";
-    $audioFileUrl = 'https://' . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/') + 1) . AUDIO_DIR . $audioFileName;
+    $audioFileUrl = $requestScheme . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/') + 1) . AUDIO_DIR . $audioFileName;
 
     // Before we send a request to TikTok we can check if the audio file already exists locally
     if (SAVE_LOCALLY && file_exists(AUDIO_DIR . $audioFileName)) {
@@ -263,7 +263,7 @@ else if ($postData['service'] === 'IBM Watson') {
 
     // generate a filename
     $audioFileName = 'IBM' . $postData['voice'] . md5($postData['text']) . ".mp3";
-    $audioFileUrl = 'https://' . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/') + 1) . AUDIO_DIR . $audioFileName;
+    $audioFileUrl = $requestScheme . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/') + 1) . AUDIO_DIR . $audioFileName;
 
     // First we'll check if the file already exists locally
     if (file_exists(AUDIO_DIR . $audioFileName)) {
