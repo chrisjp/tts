@@ -30,7 +30,7 @@ $v = '1.3';
             </div>
 
             <div class="box">
-                <p>Choose from <span id="voicecount" class="has-text-weight-bold">500+</span> voices from Amazon Polly (via Streamlabs), TikTok, CereProc, IBM Watson, Acapela, Oddcast, Google Translate, iSpeech.<br />
+                <p>Choose from <span id="voicecount" class="has-text-weight-bold">500+</span> voices from Amazon Polly (via Streamlabs), TikTok, CereProc, IBM Watson, Acapela, Oddcast, Google Translate.<br />
                     Polly voices can be used for testing how Twitch.tv donations will sound as many streamers have TTS enabled via Streamlabs or StreamElements for this. <img src="https://cdn.frankerfacez.com/emoticon/109777/1" alt="FeelsGoodMan" /><br/>
                     Also you may wish to check out the <a href="https://docs.google.com/document/d/1qLKdc3QArtn6PVuGf42EfoMuzvLE_ykWwU1RViEcrbU/edit?usp=sharing" target="_blank">"TTS Dossier"</a> for some <em>entertaining</em> ideas. <img src="https://cdn.frankerfacez.com/emoticon/381875/1" alt="KEKW" /></p>
                 <p>Finally, here's a <a href="https://gist.github.com/TETYYS/f1aa16b18fb619fc6c0f13ba4f9ae70d" target="_blank">list of characters</a> explaining how they are pronounced (specifically by Brian). <img src="https://cdn.frankerfacez.com/emoticon/239504/1" alt="5Head" /></p>
@@ -119,7 +119,6 @@ $v = '1.3';
                 // <a href="https://www.acapela-group.com/demos/">Acapela</a>
                 // <a href="https://www.oddcast.com/ttsdemo/index.php">Oddcast</a>
                 // <a href="https://translate.google.com/">Google Translate</a>
-                // <a href="https://ispeech.org">iSpeech</a>
             </p>
             <p>
                 <a href="https://github.com/chrisjp/tts"><img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/github.svg" width="32" height="32" alt="GitHub" /></a>

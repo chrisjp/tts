@@ -623,54 +623,6 @@ const ttsServices = {
             {vid: 'vi-vn', name: '', flag: 'VN', lang: 'Vietnamese', accent: '', sex: 'F'},
         ],
     },
-    'iSpeech':
-    {
-        url: 'https://www.ispeech.org/p/generic/getaudio?action=convert&pitch=100&voice=__VOICE__&speed=__SPEED__&text=__TEXT__',
-        charLimit: 150,
-        countBytes: true,
-        voices: [
-            {vid: 'ukenglishfemale', name: '', flag: 'GB', lang: 'English', accent: 'England', sex: 'F'},
-            {vid: 'ukenglishmale', name: '', flag: 'GB', lang: 'English', accent: 'England', sex: 'M'},
-            {vid: 'usenglishfemale', name: '', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'usenglishmale', name: '', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'auenglishfemale', name: '', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'F'},
-            {vid: 'caenglishfemale', name: '', flag: 'CA', lang: 'English', accent: 'Canadian', sex: 'F'},
-            {vid: 'arabicmale', name: '', flag: 'EG', lang: 'Arabic', accent: 'Egypt', sex: 'M'},
-            {vid: 'chchinesefemale', name: '', flag: 'CN', lang: 'Chinese', accent: '', sex: 'F'},
-            {vid: 'hkchinesefemale', name: '', flag: 'HK', lang: 'Chinese', accent: 'Hong Kong', sex: 'F'},
-            //{vid: 'twchinesefemale', name: '', flag: 'TW', lang: 'Chinese', accent: 'Taiwan', sex: 'F'}, // "invalid voice" as of May 2019
-            {vid: 'eurczechfemale', name: '', flag: 'CZ', lang: 'Czech', accent: '', sex: 'F'},
-            {vid: 'eurdanishfemale', name: '', flag: 'DK', lang: 'Danish', accent: '', sex: 'F'},
-            {vid: 'eurdutchfemale', name: '', flag: 'NL', lang: 'Dutch', accent: '', sex: 'F'},
-            {vid: 'eurfinnishfemale', name: '', flag: 'FI', lang: 'Finnish', accent: '', sex: 'F'},
-            {vid: 'eurfrenchfemale', name: '', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'eurfrenchmale', name: '', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
-            {vid: 'cafrenchfemale', name: '', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'F'},
-            {vid: 'cafrenchmale', name: '', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'M'},
-            {vid: 'eurgermanfemale', name: '', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            {vid: 'eurgermanmale', name: '', flag: 'DE', lang: 'German', accent: '', sex: 'M'},
-            {vid: 'eurgreekfemale', name: '', flag: 'GR', lang: 'Greek', accent: '', sex: 'F'},
-            {vid: 'huhungarianfemale', name: '', flag: 'HU', lang: 'Hungarian', accent: '', sex: 'F'},
-            {vid: 'euritalianfemale', name: '', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
-            {vid: 'euritalianmale', name: '', flag: 'IT', lang: 'Italian', accent: '', sex: 'M'},
-            {vid: 'jpjapanesefemale', name: '', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
-            {vid: 'krkoreanfemale', name: '', flag: 'KR', lang: 'Korean', accent: '', sex: 'F'},
-            {vid: 'eurnorwegianfemale', name: '', flag: 'NO', lang: 'Norwegian', accent: '', sex: 'F'},
-            {vid: 'eurpolishfemale', name: '', flag: 'PL', lang: 'Polish', accent: '', sex: 'F'},
-            {vid: 'eurportuguesefemale', name: '', flag: 'PT', lang: 'Portuguese', accent: 'European', sex: 'F'},
-            {vid: 'eurportuguesemale', name: '', flag: 'PT', lang: 'Portuguese', accent: 'European', sex: 'M'},
-            {vid: 'brportuguesefemale', name: '', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'F'},
-            {vid: 'rurussianfemale', name: '', flag: 'RU', lang: 'Russian', accent: '', sex: 'F'},
-            {vid: 'rurussianmale', name: '', flag: 'RU', lang: 'Russian', accent: '', sex: 'M'},
-            {vid: 'eurspanishfemale', name: '', flag: 'ES', lang: 'Spanish', accent: 'Spain', sex: 'F'},
-            {vid: 'eurspanishmale', name: '', flag: 'ES', lang: 'Spanish', accent: 'Spain', sex: 'M'},
-            {vid: 'usspanishfemale', name: '', flag: 'MX', lang: 'Spanish', accent: 'Latin American', sex: 'F'},
-            {vid: 'usspanishmale', name: '', flag: 'MX', lang: 'Spanish', accent: 'Latin American', sex: 'M'},
-            {vid: 'swswedishfemale', name: '', flag: 'SE', lang: 'Swedish', accent: '', sex: 'F'},
-            {vid: 'eurturkishfemale', name: '', flag: 'TR', lang: 'Turkish', accent: '', sex: 'F'},
-            {vid: 'eurturkishmale', name: '', flag: 'TR', lang: 'Turkish', accent: '', sex: 'M'},
-        ],
-    },
 };
 
 // Return an object containing CSS class names depending on if we're displaying light mode or dark mode
@@ -1083,7 +1035,7 @@ function generateTTSUrl() {
     } else {
         // No need to proxy we can just replace some URL parameters
 
-        // Google's default speed is 1, iSpeech uses 0, no other service has such a variable
+        // Google's default speed is 1, no other service has such a variable
         var speed = (api === 'Google Translate') ? 1 : 0;
 
         // Perform possible text replacements for this API

@@ -113,7 +113,6 @@ $v = '1.3';
                 // <a href="https://www.acapela-group.com/demos/">Acapela</a>
                 // <a href="https://www.oddcast.com/ttsdemo/index.php">Oddcast</a>
                 // <a href="https://translate.google.com/">Google Translate</a>
-                // <a href="https://ispeech.org">iSpeech</a>
             </p>
             <p>
                 <a href="https://github.com/chrisjp/tts"><img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/github.svg" width="32" height="32" alt="GitHub" /></a>
