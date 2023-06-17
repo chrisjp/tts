@@ -29,10 +29,6 @@ Many of the services used aren't intended for professional/commercial use or are
 - Light background music plays throughout
 #### Oddcast
 - 600 character limit
-#### ReadSpeaker
-- 250 character limit
-- Says "this is a demo" before or after your text
-- Light background music plays throughout
 #### Google Translate
 - 200 character limit
 - TTS URLs are _not_ served over https; the secure URLs require a valid token, which while technically possible to generate, is not something I want to spend time on just for a simple demo app. Do note that some browsers will refuse to load files served over http.
