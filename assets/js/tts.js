@@ -2,10 +2,8 @@
 const ttsServices = {
     'Polly':
     {
-        url: 'https://streamlabs.com/polly/speak',
         charLimit: 550,
         countBytes: true,
-        needsProxy: true,
         voices: [
             {vid: 'Brian', name: 'Brian', flag: 'GB', lang: 'English', accent: 'British', sex: 'M'},
             {vid: 'Amy', name: 'Amy', flag: 'GB', lang: 'English', accent: 'British', sex: 'F'},
@@ -76,10 +74,8 @@ const ttsServices = {
     },
     'CereProc':
     {
-        url: 'https://www.cereproc.com/themes/benchpress/livedemo.php',
         charLimit: 2000,
         countBytes: true,
-        needsProxy: true,
         voices: [
             {vid: 'Amy', name: 'Amy', flag: 'GB', lang: 'English', accent: 'England', sex: 'F'},
             {vid: 'Demon', name: 'Demon', flag: 'GB', lang: 'English', accent: 'England', sex: 'N', customEmoji: '\uD83D\uDE08'},
@@ -140,10 +136,8 @@ const ttsServices = {
     },
     'TikTok':
     {
-        url: 'https://api22-normal-c-useast1a.tiktokv.com/media/api/text/speech/invoke/',
         charLimit: 300,
         countBytes: true,
-        needsProxy: true,
         voices: [
             // ENGLISH
             {vid: 'en_uk_001', name: 'UK Male 1', flag: 'GB', lang: 'English', accent: 'England', sex: 'M'},
@@ -200,10 +194,8 @@ const ttsServices = {
     },
     'IBM Watson':
     {
-        url: 'https://www.ibm.com/demos/live/tts-demo/api/tts/synthesize',
         charLimit: 5000,
         countBytes: false,
-        needsProxy: true,
         voices: [
             {vid: 'en-GB_CharlotteV3Voice', name: 'Charlotte', flag: 'GB', lang: 'English', accent: 'British', sex: 'F'},
             {vid: 'en-GB_JamesV3Voice', name: 'James', flag: 'GB', lang: 'English', accent: 'British', sex: 'M'},
@@ -238,10 +230,8 @@ const ttsServices = {
     },
     'Acapela':
     {
-        url: '',
         charLimit: 2000,
         countBytes: false,
-        needsProxy: true,
         voices: [
             {vid: 'graham22k', name: 'Graham', flag: 'GB', lang: 'English', accent: '', sex: 'M'},
             {vid: 'harry22k', name: 'Harry', flag: 'GB', lang: 'English', accent: '', sex: 'M'},
@@ -384,10 +374,8 @@ const ttsServices = {
     },
     'Oddcast':
     {
-        url: 'https://cache-a.oddcast.com/tts/gen.php?EID=__EID__&LID=__LID__&VID=__VOICE__&TXT=__TEXT__&IS_UTF8=1&EXT=mp3&FNAME=&ACC=__ACC__&API=&SESSION=&CS=__CHECKSUM__',
         charLimit: 600,
         countBytes: false,
-        needsProxy: true,   // Not actually required but it's faster to calculate the md5 checksum in PHP
         voices: [           // Voice IDs are not unique as they belong to an engine and a language. Our IDs are in the format 'voiceId-engineId-languageId'
             {vid: '4-3-1', name: 'Bridget', flag: 'GB', lang: 'English', accent: 'British', sex: 'F'},
             {vid: '6-2-1', name: 'Catherine', flag: 'GB', lang: 'English', accent: 'British', sex: 'F'},
@@ -569,10 +557,8 @@ const ttsServices = {
     },
     'Google Translate':
     {
-        url: 'http://translate.google.com/translate_tts?ie=UTF-8&total=1&idx=0&client=tw-ob&prev=input&textlen=__LEN__&q=__TEXT__&tl=__LOCALE__&ttsspeed=__SPEED__',
         charLimit: 200,
         countBytes: false,
-        needsProxy: true,   // Technically not required but audio URLs 404 when attempted to be played inline, so we need to fetch and save locally
         voices: [
             {vid: 'en-gb', name: '', flag: 'GB', lang: 'English', accent: 'England', sex: 'F'},
             {vid: 'en-us', name: '', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
@@ -1002,52 +988,35 @@ function generateTTSUrl() {
     const voice = getSelectedVoice();
     const api = voice.dataset.api;
     const text = document.getElementById('text').value.trim() || 'Please enter some text.';
-    var url = ttsServices[api].url;
 
     // Change the URL parameters
     changeUrl(voice);
 
-    // Send request to the server if it needs proxying to get around CORS issues
-    if (ttsServices[api].needsProxy) {
-        // Show a loading spinner while the proxy sends/receives the request
-        document.getElementById('playbutton').classList.add('is-loading');
+    // Send request to the server to get around CORS issues
+    // Show a loading spinner while the proxy sends/receives the request
+    document.getElementById('playbutton').classList.add('is-loading');
 
-        // Send request to our proxy script
-        var xhr = new XMLHttpRequest();
-        xhr.onload = function () {
-            var response = JSON.parse(xhr.responseText);
-            if (xhr.readyState == 4 && xhr.status == '200') {
-                //console.log(response);
-                if (response.success === true) {
-                    showAudioPlayer(response.speak_url);
-                } else if (response.error) {
-                    showErrorMessage(response.error);
-                }
-            } else {
-                console.error(response);
+    // Send request to our proxy script
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+        var response = JSON.parse(xhr.responseText);
+        if (xhr.readyState == 4 && xhr.status == '200') {
+            //console.log(response);
+            if (response.success === true) {
+                showAudioPlayer(response.speak_url);
+            } else if (response.error) {
+                showErrorMessage(response.error);
             }
+        } else {
+            console.error(response);
+        }
 
-            // Remove loading spinner
-            document.getElementById('playbutton').classList.remove('is-loading');
-        };
-        xhr.open('POST', 'proxy.php', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.send('service=' + encodeURIComponent(api) + '&voice=' + encodeURIComponent(voice.dataset.vid) + '&text=' + encodeURIComponent(text));
-    } else {
-        // No need to proxy we can just replace some URL parameters
-
-        // Google's default speed is 1, no other service has such a variable
-        var speed = (api === 'Google Translate') ? 1 : 0;
-
-        // Perform possible text replacements for this API
-        url = url.replace('__LEN__', text.length);
-        url = url.replace('__TEXT__', encodeURIComponent(text));
-        url = url.replace('__LOCALE__', voice.dataset.vid);
-        url = url.replace('__VOICE__', voice.dataset.vid);
-        url = url.replace('__SPEED__', speed);
-
-        showAudioPlayer(url);
-    }
+        // Remove loading spinner
+        document.getElementById('playbutton').classList.remove('is-loading');
+    };
+    xhr.open('POST', 'proxy.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send('service=' + encodeURIComponent(api) + '&voice=' + encodeURIComponent(voice.dataset.vid) + '&text=' + encodeURIComponent(text));
 }
 
 // Add <audio> player to the DOM
