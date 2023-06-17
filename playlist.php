@@ -1,5 +1,5 @@
 <?php
-$v = '1.25';
+$v = '1.3';
 // Are we trying to save a playlist?
 if (($_SERVER['REQUEST_METHOD'] === 'POST' && $_REQUEST['save'] === '1') || ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_REQUEST['json']) && !empty($_REQUEST['json'])) ) {
     header('Content-Type: application/json');
@@ -72,6 +72,16 @@ if (($_SERVER['REQUEST_METHOD'] === 'POST' && $_REQUEST['save'] === '1') || ($_S
             <div id="toggleStyleMode" class="is-pulled-right toggle-style" onclick="toggleStyleMode(true);">💡</div>
             <h1 class="title is-2">Text-to-Speech Simulator</h1>
             <p class="subtitle is-4">A simple web app demonstrating how text sounds in different TTS voices.</p>
+
+            <div id="tab-container">
+                <div class="tabs is-centered">
+                    <ul>
+                    <li class=""><a href="./">Demo</a></li>
+                    <li class="is-active has-text-weight-bold"><a href="conversation.php">Conversation</a></li>
+                    </ul>
+                </div>
+            </div>
+
             <div class="box">
                 <p>Listen to this TTS conversation <span id="cnvrstn-people">...</span></p>
                 <p><span id="cnvrstn-duration">&nbsp;</span></p><br/><br/>

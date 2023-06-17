@@ -1,5 +1,5 @@
 <?php
-$v = '1.25';
+$v = '1.3';
 ?>
 <!doctype html>
 <html lang="en" class="mode-light has-background-white-bis">
@@ -7,7 +7,7 @@ $v = '1.25';
         <meta charset="utf-8">
         <title>Text-to-Speech (TTS) StreamElements Demo Simulator Emulator Generator Tool Thing</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css" integrity="sha512-IgmDkwzs96t4SrChW29No3NXBIBv8baW490zk5aXvhCD8vuZM3yUSkbyTBcXohkySecyzIrUwiF/qV0cuPcL3Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css" integrity="sha512-HqxHUkJM0SYcbvxUw5P60SzdOTy/QVwA1JJrvaXJv4q7lmbDZCmZaqz01UPOaQveoxfYRv1tHozWGPMcuTBuvQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="assets/css/tts.css?v=<?php echo $v ?>">
         <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
         <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -19,6 +19,16 @@ $v = '1.25';
             <div id="toggleStyleMode" class="is-pulled-right toggle-style" onclick="toggleStyleMode(true);">💡</div>
             <h1 class="title is-2">Text-to-Speech Simulator</h1>
             <p class="subtitle is-4">A simple web app demonstrating how text sounds in different TTS voices.</p>
+
+            <div id="tab-container">
+                <div class="tabs is-centered">
+                    <ul>
+                    <li class=""><a href="./">Demo</a></li>
+                    <li class="is-active has-text-weight-bold"><a href="conversation.php">Conversation</a></li>
+                    </ul>
+                </div>
+            </div>
+
             <div class="box">
                 <p>Imagine being able to use multiple TTS voices to create a conversation.</p>
                 <p>What if there was no need to imagine it?</p>
