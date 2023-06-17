@@ -346,44 +346,24 @@ function generateConversation() {
 function fetchTTSUrl(api, voice, text, extras) {
     // this is based on the generateTTSUrl() function but with UI stuff changed for playlist building
 
-    const url = ttsServices[api].url;
-
     // We need to send some extra information to the server, so that we can access it in the request response
     extras = JSON.stringify(extras);
 
-    // Send request to the server if it needs proxying to get around CORS issues
-    if (ttsServices[api].needsProxy) {
+    // Send request to the server to get around CORS issues
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+        const response = JSON.parse(xhr.responseText);
+        if (xhr.readyState == 4 && xhr.status == '200') {
+            //console.log(response);
+            dialogueToArray(response);
+        } else {
+            console.error(response);
+        }
 
-        // Send request to our proxy script
-        const xhr = new XMLHttpRequest();
-        xhr.onload = function () {
-            const response = JSON.parse(xhr.responseText);
-            if (xhr.readyState == 4 && xhr.status == '200') {
-                //console.log(response);
-                dialogueToArray(response);
-            } else {
-                console.error(response);
-            }
-
-        };
-        xhr.open('POST', 'proxy.php', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.send('service=' + encodeURIComponent(api) + '&voice=' + encodeURIComponent(voice) + '&text=' + encodeURIComponent(text) + '&extras=' + encodeURIComponent(extras));
-    } else {
-        // No need to proxy we can just replace some URL parameters
-
-        // Google's default speed is 1, iSpeech uses 0, no other service has such a variable
-        const speed = (api === 'Google Translate') ? 1 : 0;
-
-        // Perform possible text replacements for this API
-        url = url.replace('__LEN__', text.length);
-        url = url.replace('__TEXT__', encodeURIComponent(text));
-        url = url.replace('__LOCALE__', voice);
-        url = url.replace('__VOICE__', voice);
-        url = url.replace('__SPEED__', speed);
-
-        addAudioTagToArray(url);
-    }
+    };
+    xhr.open('POST', 'proxy.php', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send('service=' + encodeURIComponent(api) + '&voice=' + encodeURIComponent(voice) + '&text=' + encodeURIComponent(text) + '&extras=' + encodeURIComponent(extras));
 }
 
 // Update HTML progress bar
