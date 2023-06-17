@@ -16,6 +16,8 @@ if (!defined('HOURS_TO_KEEP'))  define('HOURS_TO_KEEP', 24);
 if (!defined('SAVE_TXT'))       define('SAVE_TXT', false);
 if (!defined('TIKTOK_SID'))     define('TIKTOK_SID', '');
 
+// If running locally we might not have https enabled so don't force it unless we can't detect.
+$requestScheme = (isset($_SERVER['REQUEST_SCHEME']) ? $_SERVER['REQUEST_SCHEME'] : 'https') . '://';
 $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
 
 // Build postData array
@@ -411,4 +413,87 @@ else if ($postData['service'] == 'Acapela') {
     }
 
     exit(json_encode($json));
+}
+else if ($postData['service'] === 'Google Translate') {
+    $json = [];
+
+    // Formulate filename and URL for the resulting voice file
+    $audioFileName = "GTranslate" . $postData['voice'] . md5($postData['text']) . ".mp3";
+    $audioFileUrl = $requestScheme . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/') + 1) . AUDIO_DIR . $audioFileName;
+
+    // Before we send a request to Google we can check if the audio file already exists locally
+    if (SAVE_LOCALLY && file_exists(AUDIO_DIR . $audioFileName)) {
+        $json = [
+            'success' => true,
+            'speak_url' => $audioFileUrl,
+            'info' => 'Audio file already existed.',
+            'extras' => !empty($postData['extras']) ? json_decode($postData['extras']) : new StdClass()
+        ];
+        $json['extras']->originalText = $postData['text'];
+        $json['extras']->voiceName = $postData['voice'];
+        $json['extras']->service = $postData['service'];
+        $json = json_encode($json);
+        exit($json);
+    }
+    else {
+        // Generate a request to send to their server
+
+        // construct URL parameters
+        $urlParams = [
+            'textlen' => strlen($postData['text']),
+            'q' => $postData['text'],
+            'tl' => $postData['voice'],
+            'ttsspeed' => '1',
+        ];
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'http://translate.google.com/translate_tts?ie=UTF-8&total=1&idx=0&client=tw-ob&prev=input&' . http_build_query($urlParams));
+        curl_setopt($ch, CURLOPT_POST, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        $response = curl_exec($ch);
+        $info = curl_getinfo($ch);
+        curl_close($ch);
+
+        $json = new StdClass();
+
+        // Success
+        if ($info['http_code'] === 200 && $info['content_type'] === "audio/mpeg") {
+
+            $audioData = $response;    // mp3 audio data
+
+            if (SAVE_LOCALLY) {
+                // write the data to a file
+                if ($audioData) {
+                    $put = file_put_contents(AUDIO_DIR . $audioFileName, $audioData);
+                    if ($put) $json->speak_url = $audioFileUrl;
+
+                    if (SAVE_TXT) $putTxt = file_put_contents(AUDIO_DIR . str_replace('.mp3', '.txt', $audioFileName), $postData['text'] . "\n\nReferer: " . $referer);
+                }
+            }
+            else {
+                $json->speak_url = "data:audio/mp3;base64," . base64_encode($audioData);
+            }
+            $json->success = true;
+        } else {
+            $json->success = false;
+            $json->error = "An error occurred. HTTP Status: " . $info['http_code'] . "; URL tried: " . $info['url'];
+        }
+
+        $json->extras = !empty($postData['extras']) ? json_decode($postData['extras']) : new StdClass();
+        $json->extras->originalText = $postData['text'];
+        $json->extras->voiceName = $postData['voice'];
+        $json->extras->service = $postData['service'];
+        $response = json_encode($json);
+
+        // Delete old files
+        $fileSystemIterator = new FilesystemIterator(AUDIO_DIR);
+        $now = time();
+        foreach ($fileSystemIterator as $file) {
+            // delete files older than HOURS_TO_KEEP hours
+            if ($now - $file->getCTime() >= 60 * 60 * HOURS_TO_KEEP) @unlink(AUDIO_DIR . $file->getFilename());
+        }
+
+        exit($response);
+    }
 }

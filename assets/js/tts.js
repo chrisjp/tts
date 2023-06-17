@@ -572,6 +572,7 @@ const ttsServices = {
         url: 'http://translate.google.com/translate_tts?ie=UTF-8&total=1&idx=0&client=tw-ob&prev=input&textlen=__LEN__&q=__TEXT__&tl=__LOCALE__&ttsspeed=__SPEED__',
         charLimit: 200,
         countBytes: false,
+        needsProxy: true,   // Technically not required but audio URLs 404 when attempted to be played inline, so we need to fetch and save locally
         voices: [
             {vid: 'en-gb', name: '', flag: 'GB', lang: 'English', accent: 'England', sex: 'F'},
             {vid: 'en-us', name: '', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
