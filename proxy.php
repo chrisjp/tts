@@ -254,62 +254,117 @@ else if ($postData['service'] === 'TikTok') {
     }
 }
 else if ($postData['service'] === 'IBM Watson') {
-    // construct POST data to be json_encode()'d
-    $postFields = [
-        'voice' => $postData['voice'],
-        'text' => $postData['text'],
-        'optOut' => 'false',
-    ];
 
     // generate a filename
     $audioFileName = 'IBM' . $postData['voice'] . md5($postData['text']) . ".mp3";
     $audioFileUrl = $requestScheme . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/') + 1) . AUDIO_DIR . $audioFileName;
 
-    // First we'll check if the file already exists locally
-    if (file_exists(AUDIO_DIR . $audioFileName)) {
+    // Before we send a request to IBM we can check if the audio file already exists locally
+    if (SAVE_LOCALLY && file_exists(AUDIO_DIR . $audioFileName)) {
         $json = [
             'success' => true,
-            'speak_url' => $audioFileUrl
+            'speak_url' => $audioFileUrl,
+            'info' => 'Audio file already existed.',
+            'extras' => !empty($postData['extras']) ? json_decode($postData['extras']) : new StdClass()
         ];
+        $json['extras']->originalText = $postData['text'];
+        $json['extras']->voiceName = $postData['voice'];
+        $json['extras']->service = $postData['service'];
+        $json = json_encode($json);
+        exit($json);
     }
     else {
-        // Now we can make the request
+        // IBM changed how their demo site works on the backend. Thankfully we can work around that but it's now a 3-step process.
+        // 1. Initialize a session and save the resulting cookies
+        // 2. Send a request with text to be spoken and session ID to be stored in
+        // 3. GET the final URL with UUID and voice ID as parameters (previous cookie data also needs to be sent in the headers, otherwise it'll return a 500 error page)
+
+        // Start off with some basic headers that would be sent if using the demo website
+        $headers = ['Origin: https://www.ibm.com',
+                    'Referer: https://www.ibm.com/demos/live/tts-demo/self-service/home',
+                    'Accept: application/json, text/plain, */*',
+                   ];
+
+        // 1. Initalize a session
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://www.ibm.com/demos/live/tts-demo/api/tts/synthesize');
+        curl_setopt($ch, CURLOPT_URL, 'https://www.ibm.com/demos/live/tts-demo/api/tts/session');
         curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($postFields));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, true);
         curl_setopt($ch, CURLINFO_HEADER_OUT, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [  'Content-Type: application/json;charset=UTF-8',
-                                                'User-Agent: ' . $_SERVER['HTTP_USER_AGENT'],
-                                                'Referer: https://www.ibm.com/demos/live/tts-demo/self-service/home',
-                                            ]);
-        $audioData = curl_exec($ch);
-        curl_close($ch);
-
-        /*
-            There isn't a nice efficient/quick way to check for an error here.
-            If a request is invalid for whatever reason (e.g. a non-existent voice ID)
-            their server won't return any data and will simply timeout.
-            For now, we'll assume the request is always successful.
-
-            Another issue is that raw audio data is returned rather than a URL.
-            Unless we save it locally the easiest way to deal with this is to return
-            a data URI with the audio data base64 encoded.
-        */
-
-        $json = [
-            'success' => true,
-            'speak_url' => "data:audio/mp3;base64," . base64_encode($audioData)
-        ];
-
-        if (SAVE_LOCALLY) {
-            // We need to write the data to a file
-            $put = file_put_contents(AUDIO_DIR . $audioFileName, $audioData);
-            if ($put) $json['speak_url'] = $audioFileUrl;
-
-            if (SAVE_TXT) $putTxt = file_put_contents(AUDIO_DIR . str_replace('.mp3', '.txt', $audioFileName), $postData['text'] . "\n\nReferer: " . $referer);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        $IBMResponse1 = curl_exec($ch);
+        
+        // Extract all the cookies it tried to set
+        preg_match_all('/^Set-Cookie:\s*([^;]*)/mi', $IBMResponse1, $matches);
+        $cookies = [];
+        foreach($matches[1] as $cookie) {
+            $cookies[] = "Cookie: " . $cookie;  // in the format required by headers
         }
+        // Add them into the array of headers to send back
+        $headersWithCookies = array_merge($headers, $cookies);
+        
+        // 2. Send a request to the store endpoint
+        // The payload for this should be JSON containing SSML-formatted text to be synthesized and a sessionID to store it in
+        // The session ID can be faked - it just needs to be a string in the format of a UUID, so we'll generate one now
+        $UUID = vsprintf( '%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex(random_bytes(16)), 4) );
+
+        $jsonPayload = '{"ssmlText": "<prosody pitch=\"0%\" rate=\"-0%\">' . $postData['text'] . '</prosody>","sessionID": "' . $UUID . '"}';
+
+        // Include a header specifiying the correct Content-Type
+        $headersWithCookies[] = 'Content-Type: application/json; charset=utf-8';
+
+        // Send the request
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://www.ibm.com/demos/live/tts-demo/api/tts/store');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonPayload);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headersWithCookies);
+        $IBMResponse2 = curl_exec($ch);
+        
+        // 3. Finally we can make a GET request to the newSynthesizer endpoint with the voice ID and UUID as parameters
+        $finalUrl = 'https://www.ibm.com/demos/live/tts-demo/api/tts/newSynthesizer?voice=' . $postData['voice'] . '&id=' . $UUID;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $finalUrl);
+        curl_setopt($ch, CURLOPT_POST, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headersWithCookies);
+        $audioData = curl_exec($ch);
+        $responseInfo = curl_getinfo($ch);
+
+        $json = new stdClass();
+
+        // Success
+        if ($responseInfo['http_code'] === 200 && $responseInfo['content_type'] === "audio/mp3") {
+            $json->success = true;
+            
+            if (SAVE_LOCALLY) {
+                // write the data to a file
+                if ($audioData) {
+                    $put = file_put_contents(AUDIO_DIR . $audioFileName, $audioData);
+                    if ($put) $json->speak_url = $audioFileUrl;
+
+                    if (SAVE_TXT) $putTxt = file_put_contents(AUDIO_DIR . str_replace('.mp3', '.txt', $audioFileName), $postData['text'] . "\n\nReferer: " . $referer);
+                }
+            }
+            else {
+                $json->speak_url = "data:audio/mp3;base64," . base64_encode($audioData);
+            }
+        } else {
+            $json->success = false;
+            $json->error = "An error occurred. HTTP Status: " . $responseInfo['http_code'] . "; URL tried: " . $responseInfo['url'];
+        }
+
+        $json->extras = !empty($postData['extras']) ? json_decode($postData['extras']) : new StdClass();
+        $json->extras->originalText = $postData['text'];
+        $json->extras->voiceName = $postData['voice'];
+        $json->extras->service = $postData['service'];
     }
 
     // Delete old files
