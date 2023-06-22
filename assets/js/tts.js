@@ -106,7 +106,7 @@ const ttsServices = {
             {vid: 'Megan', name: 'Megan', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
             {vid: 'Nathan', name: 'Nathan', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
             {vid: 'Nicole', name: 'Nicole', flag: 'FR', lang: 'English', accent: 'French', sex: 'F'},
-            {vid: 'Rita', name: 'Rita', flag: 'ES-CA', lang: 'Catalan', accent: '', sex: 'F'},
+            {vid: 'Rita', name: 'Rita', flag: 'ES-CT', lang: 'Catalan', accent: '', sex: 'F'},
             {vid: 'Mailin-CereWave', name: 'Mailin', flag: 'CN', lang: 'Chinese', accent: '', sex: 'F'},
             {vid: 'Marie-CereWave', name: 'Marie', flag: 'DK', lang: 'Danish', accent: '', sex: 'F'},
             {vid: 'Ada', name: 'Ada', flag: 'NL', lang: 'Dutch', accent: '', sex: 'F'},
@@ -277,7 +277,7 @@ const ttsServices = {
             {vid: 'mehdi22k', name: 'Mehdi', flag: 'SA', lang: 'Arabic', accent: '', sex: 'M'},
             {vid: 'nizar22k', name: 'Nizar', flag: 'SA', lang: 'Arabic', accent: '', sex: 'M'},
             {vid: 'salma22k', name: 'Salma', flag: 'SA', lang: 'Arabic', accent: '', sex: 'F'},
-            {vid: 'laia22k', name: 'Laia', flag: 'ES-CA', lang: 'Catalan', accent: '', sex: 'F'},
+            {vid: 'laia22k', name: 'Laia', flag: 'ES-CT', lang: 'Catalan', accent: '', sex: 'F'},
             {vid: 'lulu22k', name: 'Lulu', flag: 'CN', lang: 'Chinese', accent: 'Mandarin', sex: 'F'},
             {vid: 'eliska22k', name: 'Eliska', flag: 'CZ', lang: 'Czech', accent: '', sex: 'F'},
             {vid: 'mette22k', name: 'Mette', flag: 'DK', lang: 'Danish', accent: '', sex: 'F'},
@@ -411,11 +411,11 @@ const ttsServices = {
             {vid: '2-2-27', name: 'Laila', flag: 'ARAB', lang: 'Arabic', accent: '', sex: 'F'},
             {vid: '1-4-27', name: 'Maged', flag: 'ARAB', lang: 'Arabic', accent: '', sex: 'M'},
             {vid: '1-2-27', name: 'Tarik', flag: 'ARAB', lang: 'Arabic', accent: '', sex: 'M'},
-            {vid: '1-4-22', name: 'Arantxa', flag: 'ES-EU', lang: 'Basque', accent: '', sex: 'F'},
-            {vid: '3-2-5', name: 'Empar', flag: 'ES-CA', lang: 'Catalan', accent: 'Valencian', sex: 'F'},
-            {vid: '2-2-5', name: 'Jordi', flag: 'ES-CA', lang: 'Catalan', accent: '', sex: 'M'},
-            {vid: '1-2-5', name: 'Montserrat', flag: 'ES-CA', lang: 'Catalan', accent: '', sex: 'F'},
-            {vid: '1-4-5', name: 'Nuria', flag: 'ES-CA', lang: 'Catalan', accent: '', sex: 'F'},
+            {vid: '1-4-22', name: 'Arantxa', flag: 'ES-PV', lang: 'Basque', accent: '', sex: 'F'},
+            {vid: '3-2-5', name: 'Empar', flag: 'ES-CT', lang: 'Catalan', accent: 'Valencian', sex: 'F'},
+            {vid: '2-2-5', name: 'Jordi', flag: 'ES-CT', lang: 'Catalan', accent: '', sex: 'M'},
+            {vid: '1-2-5', name: 'Montserrat', flag: 'ES-CT', lang: 'Catalan', accent: '', sex: 'F'},
+            {vid: '1-4-5', name: 'Nuria', flag: 'ES-CT', lang: 'Catalan', accent: '', sex: 'F'},
             {vid: '3-3-10', name: 'Hui', flag: 'CN', lang: 'Chinese', accent: 'Mandarin', sex: 'F'},
             {vid: '5-3-10', name: 'Kiang', flag: 'CN', lang: 'Chinese', accent: 'Mandarin', sex: 'M'},
             {vid: '4-3-10', name: 'Liang', flag: 'CN', lang: 'Chinese', accent: 'Mandarin', sex: 'M'},
@@ -1154,11 +1154,11 @@ function genderLetterToEmoji(voice) {
 
 // Convert country code (ISO 3166-1 alpha-2) to emoji flag
 function countryCodeToEmoji(countryCode) {
-    // Windows (as of Windows 10) still doesn't support flag emojis so we'll display an image instead
-    // There are also some edge cases for languages without a flag emoji (Arabic, Catalan, Basque...)
+    // Windows doesn't support flag emojis so we'll display an image instead
+    // There are also some edge cases for languages without a flag emoji (Arabic, Esperanto)
 
     var emoji = '\ud83c\udff3\ufe0f';   // white flag (default)
-    var noFlag = (countryCode == 'ARAB' || countryCode == 'ES-CA' || countryCode == 'ES-GA' || countryCode == 'ES-EU' || countryCode == 'ESPER');   // "country" codes with no flag emoji
+    var noFlag = (countryCode == 'ARAB' || countryCode == 'ESPER');   // "country" codes with no flag emoji
     var isWin = navigator.platform.indexOf('Win') > -1;     // check if user is on Windows
 
     if ((isWin || noFlag) && countryCode.length != 0) {
@@ -1203,16 +1203,12 @@ function countryCodeToImg(countryCode) {
             imgUrl = 'https://upload.wikimedia.org/wikipedia/commons/2/2b/Flag_of_the_Arab_League.svg';
             break;
 
-        case 'ES-EU':   // Basque - flag not currently in flag-icon-css
-            imgUrl = 'https://upload.wikimedia.org/wikipedia/commons/2/2d/Flag_of_the_Basque_Country.svg';
-            break;
-
         case 'ESPER':   // Esperanto - international language with no nation so won't ever be in flag-icon-css
             imgUrl = 'https://upload.wikimedia.org/wikipedia/commons/f/f5/Flag_of_Esperanto.svg';
             break;
 
         default:
-            imgUrl = 'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/flags/4x3/' + countryCode.toLowerCase() + '.svg';
+            imgUrl = 'https://cdnjs.cloudflare.com/ajax/libs/flag-icons/6.7.0/flags/4x3/' + countryCode.toLowerCase() + '.svg';
     }
 
     return '<img src="' + imgUrl + '" alt="' + countryCode + ' flag" style="width:20px;" />';
