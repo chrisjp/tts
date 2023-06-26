@@ -4,12 +4,18 @@
 .textarea {
     min-height: 150px;
 }
+.voice-name {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 84%;
+}
 .voice-flag {
     font-size: 24px;
     line-height: 0;
+    width: 9%;
 }
 .voice-sex {
-    width: 16px;
+    width: 7%;
 }
 .button-heading {
     cursor: default !important;
