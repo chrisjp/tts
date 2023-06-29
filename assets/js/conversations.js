@@ -380,7 +380,7 @@ function addPlaylistToDOM() {
 
     for (let i = 0; i < arrPlaylistDialogue.length; i++) {
         // Check this index isn't undefined (if it is it's probably audio we skipped over due to an error)
-        if (arrPlaylistDialogue[i] !== undefined) {
+        if (arrPlaylistDialogue[i] !== undefined && arrPlaylistDialogue[i] !== null) {
             playlistHtml += isPlaylistPage ? '<div class="box"><div class="columns"><div class="column is-one-fifth">' : '';
             playlistHtml += '<strong>' + arrPlaylistDialogue[i].voice.name + '</strong><br/>';
             playlistHtml += isPlaylistPage ? '<span id="btn-transcript-' + i + '" class="button is-small is-link" onclick="toggleTranscript(' + i + ')">Show transcript</span></div><div class="column">' : '';
