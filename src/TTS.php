@@ -59,6 +59,13 @@ class TTS
      */
     private $responseJSON = '';
 
+    /**
+     * The last error message received.
+     *
+     * @var string
+     */
+    private $lastErrorMessage = '';
+
     public function __construct($service = null, $voice = null)
     {
         // Load configuration constants
@@ -66,7 +73,10 @@ class TTS
         if (!file_exists($configFile)) {
             // Attempt to create it from distributed version holding the defaults
             $cp = @copy($configFile . '.dist', $configFile);
-            if (!$cp) $this->exitWithErrorJSON('Config file not found.');
+            if (!$cp) {
+                $this->lastErrorMessage = 'Config file not found.';
+                $this->exitWithErrorJSON($this->lastErrorMessage);
+            }
         }
         require_once $configFile;
 
@@ -107,12 +117,14 @@ class TTS
             }
             catch (\Throwable $e)
             {
-                $this->exitWithErrorJSON('The service ' . $service . ' was not found. Please select a valid service. ' . $e->getMessage());
+                $this->lastErrorMessage = 'The service ' . $service . ' was not found. Please select a valid service. ' . $e->getMessage();
+                $this->exitWithErrorJSON($this->lastErrorMessage);
             }
         }
 
         if (!($service instanceof Service)) {
-            $this->exitWithErrorJSON('The object given is not an instance of the Service class.');
+            $this->lastErrorMessage = 'The object given is not an instance of the Service class.';
+            $this->exitWithErrorJSON($this->lastErrorMessage);
         }
 
         $this->service = $service;
@@ -400,6 +412,36 @@ class TTS
         }
 
         return $i;
+    }
+
+    /**
+     * Checks that a request sent to request_tts.php is valid.
+     * i.e. its using POST method and at a bare minimum it has a non-empty value for `text`
+     *
+     * @return boolean
+     */
+    public function isValidPOSTRequest(): bool
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->lastErrorMessage =  'This script only accepts POST requests.';
+            return false;
+        }
+        if (!isset($_REQUEST['text']) || empty(trim($_REQUEST['text']))) {
+            $this->lastErrorMessage = '\'text\' value must not be empty.';
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Get the last error message received.
+     *
+     * @return string
+     */
+    public function getLastErrorMessage(): string
+    {
+        return $this->lastErrorMessage;
     }
 
     /**
