@@ -1,0 +1,363 @@
+<?php
+
+namespace ChrisJP\TTS;
+
+use ChrisJP\TTS\Services\Service;
+
+class TTS
+{
+    use ReturnObjectTrait;
+
+    const version = '1.0.0';
+
+    /**
+     * TTS Service to use
+     *
+     * @var Service|null
+     */
+    private $service;
+
+    /**
+     * ID of voice to use
+     *
+     * @var string 
+     */
+    private $voice;
+
+    /**
+     * The text that should be spoken
+     *
+     * @var string
+     */
+    private $textToSpeak = '';
+
+    /**
+     * response to request for TTS audio
+     *
+     * @var object
+     */
+    private $response;
+
+    /**
+     * JSON encoded response to request for TTS audio
+     *
+     * @var string
+     */
+    private $responseJSON = '';
+
+    public function __construct($service = null, $voice = null)
+    {
+        // Load configuration constants
+        $configFile = $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+        if (!file_exists($configFile)) {
+            // Attempt to create it from distributed version holding the defaults
+            $cp = @copy($configFile . '.dist', $configFile);
+            if (!$cp) $this->exitWithErrorJSON('Config file not found.');
+        }
+        require_once $configFile;
+
+        if ($service !== null) {
+            $this->setService($service);
+        } else {
+            $this->setService('Polly');
+        }
+
+        if ($voice !== null) {
+            $this->setVoice($voice);
+        } else {
+            $this->setVoice($this->service->getDefaultVoice());
+        }
+    }
+
+    /**
+     * Set service to be used
+     *
+     * @param object|string $service
+     * @return $this
+     */
+    public function setService(object|string $service, array $classParams = [])
+    {
+        if (is_string($service)) {
+            $service = str_replace(' ', '', $service);
+            $serviceClass = __NAMESPACE__ . '\Services\\' . $service;
+            try {
+                if (!empty($classParams)) {
+                    // No simple way to instantiate a class with an array of parameters so use ReflectionClass instead
+                    $reflection_class = new \ReflectionClass($serviceClass);  
+                    $service = $reflection_class->newInstanceArgs($classParams);
+                }
+                else {
+                    // We can instantiate the class normally if no paramaters need passing to it.
+                    $service = new $serviceClass();
+                }
+            }
+            catch (\Throwable $e)
+            {
+                $this->exitWithErrorJSON('The service ' . $service . ' was not found. Please select a valid service. ' . $e->getMessage());
+            }
+        }
+
+        if (!($service instanceof Service)) {
+            $this->exitWithErrorJSON('The object given is not an instance of the Service class.');
+        }
+
+        $this->service = $service;
+        return $this;
+    }
+
+    /**
+     * Get service to be used
+     *
+     * @return Service
+     */
+    public function getService(): Service
+    {
+        return $this->service;
+    }
+
+    /**
+     * Set voice ID to be used
+     *
+     * @param string $voice
+     * @return $this
+     */
+    public function setVoice(string $voice)
+    {
+        $this->voice = $voice;
+        return $this;
+    }
+
+    /**
+     * Get voice ID to be used
+     *
+     * @return string
+     */
+    public function getVoice(): string
+    {
+        return $this->voice;
+    }
+
+    /**
+     * Set the text to be spoken
+     *
+     * @param string $textToSpeak
+     * @return $this
+     */
+    public function setTextToSpeak(string $textToSpeak)
+    {
+        $this->textToSpeak = $textToSpeak;
+        return $this;
+    }
+
+    /**
+     * Get the text to be spoken
+     *
+     * @return string
+     */
+    public function getTextToSpeak(): string
+    {
+        return $this->textToSpeak;
+    }
+
+    /**
+     * Request TTS audio
+     * 
+     * Before sending the request a check will be made to see if it has already been saved.
+     * 
+     * By default this will return a JSON encoded string for use in JavaScript
+     * passing false here will cause the object to be returned instead.
+     *
+     * @param boolean $returnJSON
+     * @return string|object
+     */
+    public function requestAudio(bool $returnJSON = true): string|object
+    {
+        // Check for locally saved copy of the same audio and return that if found
+        $localAudioUrl = $this->alreadySaved($this->service->getShortName(), $this->voice, $this->textToSpeak);
+        if (SAVE_LOCALLY && false !== $localAudioUrl) {
+            $returnedData = $this->buildReturnObject(true, $localAudioUrl, 'File already exists locally.');
+            $this->setResponse($returnedData, true);
+        }
+        // Otherwise request audio from the remote server
+        else {
+            $returnedData = $this->service->requestTTS($this->voice, $this->textToSpeak);
+
+            // Save the file locally and return local URL instead on success
+            if (SAVE_LOCALLY && $returnedData->audio_url) {
+                $localUrl = $this->save($returnedData->audio_url);
+                if ($localUrl) $returnedData->audio_url = $localUrl;
+
+                // Delete old files
+                $this->purge();
+            }
+            $this->setResponse($returnedData);
+        }
+
+        return $returnJSON ? $this->responseJSON : $this->response;
+    }
+
+    /**
+     * Get the URL of the requested TTS output
+     *
+     * @return string|null
+     */
+    public function getAudioUrl(): string|null
+    {
+        if (!empty($this->response)) return $this->response->audio_url;
+        return null;
+    }
+
+    /**
+     * Set $response and $responseJSON
+     * 
+     * These contain the object and JSON-encoded object respectively of the data returned from the API request
+     * such as audio URL, success boolean, and info of the original request.
+     *
+     * @param object $returnedData
+     * @param boolean $alreadySaved
+     * @return void
+     */
+    public function setResponse(object $returnedData, bool $alreadySaved = false)
+    {
+        // Add details of the original request to our returned data in case we need to use it in the frontend
+        // or for debugging purposes. original_request will have a null value at this point.
+        $returnedData->original_request = (object)[
+            'service' => $this->service->getShortName(),
+            'voice'   => $this->voice,
+            'text'    => $this->textToSpeak
+        ];
+
+        // For convenience save as both the object and a JSON-encoded version
+        $this->response = $returnedData;
+        $this->responseJSON = json_encode($returnedData);
+    }
+
+    /**
+     * Check if a TTS request has already been saved
+     * Returns the URL if found, or false if not.
+     *
+     * @param string $service
+     * @param string $voice
+     * @param string $text
+     * @return string|boolean
+     */
+    public function alreadySaved(string $service, string $voice, string $text): string|bool
+    {
+        $audioFileName = $this->generateAudioFilename($service, $voice, $text);
+        if (file_exists(AUDIO_DIR . $audioFileName)) {
+            return $this->generateAudioUrl($audioFileName);
+        }
+        return false;
+    }
+
+    /**
+     * Generate and return a filename for saving the audio to
+     *
+     * @param string $service
+     * @param string $voice
+     * @param string $text
+     * @return string
+     */
+    public function generateAudioFilename(string $service, string $voice, string $text): string
+    {
+        // Construct a file name: {service name}_{voice mame}_{md5 hash of text}.mp3
+        return $service . '_' . $voice . '_' . md5($text) . '.mp3';
+    }
+
+    /**
+     * Generate and return a URL pointing to the audio file on our server
+     *
+     * @param string $audioFileName
+     * @return string
+     */
+    public function generateAudioUrl(string $audioFileName): string
+    {
+        // If running locally we might not have https enabled so don't force it unless we can't detect.
+        $requestScheme = (isset($_SERVER['REQUEST_SCHEME']) ? $_SERVER['REQUEST_SCHEME'] : 'https') . '://';
+        $audioFileUrl = $requestScheme . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/') + 1) . AUDIO_DIR . $audioFileName;
+
+        return $audioFileUrl;
+    }
+
+    /**
+     * Save audio data as an MP3 file
+     * Returns URL to the file or null on failure.
+     *
+     * @param string $remoteUrl
+     * @return string|null
+     */
+    public function save(string $remoteUrl): string|null
+    {
+        if (null !== $remoteUrl) {
+            try {
+                $audioData = file_get_contents($remoteUrl);
+
+                if ($audioData) {
+                    $audioFileName = $this->generateAudioFilename($this->service->getShortName(), $this->voice, $this->textToSpeak);
+                    $audioFileUrl = $this->generateAudioUrl($audioFileName);
+                    
+                    // Save to disk
+                    // TODO: handle potential file write error
+                    $put = file_put_contents(AUDIO_DIR . $audioFileName, $audioData);
+
+                    // Save transcription alongside it
+                    if (SAVE_TXT) {
+                        $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+                        $putTxt = file_put_contents(AUDIO_DIR . str_replace('.mp3', '.txt', $audioFileName), $this->textToSpeak . PHP_EOL . PHP_EOL . 'Referer: ' . $referer);
+                    }
+
+                    if ($put) return $audioFileUrl;
+                }
+            }
+            catch (\Throwable $e) {
+                // TODO: handle this properly
+                // Should show some sort of warning but the remote URL will at least still work, so this isn't fatal.
+                // We could also fall back to using a data URI
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Deletes audio files older than HOURS_TO_KEEP
+     * 
+     * Returns number of files deleted.
+     *
+     * @return integer
+     */
+    public function purge(): int
+    {
+        // Delete old files
+        $fileSystemIterator = new \FilesystemIterator(AUDIO_DIR);
+        $now = time();
+        $i = 0;
+        foreach ($fileSystemIterator as $file) {
+            // delete files older than HOURS_TO_KEEP hours
+            if ($now - $file->getCTime() >= 60 * 60 * HOURS_TO_KEEP) {
+                unlink(AUDIO_DIR . $file->getFilename());
+                $i++;
+            }
+        }
+
+        return $i;
+    }
+
+    /**
+     * Exit the script and output a JSON-encoded error message. Typically used for fatal errors.
+     * 
+     * Intended use of this script was originally to be used by JavaScript based frontend
+     * so these fields match those that would otherwise be returned by actual API requests,
+     * therefore they can be displayed in the same manner as legitimate API failures.
+     *
+     * @param string $error
+     * @return string
+     */
+    public function exitWithErrorJSON(string $error): string
+    {
+        $errorObject = $this->buildReturnObject(false, null, null, null, $error);
+
+        exit(json_encode($errorObject));
+    }
+
+}
