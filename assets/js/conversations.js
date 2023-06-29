@@ -63,24 +63,30 @@ else {
 function getPlaylist(plsJSON, addToDom, editingPlaylist) {
     // Load in the JSON (via playlist.php for security and validation)
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', 'playlist.php?json=' + plsJSON, true);
+    xhr.open('GET', 'playlist.php?pls_file=' + plsJSON, true);
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == '200') {
             objConversation = JSON.parse(xhr.responseText);
-            arrPlaylistDialogue = objConversation.dialogue;
-            arrPlaylistVoices = objConversation.voices;
+            if (objConversation.success === true) {
+                arrPlaylistDialogue = objConversation.dialogue;
+                arrPlaylistVoices = objConversation.voices;
 
-            if (addToDom) {
-                addPlaylistToDOM();
-                setTimeout(function () {
-                    setPlaylistMetadata();
-                    playPlaylist();
-                }, 1000);
-            } else if (editingPlaylist) {
-                editPlaylist();
+                if (addToDom) {
+                    addPlaylistToDOM();
+                    setTimeout(function () {
+                        setPlaylistMetadata();
+                        playPlaylist();
+                    }, 1000);
+                } else if (editingPlaylist) {
+                    editPlaylist();
+                }
             }
+            else {
+                document.getElementById('listen-to-this-convo').innerText = 'Error: ' + objConversation.error_msg;
+            }
+            
         } else {
-            //console.error(xhr.response);
+            console.error(xhr.response);
         }
     };
     xhr.send();
@@ -90,8 +96,10 @@ function editPlaylist() {
     // Loop through each dialogue and add form fields and set their values
     for (let i = 0; i < arrPlaylistDialogue.length; i++) {
         addDialogueBox();
-        document.getElementsByName('con-voice[]')[i].value = arrPlaylistDialogue[i].voice.id;
-        document.getElementsByName('con-text[]')[i].innerText = arrPlaylistDialogue[i].text;
+        if (null !== arrPlaylistDialogue[i]) {
+            document.getElementsByName('con-voice[]')[i].value = arrPlaylistDialogue[i].service + '__' + arrPlaylistDialogue[i].voice.id;
+            document.getElementsByName('con-text[]')[i].innerText = arrPlaylistDialogue[i].text;
+        }
     }
 }
 
@@ -427,7 +435,7 @@ function setPlaylistMetadata() {
     }
 
     // Show the participants (voice names)
-    document.getElementById('cnvrstn-people').innerHTML = 'featuring ' + Array.from(voiceNames).join(", ");
+    document.getElementById('listen-to-this-convo').innerHTML = 'TTS conversation featuring ' + Array.from(voiceNames).join(", ");
 }
 
 // play the playlist
@@ -499,13 +507,14 @@ function dialogueToArray(result) {
         dialogue.voice = {}
         dialogue.voice.id = result.meta.voice_id;
         dialogue.voice.name = result.meta.service + ' - ' + result.meta.voice_name;
+        dialogue.service = result.meta.service;
         dialogue.text = result.meta.text;
         dialogue.audio_url = result.audio_url;
 
         arrPlaylistDialogue[playlistIndex] = dialogue;
     } else {
         // show an error?
-        console.log('Dialogue skipped. Reason: ' + result.error);
+        console.log('Dialogue skipped. Reason: ' + result.error_msg);
     }
 
     // Call generateConversation() again to continue going through the input
@@ -515,6 +524,7 @@ function dialogueToArray(result) {
 // Convert all the conversation data to a JSON string ready for writing to a file.
 function conversationToJSON() {
     objConversation = {};
+    objConversation.success = true;
     objConversation.voices = arrPlaylistVoices;
     objConversation.dialogue = arrPlaylistDialogue;
 
@@ -544,9 +554,10 @@ function sharePlaylist(e) {
                 //console.log(response);
                 if (response.success === true) {
                     // Copy playlist URL to clipboard
-                    copyToClipboard(null, e, response.playlistUrl);
-                } else if (response.error) {
-                    //showErrorMessage(response.error);
+                    copyToClipboard(null, e, response.playlist_url);
+                }
+                else {
+                    showErrorMessage(response.error_msg);
                 }
             } else {
                 console.error(response);
