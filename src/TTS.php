@@ -66,6 +66,14 @@ class TTS
      */
     private $lastErrorMessage = '';
 
+    /**
+     * Full path to AUDIO_DIR
+     * Set by prepending DOCUMENT_ROOT to AUDIO_DIR constant
+     *
+     * @var string
+     */
+    private $pathToAudioDir = '';
+
     public function __construct($service = null, $voice = null)
     {
         // Load configuration constants
@@ -91,6 +99,8 @@ class TTS
         } else {
             $this->setVoice($this->service->getDefaultVoice());
         }
+
+        if (empty($this->pathToAudioDir)) $this->pathToAudioDir = $_SERVER['DOCUMENT_ROOT'] . '/' . AUDIO_DIR;
     }
 
     /**
@@ -315,7 +325,7 @@ class TTS
     public function alreadySaved(string $service, string $voice, string $text): string|bool
     {
         $audioFileName = $this->generateAudioFilename($service, $voice, $text);
-        if (file_exists(AUDIO_DIR . $audioFileName)) {
+        if (file_exists($this->pathToAudioDir . $audioFileName)) {
             return $this->generateAudioUrl($audioFileName);
         }
         return false;
@@ -359,35 +369,66 @@ class TTS
      */
     public function save(string $remoteUrl): string|null
     {
-        if (null !== $remoteUrl) {
-            try {
-                $audioData = file_get_contents($remoteUrl);
-
-                if ($audioData) {
-                    $audioFileName = $this->generateAudioFilename($this->service->getShortName(), $this->voice, $this->textToSpeak);
-                    $audioFileUrl = $this->generateAudioUrl($audioFileName);
-                    
-                    // Save to disk
-                    // TODO: handle potential file write error
-                    $put = file_put_contents(AUDIO_DIR . $audioFileName, $audioData);
-
-                    // Save transcription alongside it
-                    if (SAVE_TXT) {
-                        $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
-                        $putTxt = file_put_contents(AUDIO_DIR . str_replace('.mp3', '.txt', $audioFileName), $this->textToSpeak . PHP_EOL . PHP_EOL . 'Referer: ' . $referer);
+        if ($this->isAudioDirWritable(true)) {
+            if (null !== $remoteUrl) {
+                try {
+                    $audioData = file_get_contents($remoteUrl);
+    
+                    if ($audioData) {
+                        $audioFileName = $this->generateAudioFilename($this->service->getShortName(), $this->voice, $this->textToSpeak);
+                        $audioFileUrl = $this->generateAudioUrl($audioFileName);
+                        
+                        // Save to disk
+                        // TODO: handle potential file write error
+                        $put = file_put_contents($this->pathToAudioDir . $audioFileName, $audioData);
+    
+                        // Save transcription alongside it
+                        if (SAVE_TXT) {
+                            $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
+                            $putTxt = file_put_contents($this->pathToAudioDir . str_replace('.mp3', '.txt', $audioFileName), $this->textToSpeak . PHP_EOL . PHP_EOL . 'Referer: ' . $referer);
+                        }
+    
+                        if ($put) return $audioFileUrl;
                     }
-
-                    if ($put) return $audioFileUrl;
                 }
-            }
-            catch (\Throwable $e) {
-                // TODO: handle this properly
-                // Should show some sort of warning but the remote URL will at least still work, so this isn't fatal.
-                // We could also fall back to using a data URI
+                catch (\Throwable $e) {
+                    // TODO: handle this properly - it won't catch Warnings.
+                    // Should show some sort of warning but the remote URL will at least still work, so this isn't fatal.
+                    // We could also fall back to using a data URI
+                }
             }
         }
 
         return null;
+    }
+
+    /**
+     * Checks that AUDIO_DIR exists and is writable
+     * If $tryToFix is set to true, attempts to fix the issue.
+     *
+     * @param boolean $tryToFix
+     * @return boolean
+     */
+    public function isAudioDirWritable(bool $tryToFix = false): bool
+    {
+        $dirExists = is_dir($this->pathToAudioDir);
+        $dirIsWritable = is_writable($this->pathToAudioDir);
+
+        if ($dirExists && $dirIsWritable) return true;
+
+        if (!$dirExists) {
+            if ($tryToFix) {
+                if (@mkdir($this->pathToAudioDir, 0777)) return true;
+                return false;
+            }
+        }
+        else if (!$dirIsWritable) {
+            if ($tryToFix) {
+                if (@chmod($this->pathToAudioDir, 0777)) return true;
+                return false;
+            }
+        }
+        return false;
     }
 
     /**
@@ -399,15 +440,17 @@ class TTS
      */
     public function purge(): int
     {
-        // Delete old files
-        $fileSystemIterator = new \FilesystemIterator(AUDIO_DIR);
-        $now = time();
         $i = 0;
-        foreach ($fileSystemIterator as $file) {
-            // delete files older than HOURS_TO_KEEP hours
-            if ($now - $file->getCTime() >= 60 * 60 * HOURS_TO_KEEP) {
-                unlink(AUDIO_DIR . $file->getFilename());
-                $i++;
+        if ($this->isAudioDirWritable()) {
+            $fileSystemIterator = new \FilesystemIterator($this->pathToAudioDir);
+            $now = time();
+            
+            foreach ($fileSystemIterator as $file) {
+                // delete files older than HOURS_TO_KEEP hours
+                if ($now - $file->getCTime() >= 60 * 60 * HOURS_TO_KEEP) {
+                    unlink($this->pathToAudioDir . $file->getFilename());
+                    $i++;
+                }
             }
         }
 
