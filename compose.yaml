@@ -7,7 +7,6 @@ services:
       - "8080:80"
     volumes:
       - ./:/var/www/html
-      - ./assets/audio:/var/www/html/assets/audio
       - ./conf/nginx.conf:/etc/nginx/conf.d/default.conf
     restart: always
     depends_on:

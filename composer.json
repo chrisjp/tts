@@ -18,7 +18,8 @@
 	},
 	"scripts": {
 		"post-install-cmd": [
-			"php -r \"if(!file_exists('config.php')) copy('config.php.dist', 'config.php');\""
+			"php -r \"if(!file_exists('config.php')) copy('config.php.dist', 'config.php');\"",
+			"php -r \"if(!is_dir('assets/audio/')) mkdir('assets/audio/', 0777);\""
 		]
 	}
 }
