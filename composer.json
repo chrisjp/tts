@@ -1,0 +1,24 @@
+{
+	"name": "chrisjp/tts",
+	"description": "A PHP library and demo website to interface with various TTS services.",
+	"type": "library",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Chris Phillips"
+		}
+	],
+	"require": {
+		"php": "^8.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"ChrisJP\\TTS\\": "src/"
+		}
+	},
+	"scripts": {
+		"post-install-cmd": [
+			"php -r \"if(!file_exists('config.php')) copy('config.php.dist', 'config.php');\""
+		]
+	}
+}
