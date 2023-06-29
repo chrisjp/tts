@@ -1312,13 +1312,14 @@ function generateTTSUrl() {
     // Send request to our proxy script
     var xhr = new XMLHttpRequest();
     xhr.onload = function () {
+        //console.log(xhr.responseText);
         var response = JSON.parse(xhr.responseText);
         if (xhr.readyState == 4 && xhr.status == '200') {
-            //console.log(response);
+            console.log(response);
             if (response.success === true) {
-                showAudioPlayer(response.speak_url);
-            } else if (response.error) {
-                showErrorMessage(response.error);
+                showAudioPlayer(response.audio_url);
+            } else {
+                showErrorMessage(response.error_msg);
             }
         } else {
             console.error(response);
@@ -1327,7 +1328,7 @@ function generateTTSUrl() {
         // Remove loading spinner
         document.getElementById('playbutton').classList.remove('is-loading');
     };
-    xhr.open('POST', 'proxy.php', true);
+    xhr.open('POST', 'request_tts.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.send('service=' + encodeURIComponent(api) + '&voice=' + encodeURIComponent(voice.dataset.vid) + '&text=' + encodeURIComponent(text));
 }
