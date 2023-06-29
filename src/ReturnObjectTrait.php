@@ -14,10 +14,10 @@ trait ReturnObjectTrait
      * @param array $curlInfo
      * @param string|null $errorMessage
      * @param string|null $serviceResponse
-     * @param object|null $originalRequest
+     * @param object|null $meta
      * @return object
      */
-    public function buildReturnObject(bool $success, string $audioUrl = null, string $info = null, array|null $curlInfo = [], string $errorMessage = null, string $serviceResponse = null, object $originalRequest = null): object
+    public function buildReturnObject(bool $success, string $audioUrl = null, string $info = null, array|null $curlInfo = [], string $errorMessage = null, string $serviceResponse = null, object $meta = null): object
     {
         if (is_array($curlInfo) && array_key_exists('http_code', $curlInfo) && array_key_exists('total_time', $curlInfo)) {
             $info = 'HTTP status: ' . $curlInfo['http_code'] . '; Total transfer time: ' . $curlInfo['total_time'] . ' seconds.';
@@ -29,7 +29,7 @@ trait ReturnObjectTrait
             'info'             => $info,
             'error_msg'        => $errorMessage,
             'service_response' => $serviceResponse,
-            'original_request' => $originalRequest
+            'meta'             => $meta
         ];
     }
 }

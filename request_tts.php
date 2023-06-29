@@ -16,6 +16,8 @@ $tts = new TTS();
 if (array_key_exists('service', $_REQUEST)) $tts->setService($_REQUEST['service']);
 if (array_key_exists('voice', $_REQUEST)) $tts->setVoice($_REQUEST['voice']);
 if (array_key_exists('text', $_REQUEST)) $tts->setTextToSpeak($_REQUEST['text']);
+if (array_key_exists('playlist_index', $_REQUEST)) $tts->setPlaylistIndex($_REQUEST['playlist_index']);
+if (array_key_exists('voice_name', $_REQUEST)) $tts->setVoiceName($_REQUEST['voice_name']);
 else exit(json_encode(['success' => false, 'error_msg' => "No text specified!"]));
 
 // Make a request to the service's API for the audio. This will return JSON containing all the relevant data.

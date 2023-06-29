@@ -25,11 +25,25 @@ class TTS
     private $voice;
 
     /**
+     * Human-friendly name of the voice ID
+     *
+     * @var string 
+     */
+    private $voiceName;
+
+    /**
      * The text that should be spoken
      *
      * @var string
      */
     private $textToSpeak = '';
+
+    /**
+     * Index of this TTS within a playlist
+     *
+     * @var integer
+     */
+    private $playlistIndex = 0;
 
     /**
      * response to request for TTS audio
@@ -138,6 +152,28 @@ class TTS
     }
 
     /**
+     * Set human-friendly name of voice ID
+     *
+     * @param string $voiceName
+     * @return $this
+     */
+    public function setVoiceName(string $voiceName)
+    {
+        $this->voiceName = $voiceName;
+        return $this;
+    }
+
+    /**
+     * Get human-friendly name of voice ID
+     *
+     * @return string
+     */
+    public function getVoiceName(): string
+    {
+        return $this->voiceName;
+    }
+
+    /**
      * Set the text to be spoken
      *
      * @param string $textToSpeak
@@ -160,6 +196,28 @@ class TTS
     }
 
     /**
+     * Set the index of this TTS audio within a playlist
+     *
+     * @param integer $playlistindex
+     * @return $this
+     */
+    public function setPlaylistIndex(int $playlistindex)
+    {
+        $this->playlistIndex = $playlistindex;
+        return $this;
+    }
+
+    /**
+     * Get the index of this TTS audio within a playlist
+     *
+     * @return integer
+     */
+    public function getPlaylistIndex(): int
+    {
+        return $this->playlistIndex;
+    }
+
+    /**
      * Request TTS audio
      * 
      * Before sending the request a check will be made to see if it has already been saved.
@@ -176,7 +234,7 @@ class TTS
         $localAudioUrl = $this->alreadySaved($this->service->getShortName(), $this->voice, $this->textToSpeak);
         if (SAVE_LOCALLY && false !== $localAudioUrl) {
             $returnedData = $this->buildReturnObject(true, $localAudioUrl, 'File already exists locally.');
-            $this->setResponse($returnedData, true);
+            $this->setResponse($returnedData);
         }
         // Otherwise request audio from the remote server
         else {
@@ -214,17 +272,18 @@ class TTS
      * such as audio URL, success boolean, and info of the original request.
      *
      * @param object $returnedData
-     * @param boolean $alreadySaved
      * @return void
      */
-    public function setResponse(object $returnedData, bool $alreadySaved = false)
+    public function setResponse(object $returnedData)
     {
         // Add details of the original request to our returned data in case we need to use it in the frontend
-        // or for debugging purposes. original_request will have a null value at this point.
-        $returnedData->original_request = (object)[
-            'service' => $this->service->getShortName(),
-            'voice'   => $this->voice,
-            'text'    => $this->textToSpeak
+        // or for debugging purposes. meta will have a null value at this point.
+        $returnedData->meta = (object)[
+            'service'        => $this->service->getShortName(),
+            'voice_id'       => $this->voice,
+            'voice_name'     => $this->voiceName,
+            'text'           => $this->textToSpeak,
+            'playlist_index' => $this->playlistIndex
         ];
 
         // For convenience save as both the object and a JSON-encoded version

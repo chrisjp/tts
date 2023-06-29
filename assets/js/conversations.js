@@ -124,7 +124,7 @@ function generateSelectHtml() {
                 }
 
                 const voiceId = voiceGroup + '__' + voices[i].vid;
-                voiceSelectHTML += '<option value="' + voiceId + '" data-desc="' + voiceName + '">' + voiceName + '</option>';
+                voiceSelectHTML += '<option value="' + voiceId + '" data-desc="' + voiceName + '" data-voice-name="' + voices[i].name + '">' + voiceName + '</option>';
             }
 
             // Close optgroup
@@ -254,7 +254,6 @@ function removeDialogueBox(e) {
 function generateOptionTags() {
     // Populate the <select> with our chosen voices
     const voiceSelects = document.getElementsByName('voice[]');
-    let chosenVoices = [];
     let optionHtml = '';
     for (let i = 0; i < voiceSelects.length; i++) {
         const selectId = 'voice_' + (i + 1);
@@ -265,8 +264,9 @@ function generateOptionTags() {
         const voiceId = voiceSelects[i].value;
         const selIdx = voiceSelects[i].selectedIndex;
         const voiceName = voiceSelects[i].options[selIdx].label;
+        const voiceNameShort = voiceSelects[i].options[selIdx].dataset.voiceName;
 
-        if (voiceId) optionHtml += '<option value="' + voiceId + '" data-charlimit="' + charLimit + '" data-api="' + serviceName + '">' + voiceName + '</option>';
+        if (voiceId) optionHtml += '<option value="' + voiceId + '" data-charlimit="' + charLimit + '" data-api="' + serviceName + '" data-voice-name="' + voiceNameShort + '">' + voiceName + '</option>';
     }
 
     return optionHtml;
@@ -323,14 +323,13 @@ function generateConversation() {
         const text = arrayTexts[currentPos].value.trim();
         const api = voiceInfo[0];
         const voice = voiceInfo[1];
-        let extras = new Object;
-        extras.cnvIdx = currentPos;
-        extras.selectedVoice = arrayVoices[currentPos].value;
+        const selIdx = arrayVoices[currentPos].selectedIndex;
+        const voiceName = arrayVoices[currentPos].options[selIdx].dataset.voiceName;
 
         updateProgress(currentPos, count);
 
         // If the text isn't empty we'll generate a TTS URL, otherwise just call this again to skip it.
-        if (text.length > 0) fetchTTSUrl(api, voice, text, extras);
+        if (text.length > 0) fetchTTSUrl(api, voice, text, voiceName, currentPos);
         else generateConversation();
     } else {
         // we've finished generating the audio clips
@@ -343,11 +342,8 @@ function generateConversation() {
     }
 }
 
-function fetchTTSUrl(api, voice, text, extras) {
+function fetchTTSUrl(api, voice, text, voice_name, playlist_index) {
     // this is based on the generateTTSUrl() function but with UI stuff changed for playlist building
-
-    // We need to send some extra information to the server, so that we can access it in the request response
-    extras = JSON.stringify(extras);
 
     // Send request to the server to get around CORS issues
     const xhr = new XMLHttpRequest();
@@ -361,9 +357,9 @@ function fetchTTSUrl(api, voice, text, extras) {
         }
 
     };
-    xhr.open('POST', 'proxy.php', true);
+    xhr.open('POST', 'request_tts.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.send('service=' + encodeURIComponent(api) + '&voice=' + encodeURIComponent(voice) + '&text=' + encodeURIComponent(text) + '&extras=' + encodeURIComponent(extras));
+    xhr.send('service=' + encodeURIComponent(api) + '&voice=' + encodeURIComponent(voice) + '&text=' + encodeURIComponent(text) + '&voice_name=' + encodeURIComponent(voice_name) + '&playlist_index=' + playlist_index);
 }
 
 // Update HTML progress bar
@@ -398,7 +394,7 @@ function addPlaylistToDOM() {
         for (let v = 0; v < arrPlaylistVoices.length; v++) {
             voiceIds.push(arrPlaylistVoices[v].id);
         }
-        playlistHtml += '<div class="control"><a href="conversation.php?voices=' + Array.from(voiceIds).join(",") + '&amp;edit=' + urlParamPls + '" id="btn-edit-playlist" class="button is-success">Edit This Playlist</a></div>';
+        playlistHtml += '<div class="control"><a href="./conversation.php?voices=' + Array.from(voiceIds).join(",") + '&amp;edit=' + urlParamPls + '" id="btn-edit-playlist" class="button is-success">Edit This Playlist</a></div>';
     }
     playlistHtml += '</div>';
 
@@ -497,14 +493,14 @@ function selectedVoicesToArray() {
 // Only to be called via the XHR response
 function dialogueToArray(result) {
     if (result.success === true) {
-        const playlistIndex = parseInt(result.extras.cnvIdx);
+        const playlistIndex = parseInt(result.meta.playlist_index);
 
         let dialogue = {};
         dialogue.voice = {}
-        dialogue.voice.id = result.extras.selectedVoice;
-        dialogue.voice.name = result.extras.service + ' - ' + result.extras.voiceName;
-        dialogue.text = result.extras.originalText;
-        dialogue.audio_url = result.speak_url;
+        dialogue.voice.id = result.meta.voice_id;
+        dialogue.voice.name = result.meta.service + ' - ' + result.meta.voice_name;
+        dialogue.text = result.meta.text;
+        dialogue.audio_url = result.audio_url;
 
         arrPlaylistDialogue[playlistIndex] = dialogue;
     } else {
