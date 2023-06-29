@@ -39,7 +39,7 @@ $v = '1.41';
                 
                 <div id="filters">
                     <div id="filter-api" class="tabs is-toggle is-centered is-small"></div>
-                    <div id="filter-sex" class="tabs is-toggle is-centered is-small"></div>
+                    <div id="filter-gender" class="tabs is-toggle is-centered is-small"></div>
                     <div id="lang-selection" class="buttons are-small"></div>
                 </div>
 
