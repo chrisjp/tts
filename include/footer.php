@@ -25,7 +25,7 @@ if (__FILE__ === $_SERVER['SCRIPT_FILENAME']) {
         </div>
     </footer>
     <!-- JS -->
-    <script src="assets/js/tts.js?v=<?php echo $tts::version; ?>"></script>
+    <script type="module" src="assets/js/tts.js?v=<?php echo $tts::version; ?>"></script>
 <?php if (in_array(basename($_SERVER['SCRIPT_FILENAME']), ['conversation.php', 'playlist.php'])) echo '    <script src="assets/js/conversations.js?v=' . $tts::version . '"></script>' . PHP_EOL; ?>
     </body>
 </html>
