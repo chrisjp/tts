@@ -4,12 +4,16 @@
  *
  */
 
+// Full path to the directory we are running in. No trailing slash.
+// Defaults to dirname(__FILE__) which will be the directory this config file sits in.
+define('DOCROOT', dirname(__FILE__));
+
 // Set to true to save the generated audio file locally
 define('SAVE_LOCALLY', true);
 
-// Directory to save audio files (relative)
+// Directory to save audio files (relative). Include leading and trailing slashes.
 // Needs to exist and have write permissions. The script will attempt to create it for you if it doesn't exist.
-define('AUDIO_DIR', 'assets/audio/');
+define('AUDIO_DIR', '/assets/audio/');
 
 // Hours to keep files for (whenever a new file is saved files older than this will be removed)
 define('HOURS_TO_KEEP', 24);

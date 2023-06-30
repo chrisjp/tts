@@ -77,7 +77,7 @@ class TTS
     public function __construct($service = null, $voice = null)
     {
         // Load configuration constants
-        $configFile = $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+        $configFile = dirname(__DIR__, 1) . '/config.php';
         if (!file_exists($configFile)) {
             // Attempt to create it from distributed version holding the defaults
             $cp = @copy($configFile . '.dist', $configFile);
@@ -100,7 +100,7 @@ class TTS
             $this->setVoice($this->service->getDefaultVoice());
         }
 
-        if (empty($this->pathToAudioDir)) $this->pathToAudioDir = $_SERVER['DOCUMENT_ROOT'] . '/' . AUDIO_DIR;
+        $this->pathToAudioDir = DOCROOT . AUDIO_DIR;
     }
 
     /**
@@ -355,7 +355,7 @@ class TTS
     {
         // If running locally we might not have https enabled so don't force it unless we can't detect.
         $requestScheme = (isset($_SERVER['REQUEST_SCHEME']) ? $_SERVER['REQUEST_SCHEME'] : 'https') . '://';
-        $audioFileUrl = $requestScheme . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, strrpos($_SERVER['REQUEST_URI'], '/') + 1) . AUDIO_DIR . $audioFileName;
+        $audioFileUrl = $requestScheme . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . AUDIO_DIR . $audioFileName;
 
         return $audioFileUrl;
     }

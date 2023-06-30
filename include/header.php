@@ -5,7 +5,7 @@ if (__FILE__ === $_SERVER['SCRIPT_FILENAME']) {
     exit;
 }
 
-require $_SERVER['DOCUMENT_ROOT']. '/vendor/autoload.php';
+require './vendor/autoload.php';
 use ChrisJP\TTS\TTS;
 $tts = new TTS();
 

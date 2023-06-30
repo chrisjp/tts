@@ -1,6 +1,6 @@
 <?php
 // Grab all the stuff we need
-require __DIR__ . '/vendor/autoload.php';
+require './vendor/autoload.php';
 
 use ChrisJP\TTS\Playlist;
 
