@@ -134,7 +134,7 @@ class Playlist extends TTS
      */
     public function tryingToLoadPlaylist(): bool
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_REQUEST['pls_file']) && !empty($_REQUEST['pls_file'])) return true;
+        if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_REQUEST['pls_file'])) return true;
         return false;
     }
 
