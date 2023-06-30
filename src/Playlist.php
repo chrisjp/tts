@@ -40,7 +40,7 @@ class Playlist extends TTS
                 $playlistUrl = $this->getRequestScheme() . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '?pls=' . $name;
                 $playlistFilename = 'TTSPlaylist_' . $name . '.json';
 
-                $put = file_put_contents(AUDIO_DIR . $playlistFilename, $json);
+                $put = file_put_contents($this->getPathToAudioDir() . $playlistFilename, $json);
                 if ($put) {
                     $returnedData = $this->buildPlaylistObject(true, $playlistUrl, $json);
                 }
@@ -69,7 +69,7 @@ class Playlist extends TTS
     {
         $playlistFilename = 'TTSPlaylist_' . $jsonFile . '.json';
         
-        $fileContents = @file_get_contents(AUDIO_DIR . $playlistFilename);
+        $fileContents = @file_get_contents($this->getPathToAudioDir() . $playlistFilename);
         if ($fileContents) return $fileContents;
         
         $returnedData = $this->buildPlaylistObject(false, null, null, 'Could not find playlist named '. $jsonFile);

@@ -68,7 +68,6 @@ class TTS
 
     /**
      * Full path to AUDIO_DIR
-     * Set by prepending DOCUMENT_ROOT to AUDIO_DIR constant
      *
      * @var string
      */
@@ -100,7 +99,7 @@ class TTS
             $this->setVoice($this->service->getDefaultVoice());
         }
 
-        $this->pathToAudioDir = DOCROOT . AUDIO_DIR;
+        $this->setPathToAudioDir(DOCROOT . AUDIO_DIR);
     }
 
     /**
@@ -215,6 +214,28 @@ class TTS
     public function getTextToSpeak(): string
     {
         return $this->textToSpeak;
+    }
+
+    /**
+     * Set the full path to AUDIO_DIR
+     * By default it will be concatenated constants DOCROOT and AUDIO_DIR
+     *
+     * @param string $path
+     * @return void
+     */
+    public function setPathToAudioDir(string|null $path = '')
+    {
+        $this->pathToAudioDir = !empty($path) ? $path : DOCROOT . AUDIO_DIR;
+    }
+
+    /**
+     * Get the full path to AUDIO_DIR
+     *
+     * @return string
+     */
+    public function getPathToAudioDir(): string
+    {
+        return $this->pathToAudioDir;
     }
 
     /**
