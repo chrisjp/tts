@@ -160,7 +160,7 @@ document.getElementById('filter-gender').innerHTML = '<ul><li class="tab"><a cla
 
 // Insert buttons
 document.getElementById('voice-selection').innerHTML = buttonsHtml;
-document.getElementById('lang-selection').innerHTML = '<button id="toggleLangs" class="button ' + styles.button_fg + ' has-text-weight-bold" onclick="toggleLangs();">Language (show/hide)</button>' + langHtml;
+document.getElementById('lang-selection').innerHTML = '<button id="toggleLangs" class="button ' + styles.button_fg + ' has-text-weight-bold">Language (show/hide)</button>' + langHtml;
 
 // Show exact voice count
 document.getElementById('voicecount').innerHTML = voiceCount;
@@ -182,6 +182,7 @@ var langTabs = document.getElementsByClassName('button-lang');
 for (var i = 0; i < langTabs.length; i++) {
     langTabs[i].addEventListener('click', selectLang);
 }
+document.getElementById('toggleLangs').addEventListener('click', toggleLangs);
 document.getElementById('playbutton').addEventListener('click', generateTTSUrl);
 document.getElementById('copylinkbutton').addEventListener('click', copyToClipboard);
 document.getElementById('text').addEventListener('input', handleTextInput);

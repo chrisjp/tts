@@ -67,8 +67,8 @@ include 'include/header.php';
 
 
                 <div class="box has-text-centered">
-                    <button id="btn-add-con" type="button" class="button is-success" onclick="addDialogueBox()" disabled>Add Dialogue</button>
-                    <button id="btn-speak-con" type="button" class="button is-success" onclick="generateConversation()" disabled>Generate TTS</button>
+                    <button id="btn-add-con" type="button" class="button is-success" disabled>Add Dialogue</button>
+                    <button id="btn-speak-con" type="button" class="button is-success" disabled>Generate TTS</button>
                 </div>
             </div>
 <?php

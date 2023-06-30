@@ -9,8 +9,10 @@ let lastTrackNo = -1;
 
 // Array of TTS Services we can select from for use in conversations
 const validServices = ['Polly', 'CereProc', 'TikTok'];
+import ttsServices from './voices.json' assert {type: 'json'};
 
-// Current URL paramaters (const url is defined in tts.js
+// Current URL paramaters
+const url = new URL(window.location.href);
 const urlParamVoices = url.searchParams.get('voices');
 const urlParamPls = url.searchParams.get('pls');
 const urlParamEdit = url.searchParams.get('edit');
@@ -32,6 +34,9 @@ if (urlParamPls !== null) {
 }
 // make conversation page
 else {
+
+    document.getElementById('btn-add-con').addEventListener('click', addDialogueBox);
+    document.getElementById('btn-speak-con').addEventListener('click', generateConversation);
 
     // Generate HTML <option>s for the voice <select>s and add it to the DOM
     generateSelectHtml();
@@ -107,6 +112,7 @@ function editPlaylist() {
 function generateSelectHtml() {
 
     // Iterate over each group of voices
+    let selVoice, voiceName = '', voiceAccent = '';
     for (const voiceGroup in ttsServices) {
         const voices = ttsServices[voiceGroup].voices;
 
@@ -218,22 +224,31 @@ function updateSelectedVoices() {
 // Add a dialogue box (<select> with our chosen voices and corresponding <textrea>)
 function addDialogueBox() {
     // HTML we want to add
-    const conVoiceDropdown = '<div class="control select is-rounded"><select name="con-voice[]" onchange="updateTextareaAttributes(this)"></select></div>';
-    const conBtnRemove = '<div class="control"><button type="button" class="delete has-background-danger-dark" onclick="removeDialogueBox(this)"></button></div>';
-    const conTextInput = '<div class="control"><textarea name="con-text[]" rows="3" cols="80" maxlength="550" class="textarea dialogue" oninput="handleConvoInput(this)"  placeholder="Enter some text here..."></textarea><span class="is-pulled-right is-size-7 has-text-right"><span name="chars[]">0</span>/<span name="charlimit[]">-</span></span></div>';
+    const randomId = random(8);
+    const selectId = 'con-voice-' + randomId;
+    const buttonId = 'con-delete-' + randomId;
+    const textId = 'con-text-' + randomId;
+    const conVoiceDropdown = '<div class="control select is-rounded"><select id="' + selectId + '" name="con-voice[]"></select></div>';
+    const conBtnRemove = '<div class="control"><button id="' + buttonId + '" type="button" class="delete has-background-danger-dark"></button></div>';
+    const conTextInput = '<div class="control"><textarea id="' + textId + '" name="con-text[]" rows="3" cols="80" maxlength="550" class="textarea dialogue" placeholder="Enter some text here..."></textarea><span class="is-pulled-right is-size-7 has-text-right"><span name="chars[]">0</span>/<span name="charlimit[]">-</span></span></div>';
     const divBox = '<div class="box"><div class="field is-grouped">' + conVoiceDropdown + conBtnRemove + '</div><div class="field">' + conTextInput + '</div></div>';
 
     // Create a div element and add the above HTML in it
     const uselessDiv = document.createElement('div');
     uselessDiv.innerHTML = divBox;
 
-    divContainer = document.getElementById('con-voice-and-text-input');
+    let divContainer = document.getElementById('con-voice-and-text-input');
 
     // Loop through each child element of the useless div and append them to our container
     // this avoids using innerHTML which would remove all elements (and user entered text with it) and recreate them
     while (uselessDiv.firstChild) {
         divContainer.appendChild(uselessDiv.firstChild);
     }
+
+    // Event listeners
+    document.getElementById(selectId).addEventListener('change', function(event){updateTextareaAttributes(document.getElementById(selectId))});
+    document.getElementById(buttonId).addEventListener('click', function(event){removeDialogueBox(document.getElementById(buttonId))});
+    document.getElementById(textId).addEventListener('input', function(event){handleConvoInput(document.getElementById(textId))});
 
     const optionHtml = generateOptionTags();
 
@@ -292,8 +307,45 @@ function handleConvoInput(textarea) {
     characterCount(textarea, elChars, elCharCount, voiceOptionTag.dataset.api);
 }
 
+// Show character count/limit
+function characterCount(textarea, elChars, elCharCount, service) {
+    // Some services count bytes rather than characters
+    const thisText = textarea.value;
+    const api = service == null ? getSelectedVoice().dataset.api : service;
+    const curLength = ttsServices[api].countBytes === true ? byteCount(thisText.trim()) : thisText.trim().length;
+    elChars.innerHTML = curLength;
+
+    // if current length is near the max length change colour to red
+    if (curLength > (textarea.maxLength - 10)) {
+        elCharCount.classList.add('has-text-danger');
+    } else {
+        elCharCount.classList.remove('has-text-danger');
+    }
+}
+
+// Count bytes of text string
+// https://stackoverflow.com/a/12203648/403476
+function byteCount(s) {
+    return encodeURI(s).split(/%..|./).length - 1;
+}
+
+// Convert gender letter to Emoji
+function genderLetterToEmoji(voice) {
+    if (voice.gender == 'M') {
+        return '\u2642';
+    } else if (voice.gender == 'F') {
+        return '\u2640';
+    } else if (voice.gender == 'O') {
+        if (voice.customEmoji) return voice.customEmoji;
+        return '\u2753';
+    }
+
+    return '\u2753';
+}
+
 // Set the correct maxlength based on the API being used and make this visible to users in span.character-count[]
 function updateTextareaAttributes(voiceSelect) {
+    console.log();
     const idxVoice = voiceSelect.selectedIndex;
     const voiceOptionTag = voiceSelect.options[idxVoice];
 
@@ -391,12 +443,12 @@ function addPlaylistToDOM() {
         if (arrPlaylistDialogue[i] !== undefined && arrPlaylistDialogue[i] !== null) {
             playlistHtml += isPlaylistPage ? '<div class="box"><div class="columns"><div class="column is-one-fifth">' : '';
             playlistHtml += '<strong>' + arrPlaylistDialogue[i].voice.name + '</strong><br/>';
-            playlistHtml += isPlaylistPage ? '<span id="btn-transcript-' + i + '" class="button is-small is-link" onclick="toggleTranscript(' + i + ')">Show transcript</span></div><div class="column">' : '';
+            playlistHtml += isPlaylistPage ? '<span id="btn-transcript-' + i + '" class="button is-small is-link">Show transcript</span></div><div class="column">' : '';
             playlistHtml += '<audio controls preload="metadata" src="' + arrPlaylistDialogue[i].audio_url + '" title="TTS Audio - ' + arrPlaylistDialogue[i].voice.name + '" data-track-number="' + (i+1) + '" id="playlist-track-' + (i+1) + '"><p>Your browser does not support the <code>audio</code> element.</p></audio>';
             playlistHtml += isPlaylistPage ? '</div></div><blockquote class="is-hidden" id="transcript-' + i + '">' + arrPlaylistDialogue[i].text + '</blockquote></div>' : '<br/>';
         }
     }
-    playlistHtml += '<br /><br /><div class="field is-grouped"><div class="control"><button id="btn-copy-playlist-url" type="button" class="button is-success" onclick="sharePlaylist(this)">Share Playlist</button></div>';
+    playlistHtml += '<br /><br /><div class="field is-grouped"><div class="control"><button id="btn-copy-playlist-url" type="button" class="button is-success"">Share Playlist</button></div>';
     if (isPlaylistPage) {
         const voiceIds = [];
         for (let v = 0; v < arrPlaylistVoices.length; v++) {
@@ -407,6 +459,18 @@ function addPlaylistToDOM() {
     playlistHtml += '</div>';
 
     document.getElementById('tts-playlist').innerHTML = playlistHtml;
+
+    // Event listeners
+    document.getElementById('btn-copy-playlist-url').addEventListener('click', function(event){sharePlaylist(document.getElementById('btn-copy-playlist-url'));});
+    if (isPlaylistPage) {
+        for (let i = 0; i < arrPlaylistDialogue.length; i++) {
+            // Check this index isn't undefined (if it is it's probably audio we skipped over due to an error)
+            if (arrPlaylistDialogue[i] !== undefined && arrPlaylistDialogue[i] !== null) {
+                let transcriptBtn = 'btn-transcript-' + i;
+                document.getElementById(transcriptBtn).addEventListener('click', function(event){toggleTranscript(i);});
+            }
+        }
+    }
 }
 
 // calculate full duration of playlist
@@ -441,19 +505,22 @@ function setPlaylistMetadata() {
 // play the playlist
 function playPlaylist() {
     let audioElements = document.querySelectorAll("audio[data-track-number]");
-    lastTrackNo = parseInt(audioElements[audioElements.length - 1].dataset.trackNumber);
 
-    for (let i = 0; i < audioElements.length; i++) {
-        audioElements[i].addEventListener('playing', function(e) {
-            //console.log('Audio playback started on track ' + e.target.dataset.trackNumber + ' at ' + e.target.currentTime + ' seconds.');
-        });
-        audioElements[i].addEventListener('ended', function(e) {
-            //console.log('Audio playback has ended on track ' + e.target.dataset.trackNumber);
-            playNext(parseInt(e.target.dataset.trackNumber) + 1);
-        });
+    if (audioElements.length > 0) {
+        lastTrackNo = parseInt(audioElements[audioElements.length - 1].dataset.trackNumber);
+
+        for (let i = 0; i < audioElements.length; i++) {
+            audioElements[i].addEventListener('playing', function(e) {
+                //console.log('Audio playback started on track ' + e.target.dataset.trackNumber + ' at ' + e.target.currentTime + ' seconds.');
+            });
+            audioElements[i].addEventListener('ended', function(e) {
+                //console.log('Audio playback has ended on track ' + e.target.dataset.trackNumber);
+                playNext(parseInt(e.target.dataset.trackNumber) + 1);
+            });
+        }
+
+        audioElements[0].play();
     }
-
-    audioElements[0].play();
 }
 
 // play the next track
@@ -549,6 +616,7 @@ function sharePlaylist(e) {
         // Save the JSON data server side for sharing (we'll also validate the data there for security purposes)
         const xhr = new XMLHttpRequest();
         xhr.onload = function () {
+            console.log(xhr.responseText);
             const response = JSON.parse(xhr.responseText);
             if (xhr.readyState == 4 && xhr.status == '200') {
                 //console.log(response);
@@ -567,5 +635,110 @@ function sharePlaylist(e) {
         xhr.open('POST', 'playlist.php', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.send('save=1&name=' + encodeURIComponent(filename) + '&json=' + encodeURIComponent(filecontents));
+    }
+}
+
+// Copy audio link to clipboard
+function copyToClipboard(e, copyBtn, textToCopy) {
+    var audioUrl = typeof textToCopy === 'undefined' ? document.getElementById('audioplayer').src : textToCopy;
+
+    // Create a temporary text <input> to contain the URL of the audio clip, which we can then select and copy
+    var tempInput = document.createElement('input');
+    tempInput.type = 'text';
+    tempInput.value = audioUrl;
+    document.body.appendChild(tempInput);
+
+    // Select and copy
+    // on iOS? Need to do a hacky workaround for this to work
+    if (navigator.userAgent.match(/ipad|ipod|iphone/i)) {
+        // Set input's contentEditable to true
+        tempInput.contentEditable = true;
+        tempInput.readOnly = true;
+
+        // create a selectable range
+        var range = document.createRange();
+        range.selectNodeContents(tempInput);
+
+        // select the range
+        var selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        tempInput.setSelectionRange(0, 9999);
+
+        // revert contentEditable back to false
+        tempInput.contentEditable = false;
+    } else {
+        tempInput.select();
+    }
+    document.execCommand('Copy');
+
+    // Remove element
+    document.body.removeChild(tempInput);
+
+    // Tell user the good news!
+    copyBtn = typeof copyBtn === 'undefined' ? document.getElementById('copylinkbutton') : copyBtn;
+
+    const origText = copyBtn.textContent;
+    copyBtn.textContent = 'Copied!';
+    //copyBtn.classList.add('is-success');
+
+    setTimeout(() => {
+        copyBtn.textContent = origText;
+        //copyBtn.classList.remove('is-success');
+    }, 2000);
+}
+
+// change URL paramaters
+// https://stackoverflow.com/a/10997390/403476
+function updateURLParameter(url, param, paramVal)
+{
+    var TheAnchor = null;
+    var newAdditionalURL = "";
+    var tempArray = url.split("?");
+    var baseURL = tempArray[0];
+    var additionalURL = tempArray[1];
+    var temp = "";
+
+    if (additionalURL)
+    {
+        var tmpAnchor = additionalURL.split("#");
+        var TheParams = tmpAnchor[0];
+            TheAnchor = tmpAnchor[1];
+        if(TheAnchor)
+            additionalURL = TheParams;
+
+        tempArray = additionalURL.split("&");
+
+        for (var i=0; i<tempArray.length; i++)
+        {
+            if(tempArray[i].split('=')[0] != param)
+            {
+                newAdditionalURL += temp + tempArray[i];
+                temp = "&";
+            }
+        }
+    }
+    else
+    {
+        var tmpAnchor = baseURL.split("#");
+        var TheParams = tmpAnchor[0];
+            TheAnchor  = tmpAnchor[1];
+
+        if(TheParams)
+            baseURL = TheParams;
+    }
+
+    if(TheAnchor)
+        paramVal += "#" + TheAnchor;
+
+    var rows_txt = temp + "" + param + "=" + paramVal;
+    return baseURL + "?" + newAdditionalURL + rows_txt;
+}
+
+// Update the URL in the browser's address bar
+function setNewUrl(newUrl) {
+    if (window.history.replaceState) {
+       // prevents browser from storing history with each change:
+       window.history.replaceState('', document.getElementsByTagName('title')[0].innerHTML, newUrl);
     }
 }
