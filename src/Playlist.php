@@ -37,10 +37,7 @@ class Playlist extends TTS
             $checkJSON = json_decode($json);
 
             if (json_last_error() === JSON_ERROR_NONE) {
-                // If running locally we might not have https enabled so don't force it unless we can't detect.
-                $requestScheme = (isset($_SERVER['REQUEST_SCHEME']) ? $_SERVER['REQUEST_SCHEME'] : 'https') . '://';
-
-                $playlistUrl = $requestScheme . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '?pls=' . $name;
+                $playlistUrl = $this->getRequestScheme() . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '?pls=' . $name;
                 $playlistFilename = 'TTSPlaylist_' . $name . '.json';
 
                 $put = file_put_contents(AUDIO_DIR . $playlistFilename, $json);

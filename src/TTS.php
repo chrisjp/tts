@@ -353,9 +353,7 @@ class TTS
      */
     public function generateAudioUrl(string $audioFileName): string
     {
-        // If running locally we might not have https enabled so don't force it unless we can't detect.
-        $requestScheme = (isset($_SERVER['REQUEST_SCHEME']) ? $_SERVER['REQUEST_SCHEME'] : 'https') . '://';
-        $audioFileUrl = $requestScheme . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . AUDIO_DIR . $audioFileName;
+        $audioFileUrl = $this->getRequestScheme() . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . AUDIO_DIR . $audioFileName;
 
         return $audioFileUrl;
     }
@@ -475,6 +473,22 @@ class TTS
         }
 
         return true;
+    }
+
+    /**
+     * Gets the request scheme (http or https)
+     * including the :// when true is passed (default)
+     *
+     * @param boolean $addColonSlashSlash
+     * @return string
+     */
+    function getRequestScheme(bool $addColonSlashSlash = true): string
+    {
+        // If running locally we might not have https enabled so don't force it unless we can't detect.
+        $requestScheme = isset($_SERVER['REQUEST_SCHEME']) ? $_SERVER['REQUEST_SCHEME'] : 'https';
+        if ($addColonSlashSlash) $requestScheme .= '://';
+
+        return $requestScheme;
     }
 
     /**
