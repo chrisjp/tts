@@ -8,7 +8,7 @@ include 'include/header.php';
                 <p>Pick some voices...</p>
 
                 <br />
-                <button id="btn-add-voice" type="button" class="button is-success" onclick="addVoiceSelect()">Add Voice</button>
+                <button id="btn-add-voice" type="button" class="button is-success">Add Voice</button>
                 <hr />
 
                 <div id="voice-selects" class="columns is-multiline">
