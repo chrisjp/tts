@@ -73,7 +73,7 @@ include 'include/header.php';
                 <hr />
                 
                 <div id="recents">
-                    <h3 class="title is-4">Your Recent Chatter <button type="button" class="button is-small is-danger" onclick="clearShares();">Clear All</button></h3>
+                    <h3 class="title is-4">Your Recent Chatter <button id="btn-clear-shares" type="button" class="button is-small is-danger">Clear All</button></h3>
                     <div id="recentTTS">
                     </div>
                 </div>

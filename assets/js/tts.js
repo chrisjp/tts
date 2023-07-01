@@ -137,6 +137,7 @@ if (currentPage === 'demo') {
         langTabs[i].addEventListener('click', selectLang);
     }
     document.getElementById('toggleLangs').addEventListener('click', toggleLangs);
+    document.getElementById('btn-clear-shares').addEventListener('click', clearShares);
     document.getElementById('playbutton').addEventListener('click', generateTTSUrl);
     document.getElementById('copylinkbutton').addEventListener('click', copyToClipboard);
     document.getElementById('text').addEventListener('input', handleTextInput);
@@ -833,14 +834,14 @@ function updateRecentShares()
                     deletions = true;
                     i--;
                 } else {
-                    audioHtml = '<audio controls preload="metadata" src="' + currentData[i].audio + '" title="TTS Audio Clip"><p>Your browser does not support the <code>audio</code> element.</p></audio>';
+                    audioHtml = '<audio controls preload="metadata" src="' + currentData[i].audio_url + '" title="TTS Audio Clip"><p>Your browser does not support the <code>audio</code> element.</p></audio>';
                     recentHtml += '<div class="columns recent">' +
-                    '<div class="column is-one-fifth"><span class="recent-voice has-text-weight-bold">' + currentData[i].voiceName + '</span><br/>' +
-                    '<span class="recent-time is-size-7 has-text-grey">' + timeSince(now, new Date(currentData[i].time)) + '</span></div>' +
-                    '<div class="column"><span class="recent-message is-italic">"' + (currentData[i].message.length > 250 ? currentData[i].message.substring(0, 250) + ' [...]' : currentData[i].message ) + '"</span></div>' +
+                    '<div class="column is-one-fifth"><span class="recent-voice has-text-weight-bold">' + currentData[i].voice_name + '</span><br/>' +
+                    '<span class="recent-time is-size-7 has-text-grey">' + helper.timeSince(now, new Date(currentData[i].time)) + '</span></div>' +
+                    '<div class="column"><span class="recent-message is-italic">"' + (currentData[i].text.length > 250 ? currentData[i].text.substring(0, 250) + ' [...]' : currentData[i].text ) + '"</span></div>' +
                     '<div class="column is-two-fifths">' + audioHtml +
-                    ' <button type="button" class="button button-copy is-small ' + styles.button_fg + '" onclick="copyToClipboard(null, this, \'' + currentData[i].audio + '\');">copy URL</button>' +
-                    ' <button type="button" class="button is-small is-danger" onclick="removeShare(' + i + ');">remove</button>' + '</div>' +
+                    ' <button id="btn-copy-recent-' + i + '" type="button" class="button button-copy is-small ' + styles.button_fg + '">copy URL</button>' +
+                    ' <button id="btn-remove-recent-' + i + '" type="button" class="button is-small is-danger">remove</button>' + '</div>' +
                     '</div>';
                 }
             }
@@ -850,7 +851,15 @@ function updateRecentShares()
         } else {
             recentHtml = '<em>No links copied yet!</em>';
         }
+
         recentContainer.innerHTML = recentHtml;
+
+        if (currentData) {
+            for (let i = 0; i < currentData.length; i++) {
+                document.getElementById('btn-copy-recent-' + i).addEventListener('click', function(event){copyToClipboard(null, document.getElementById('btn-copy-recent-' + i), currentData[i].audio_url)});
+                document.getElementById('btn-remove-recent-' + i).addEventListener('click', function(event){removeShare(i)});
+            }
+        }
     }
 }
 
@@ -868,9 +877,9 @@ function addToRecentShares()
 
         let newData = {
             'time': now.getTime(),
-            'voiceName': voice.getElementsByClassName('voice-name')[0].innerText,
-            'message': document.getElementById('text').value.trim(),
-            'audio': document.getElementById('audioplayer').src
+            'voice_name': voice.getElementsByClassName('voice-name')[0].innerText,
+            'text': document.getElementById('text').value.trim(),
+            'audio_url': document.getElementById('audioplayer').src
         };
 
         // If we've already got some data, unshift our new object to the beginning of the array
