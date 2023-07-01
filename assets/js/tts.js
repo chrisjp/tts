@@ -258,7 +258,7 @@ function toggleStyleMode(clicked) {
         buttonsCopyandLang[i].classList.add(newStyles.button_fg);
     }
 
-    // TODO: does this actually update styles? global var?
+    // Update global variable
     styles = newStyles;
 
     // Set cookie if toggle was manually clicked
@@ -748,21 +748,21 @@ function countryCodeToEmoji(countryCode)
     // There are also some edge cases for languages without a flag emoji (Arabic, Esperanto)
 
     let emoji = '\ud83c\udff3\ufe0f';   // white flag (default)
-    let noFlag = (countryCode == 'ARAB' || countryCode == 'ESPER');   // "country" codes with no flag emoji
+    let noFlag = (countryCode === 'ARAB' || countryCode === 'ESPER');   // "country" codes with no flag emoji
     let isWin = navigator.platform.indexOf('Win') > -1;     // check if user is on Windows - deprecated but this is a legitimate use case
 
-    if ((isWin || noFlag) && countryCode.length != 0) {
+    if ((isWin || noFlag) && countryCode.length !== 0) {
         emoji = countryCodeToImg(countryCode);
     }
     else if (countryCode && countryCode.length >= 2) {
         const offset = 127397;
         const firstChar = countryCode.codePointAt(0);
         const secondChar = countryCode.codePointAt(1);
-        let emoji = String.fromCodePoint(firstChar + offset) + String.fromCodePoint(secondChar + offset);
+        emoji = String.fromCodePoint(firstChar + offset) + String.fromCodePoint(secondChar + offset);
 
         // Handle special cases (England, Scotland, Wales) with subdivision flags
         if (countryCode.length === 6) {
-            switch (countryCode.substr(3, 3)) {
+            switch (countryCode.substring(3, 3)) {
                 case 'ENG':
                 emoji = '\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f';
                 break;
