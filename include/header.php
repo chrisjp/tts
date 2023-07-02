@@ -27,7 +27,7 @@ $tabHighlight = 'is-active has-text-weight-bold';
     <body>
     <section class="section">
         <div class="container">
-            <div id="toggleStyleMode" class="is-pulled-right toggle-style" onclick="toggleStyleMode(true);">💡</div>
+            <div id="toggleStyleMode" class="is-pulled-right toggle-style">💡</div>
             <h1 class="title is-2">Text-to-Speech Simulator</h1>
             <p class="subtitle is-4">A simple web app demonstrating how text sounds in different TTS voices.</p>
 

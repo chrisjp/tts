@@ -12,6 +12,7 @@ else console.error("HTTP-Error: " + getVoices.status);
 // Load CSS class names
 let styles = styleClasses();
 // If we detect the user wants dark mode we'll switch to that
+document.getElementById('toggleStyleMode').addEventListener('click', function(event){toggleStyleMode(true);});
 if (getStyleMode() === 'mode-dark') toggleStyleMode();
 
 // Constants
