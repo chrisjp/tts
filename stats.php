@@ -24,7 +24,13 @@ include 'include/header.php';
                         <p><b>Services used:</b></p>
 
 <?php
+// Put data into an array and sort it in descending order
+$serviceStats = [];
 foreach ($stats->by_service as $serviceName => $servNumUses) {
+    $serviceStats[$serviceName] = $servNumUses;
+}
+arsort($serviceStats);
+foreach ($serviceStats as $serviceName => $servNumUses) {
     echo $serviceName . ': ' . $servNumUses . '<br />' . PHP_EOL;
 }
 ?>
@@ -34,7 +40,13 @@ foreach ($stats->by_service as $serviceName => $servNumUses) {
                         <p><b>Voices used:</b></p>
 
 <?php
+// Put data into an array and sort it in descending order
+$voiceStats = [];
 foreach ($stats->by_voice as $voiceId => $voiceNumUses) {
+    $voiceStats[$voiceId] = $voiceNumUses;
+}
+arsort($voiceStats);
+foreach ($voiceStats as $voiceId => $voiceNumUses) {
     echo $voiceId . ': ' . $voiceNumUses . '<br />' . PHP_EOL;
 }
 ?>
