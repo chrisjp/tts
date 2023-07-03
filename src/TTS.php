@@ -289,7 +289,7 @@ class TTS
                 if ($localUrl) $returnedData->audio_url = $localUrl;
 
                 // Delete old files
-                $this->purge();
+                $numFilesPurged = $this->purge();
             }
             $this->setResponse($returnedData);
         }
@@ -463,10 +463,10 @@ class TTS
         if ($this->isAudioDirWritable()) {
             $fileSystemIterator = new \FilesystemIterator($this->pathToAudioDir);
             $now = time();
-            
+
             foreach ($fileSystemIterator as $file) {
                 // delete files older than HOURS_TO_KEEP hours
-                if ($now - $file->getCTime() >= 60 * 60 * HOURS_TO_KEEP) {
+                if (($now - $file->getCTime()) >= (60 * 60 * HOURS_TO_KEEP)) {
                     unlink($this->pathToAudioDir . $file->getFilename());
                     $i++;
                 }
