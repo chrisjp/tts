@@ -1,6 +1,6 @@
 import * as helper from './helpers.js';
 // import ttsServices from './voices.json' assert {type: 'json'};
-// Imagine living in a timeline where a popular browser didn't support this simple one-liners.
+// Imagine living in a timeline where a popular browser didn't support this simple one-liner.
 // Firefox *still* doesn't support imports with assertions so we have to resort to fetch()
 
 // Load in all the voices for each supported service
