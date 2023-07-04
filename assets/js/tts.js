@@ -50,13 +50,13 @@ if (currentPage === 'demo') {
 
     // Iterate over each group of voices
     let buttonsHtml = '', selVoice, voiceName = '', voiceAccent = '', voiceCount = 0, langs = [];
-    let selApi = !urlParamApi || urlParamApi == 'All' ? ' is-active' : '';
+    let selApi = !urlParamApi || urlParamApi === 'All' ? ' is-active' : '';
     let filterApiHtml = '<li class="tab tab-api has-text-weight-bold' + selApi + '" id="tab-All"><a>All</a></li>';
     for (let voiceGroup in ttsServices) {
         let voices = ttsServices[voiceGroup].voices;
 
         // Add a tab for this API
-        selApi = urlParamApi == voiceGroup ? ' is-active' : '';
+        selApi = urlParamApi === voiceGroup ? ' is-active' : '';
         filterApiHtml += '<li class="tab tab-api' + selApi +'" id="tab-' + voiceGroup.replace(' ', '') + '"><a>' + voiceGroup + '</a></li>';
 
         // Add a button to act as a heading for this API's voices
@@ -66,7 +66,7 @@ if (currentPage === 'demo') {
         for (let i = 0; i < voices.length; i++) {
             // Set voice name
             voiceName = voices[i].name;
-            if (voiceName.length == 0) {
+            if (voiceName.length === 0) {
                 // If the voice is not named, use the language
                 voiceName = voices[i].lang;
                 // Include accent/region if applicable
@@ -79,7 +79,7 @@ if (currentPage === 'demo') {
                 voiceName += ' (' + voices[i].lang + voiceAccent + ')';
             }
             // Add button
-            selVoice = ((urlParamVoice == voices[i].vid) && (urlParamApi == voiceGroup)) || ( (!urlParamApi || !urlParamVoice) && (defaultVoice == voices[i].vid) && (defaultApi == voiceGroup) ) ? ' is-success selected-voice' : '';
+            selVoice = ((urlParamVoice === voices[i].vid) && (urlParamApi === voiceGroup)) || ( (!urlParamApi || !urlParamVoice) && (defaultVoice === voices[i].vid) && (defaultApi === voiceGroup) ) ? ' is-success selected-voice' : '';
             buttonsHtml += '<button type="button" class="button button-voice ' + styles.button_fg + ' is-rounded' + selVoice + '" title="' + voiceName + '" data-vid="' + voices[i].vid + '" data-api="' + voiceGroup + '" data-lang="' + voices[i].lang + '" data-gender="' + voices[i].gender + '" data-charlimit="' + ttsServices[voiceGroup].charLimit + '">' +
                         '<span class="voice-flag">' + countryCodeToEmoji(voices[i].flag) + '</span><span class="voice-name">' + voiceName +
                         '</span><span class="voice-gender">' + genderLetterToEmoji(voices[i]) + '</span></button>' + "\n";
@@ -93,19 +93,19 @@ if (currentPage === 'demo') {
 
     // Loop through languages
     langs.sort();
-    let selLang = urlParamLang == 'All' ? ' is-success selected-lang' : ' ' + styles.button_fg + ' is-hidden';
+    let selLang = urlParamLang === 'All' ? ' is-success selected-lang' : ' ' + styles.button_fg + ' is-hidden';
     let langHtml = '<button type="button" class="button button-lang ' + styles.button_fg + ' is-rounded has-text-weight-bold' + selLang + '" data-lang="All">All</button>' + "\n";
     for (let i = 0; i < langs.length; i++) {
-        selLang = (urlParamLang == langs[i]) || ( !urlParamLang && (defaultLang == langs[i]) ) ? ' is-success selected-lang' : ' is-light is-hidden';
+        selLang = (urlParamLang === langs[i]) || ( !urlParamLang && (defaultLang === langs[i]) ) ? ' is-success selected-lang' : ' is-light is-hidden';
         langHtml += '<button type="button" class="button button-lang ' + styles.button_fg + ' is-rounded' + selLang + '" data-lang="' + langs[i] + '">' + langs[i] + '</button>' + "\n";
     }
 
     // Genders
     let genders = ['Male', 'Female', 'Other'];
-    let selGender = !urlParamGender || urlParamGender.toUpperCase() == 'A' ? ' is-active' : '';
+    let selGender = !urlParamGender || urlParamGender.toUpperCase() === 'A' ? ' is-active' : '';
     let filterGenderHtml = '<li class="tab tab-gender has-text-weight-bold' + selGender + '" id="tab-A"><a>All</a></li>';
     for (let i = 0; i < genders.length; i++) {
-        selGender = (urlParamGender && urlParamGender.toUpperCase() == genders[i].charAt(0)) ? ' is-active' : '';
+        selGender = (urlParamGender && urlParamGender.toUpperCase() === genders[i].charAt(0)) ? ' is-active' : '';
         filterGenderHtml += '<li class="tab tab-gender' + selGender +'" id="tab-' + genders[i].charAt(0) + '"><a>' + genders[i] + '</a></li>';
     }
 
@@ -429,9 +429,9 @@ function updateVoiceList() {
     // Loop through buttons and unhide any that match our filters, hide the rest
     for (let i = 0; i < b.length; i++) {
         if (
-            ((lang != 'All' && b[i].getAttribute('data-lang') == lang) || lang == 'All' || b[i].getAttribute('data-lang') == null) &&
-            ((api != 'All' && b[i].getAttribute('data-api') == api) || api == 'All') &&
-            ((gender != 'A' && b[i].getAttribute('data-gender') == gender) || gender == 'A' || b[i].getAttribute('data-gender') == null)
+            ((lang !== 'All' && b[i].getAttribute('data-lang') === lang) || lang === 'All' || b[i].getAttribute('data-lang') === null) &&
+            ((api !== 'All' && b[i].getAttribute('data-api') === api) || api === 'All') &&
+            ((gender !== 'A' && b[i].getAttribute('data-gender') === gender) || gender === 'A' || b[i].getAttribute('data-gender') === null)
         ) {
             b[i].classList.remove('is-hidden');
         } else {
@@ -541,7 +541,7 @@ function generateTTSUrl() {
         xhr.onload = function () {
             //console.log(xhr.responseText);
             let response = JSON.parse(xhr.responseText);
-            if (xhr.readyState == 4 && xhr.status == '200') {
+            if (xhr.readyState === 4 && xhr.status === '200') {
                 console.log(response);
                 if (response.success === true) {
                     showAudioPlayer(response.audio_url);
@@ -582,7 +582,7 @@ function generateTTSUrlForPlaylist(api, voice, text, voice_name, playlist_index)
     const xhr = new XMLHttpRequest();
     xhr.onload = function () {
         const response = JSON.parse(xhr.responseText);
-        if (xhr.readyState == 4 && xhr.status == '200') {
+        if (xhr.readyState === 4 && xhr.status === '200') {
             //console.log(response);
             dialogueToArray(response);
         } else {
@@ -725,11 +725,11 @@ function characterCount(textarea, elChars, elCharCount, service = null)
  */
 function genderLetterToEmoji(voice)
 {
-    if (voice.gender == 'M') {
+    if (voice.gender === 'M') {
         return '\u2642';
-    } else if (voice.gender == 'F') {
+    } else if (voice.gender === 'F') {
         return '\u2640';
-    } else if (voice.gender == 'O') {
+    } else if (voice.gender === 'O') {
         if (voice.customEmoji) return voice.customEmoji;
         return '\u2753';
     }
@@ -934,7 +934,7 @@ function getPlaylist(plsJSON, addToDom, editingPlaylist) {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', 'playlist.php?pls_file=' + plsJSON, true);
     xhr.onload = function () {
-        if (xhr.readyState == 4 && xhr.status == '200') {
+        if (xhr.readyState === 4 && xhr.status === '200') {
             objConversation = JSON.parse(xhr.responseText);
             if (objConversation.success === true) {
                 arrPlaylistDialogue = objConversation.dialogue;
@@ -996,7 +996,7 @@ function generateSelectHtml() {
         for (let i = 0; i < voices.length; i++) {
             // Set voice name
             voiceName = voices[i].name;
-            if (voiceName.length == 0) {
+            if (voiceName.length === 0) {
                 // If the voice is not named, use the language
                 voiceName = voices[i].lang;
                 // Include accent/region if applicable
@@ -1237,7 +1237,7 @@ function generateConversation() {
 
     currentPos++;
 
-    if (currentPos == 0) {
+    if (currentPos === 0) {
         // We are starting a new playlist so reset everything
         document.getElementById('con-audio-output').scrollIntoView();
         document.getElementById('progress-done').classList.add('is-hidden');
@@ -1513,7 +1513,7 @@ function sharePlaylist(e) {
         xhr.onload = function () {
             //console.log(xhr.responseText);
             const response = JSON.parse(xhr.responseText);
-            if (xhr.readyState == 4 && xhr.status == '200') {
+            if (xhr.readyState === 4 && xhr.status === '200') {
                 //console.log(response);
                 if (response.success === true) {
                     // Copy playlist URL to clipboard
