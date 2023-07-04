@@ -19,12 +19,12 @@ include 'include/header.php';
                 
                 <div class="columns">
                     
-                    <div class="column column-voices">
+                    <div class="column is-half column-voices">
                         <div id="voice-selection" class="buttons is-centered">
                         </div>
                     </div>
                     
-                    <div class="column">
+                    <div class="column is-half">
                         <form action="" method="post">
                             <div class="field is-horizontal">
                                 <div class="field-body">
@@ -52,19 +52,21 @@ include 'include/header.php';
                             
                             <div class="field is-horizontal">
                                 <div class="field-body">
-                                    <div class="field is-grouped">
+                                    <div class="field">
                                         <div class="control">
                                             <div id="tts-player" class="control is-pulled-left is-hidden">
-                                            </div>
-                                        </div>
-                                        <div class="control">
-                                            <div id="tts-error" class="message is-pulled-left is-small is-hidden">
-                                                <div id="tts-error-text" class="message-body"></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="block">
+                                <div id="tts-error" class="message is-small is-hidden">
+                                    <div id="tts-error-text" class="message-body"></div>
+                                </div>
+                            </div>
+
                         </form>
                     </div>
                 

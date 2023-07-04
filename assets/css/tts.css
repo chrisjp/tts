@@ -29,6 +29,11 @@
 #tab-container .tabs ul {
     border-bottom: 0;
 }
+#tts-error-text {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+}
 @media (max-width: 639.98px) {
     .button-voice {
         width: 100%;
@@ -50,7 +55,6 @@
 @media (min-width: 1280px) and (max-width: 1407px) {
     .column-voices {
         flex: none;
-        width: 60% !important;
     }
 }
 
