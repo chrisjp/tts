@@ -15,6 +15,7 @@ export function updateURLParameter(url, param, paramVal)
     let baseURL = tempArray[0];
     let additionalURL = tempArray[1];
     let temp = "";
+    paramVal = typeof paramVal === 'undefined' ? '' : paramVal
 
     if (additionalURL) {
         let tmpAnchor = additionalURL.split("#");
