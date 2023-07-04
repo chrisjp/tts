@@ -9,23 +9,23 @@
  */
 export function updateURLParameter(url, param, paramVal)
 {
-    var TheAnchor = null;
-    var newAdditionalURL = "";
-    var tempArray = url.split("?");
-    var baseURL = tempArray[0];
-    var additionalURL = tempArray[1];
-    var temp = "";
+    let TheAnchor = null;
+    let newAdditionalURL = "";
+    let tempArray = url.split("?");
+    let baseURL = tempArray[0];
+    let additionalURL = tempArray[1];
+    let temp = "";
 
     if (additionalURL) {
-        var tmpAnchor = additionalURL.split("#");
-        var TheParams = tmpAnchor[0];
+        let tmpAnchor = additionalURL.split("#");
+        let TheParams = tmpAnchor[0];
             TheAnchor = tmpAnchor[1];
         if(TheAnchor)
             additionalURL = TheParams;
 
         tempArray = additionalURL.split("&");
 
-        for (var i=0; i<tempArray.length; i++) {
+        for (let i=0; i<tempArray.length; i++) {
             if(tempArray[i].split('=')[0] != param) {
                 newAdditionalURL += temp + tempArray[i];
                 temp = "&";
@@ -33,8 +33,8 @@ export function updateURLParameter(url, param, paramVal)
         }
     }
     else {
-        var tmpAnchor = baseURL.split("#");
-        var TheParams = tmpAnchor[0];
+        let tmpAnchor = baseURL.split("#");
+        let TheParams = tmpAnchor[0];
             TheAnchor  = tmpAnchor[1];
 
         if (TheParams)
@@ -43,7 +43,7 @@ export function updateURLParameter(url, param, paramVal)
 
     if (TheAnchor) paramVal += "#" + TheAnchor;
 
-    var rows_txt = temp + "" + param + "=" + paramVal;
+    let rows_txt = temp + "" + param + "=" + paramVal;
     return baseURL + "?" + newAdditionalURL + rows_txt;
 }
 
@@ -71,7 +71,7 @@ export function setNewUrl(newUrl)
  */
 export function timeSince(thisDate, pastDate)
 {
-    var secondsPast = (thisDate.getTime() - pastDate.getTime()) / 1000;
+    let secondsPast = (thisDate.getTime() - pastDate.getTime()) / 1000;
     if (secondsPast < 60) {
         return parseInt(secondsPast) + ' seconds ago';
     }
