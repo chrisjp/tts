@@ -12,7 +12,7 @@ include 'include/header.php';
                 <div id="filters">
                     <div id="filter-api" class="tabs is-toggle is-centered is-small"></div>
                     <div id="filter-gender" class="tabs is-toggle is-centered is-small"></div>
-                    <div id="lang-selection" class="buttons are-small"></div>
+                    <div id="lang-selection" class="buttons is-centered are-small"></div>
                 </div>
 
                 <hr />
