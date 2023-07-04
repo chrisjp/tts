@@ -558,7 +558,7 @@ function generateTTSUrl() {
         xhr.onload = function () {
             //console.log(xhr.responseText);
             let response = JSON.parse(xhr.responseText);
-            if (xhr.readyState === 4 && xhr.status === '200') {
+            if (xhr.readyState === 4 && xhr.status === 200) {
                 console.log(response);
                 if (response.success === true) {
                     showAudioPlayer(response.audio_url);
@@ -599,7 +599,7 @@ function generateTTSUrlForPlaylist(api, voice, text, voice_name, playlist_index)
     const xhr = new XMLHttpRequest();
     xhr.onload = function () {
         const response = JSON.parse(xhr.responseText);
-        if (xhr.readyState === 4 && xhr.status === '200') {
+        if (xhr.readyState === 4 && xhr.status === 200) {
             //console.log(response);
             dialogueToArray(response);
         } else {
@@ -951,7 +951,7 @@ function getPlaylist(plsJSON, addToDom, editingPlaylist) {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', 'playlist.php?pls_file=' + plsJSON, true);
     xhr.onload = function () {
-        if (xhr.readyState === 4 && xhr.status === '200') {
+        if (xhr.readyState === 4 && xhr.status === 200) {
             objConversation = JSON.parse(xhr.responseText);
             if (objConversation.success === true) {
                 arrPlaylistDialogue = objConversation.dialogue;
@@ -1530,7 +1530,7 @@ function sharePlaylist(e) {
         xhr.onload = function () {
             //console.log(xhr.responseText);
             const response = JSON.parse(xhr.responseText);
-            if (xhr.readyState === 4 && xhr.status === '200') {
+            if (xhr.readyState === 4 && xhr.status === 200) {
                 //console.log(response);
                 if (response.success === true) {
                     // Copy playlist URL to clipboard
