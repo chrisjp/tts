@@ -6,6 +6,11 @@ use ChrisJP\TTS\Services\Service;
 use ChrisJP\TTS\Request;
 use ChrisJP\TTS\ReturnObjectTrait;
 
+/**
+ * Acapela
+ * 
+ * Doesn't use their actual API. Simulates a request coming from the demo page on their website.
+ */
 class Acapela implements Service 
 {
 

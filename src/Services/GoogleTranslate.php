@@ -6,12 +6,22 @@ use ChrisJP\TTS\Services\Service;
 use ChrisJP\TTS\Request;
 use ChrisJP\TTS\ReturnObjectTrait;
 
+/**
+ * Google Translate
+ * 
+ * Uses the same endpoint as translate.google.com when you click on the speaker icon under the textarea
+ * 
+ * While Google has a full list of languages that can be translated on their website, they don't list
+ * which of those support TTS functionality. It is a case of having to type in a string and click on each
+ * individual language and see if the speaker icon appears.
+ * https://cloud.google.com/translate/docs/languages
+ */
 class GoogleTranslate implements Service 
 {
 
     use ReturnObjectTrait;
 
-    const baseURL = 'http://translate.google.com/translate_tts?';
+    const baseURL = 'https://translate.google.com/translate_tts?';
 
     const demoSite = 'https://translate.google.com/';
 
@@ -83,7 +93,7 @@ class GoogleTranslate implements Service
      */
     public function requestTTS(string $voice, string $text): object
     {
-
+        // TODO: Support `ttsspeed` parameter in the UI
         $params = [
             'client'   => 'tw-ob',
             'textlen'  => strlen($text),

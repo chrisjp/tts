@@ -6,6 +6,14 @@ use ChrisJP\TTS\Services\Service;
 use ChrisJP\TTS\Request;
 use ChrisJP\TTS\ReturnObjectTrait;
 
+/**
+ * Oddcast
+ * 
+ * Uses their API with the auth values that aren't very well hidden on their demo website.
+ * 
+ * Unfortunately, their voice IDs are not unique as each one belongs to an 'engine' and a 'language'
+ * Therefore, to make them unique we simply concatenate the three IDs together, hyphen-separated.
+ */
 class Oddcast implements Service 
 {
 

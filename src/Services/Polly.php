@@ -6,6 +6,16 @@ use ChrisJP\TTS\Services\Service;
 use ChrisJP\TTS\Request;
 use ChrisJP\TTS\ReturnObjectTrait;
 
+/**
+ * Amazon Polly voices via Streamlabs' unofficial API
+ * 
+ * Streamlabs only supports Polly voices that use the 'standard' engine.
+ * This means voices that only exist in their 'neural' engine will not work.
+ * If you do try to use them, a valid audio URL will be generated, however instead of returning
+ * MP3 audio it will return a JSON string with an error.
+ * 
+ * The full list of voices can be found here: https://docs.aws.amazon.com/polly/latest/dg/voicelist.html
+ */
 class Polly implements Service 
 {
 

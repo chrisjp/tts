@@ -6,6 +6,13 @@ use ChrisJP\TTS\Services\Service;
 use ChrisJP\TTS\Request;
 use ChrisJP\TTS\ReturnObjectTrait;
 
+/**
+ * CereProc
+ * 
+ * One of few services whose live demo allows you to change format and sample rate.
+ * Doesn't use their actual paid API, instead makes a request to their live demo PHP script
+ * mimicking coming from their live demo page.
+ */
 class CereProc implements Service
 {
     use ReturnObjectTrait;

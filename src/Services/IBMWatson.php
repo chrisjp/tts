@@ -6,6 +6,14 @@ use ChrisJP\TTS\Services\Service;
 use ChrisJP\TTS\Request;
 use ChrisJP\TTS\ReturnObjectTrait;
 
+/**
+ * IBM Watson
+ * 
+ * By interacting with their live demo site and making several requests to different API endpoints,
+ * generating cookies and other specific headers and POST data, we can make use of their voice synthesis.
+ * Eventually returns raw MP3 audio data which we can either serve as a base64 data URI
+ * or save as a file locally.
+ */
 class IBMWatson implements Service 
 {
 
@@ -110,6 +118,7 @@ class IBMWatson implements Service
         // Step 2 - Send a request to the store endpoint
         // The payload for this should be JSON containing SSML-formatted text to be synthesized and a sessionID to store it in
         // The session ID can be faked - it just needs to be a string in the format of a UUID, so we'll generate one now
+        // TODO: Support prosody tag
         $UUID = vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex(random_bytes(16)), 4));
         $jsonPayload = '{"ssmlText": "<prosody pitch=\"0%\" rate=\"-0%\">' . $text . '</prosody>","sessionID": "' . $UUID . '"}';
 
