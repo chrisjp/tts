@@ -314,8 +314,13 @@ function getCurrentPage()
  */
 function getSelectedVoice() {
     let selVoice = document.querySelectorAll('.button-voice.selected-voice')[0];
+    if (typeof selVoice === 'undefined' || selVoice === null) {
+        selVoice = document.getElementsByClassName('button-voice')[1]; // Fallback to first voice
+        selVoice.classList.add('is-success');
+        selVoice.classList.add('selected-voice');
+    }
 
-    return selVoice ? selVoice : document.getElementsByClassName('button-voice')[0];    // Return first voice as a fallback
+    return selVoice;
 }
 
 
@@ -326,8 +331,12 @@ function getSelectedVoice() {
  */
 function getSelectedApi() {
     let selApi = document.querySelectorAll('.tab-api.is-active')[0];
+    if (typeof selApi === 'undefined' || selApi === null) {
+        selApi = document.getElementById('tab-Polly'); // Fallback to Polly
+        selectApi(null, 'Polly');
+    }
 
-    return selApi ? selApi : document.getElementById('tab-Polly');      // Return Polly as a fallback
+    return selApi;
 }
 
 
@@ -338,8 +347,12 @@ function getSelectedApi() {
  */
 function getSelectedGender() {
     let selGender = document.querySelectorAll('.tab-gender.is-active')[0];
+    if (typeof selGender === 'undefined' || selGender === null) {
+        selGender = document.getElementById('tab-A'); // Fallback to All
+        selectGender(null, 'A');
+    }
 
-    return selGender ? selGender : document.getElementById('tab-A');          // Return All as a fallback
+    return selGender;
 }
 
 
@@ -350,8 +363,12 @@ function getSelectedGender() {
  */
 function getSelectedLang() {
     let selLang = document.querySelectorAll('.button-lang.selected-lang')[0];
+    if (typeof selLang === 'undefined' || selLang === null) {
+        selLang = document.getElementsByClassName('button-lang')[0]; // Fallback to All
+        selectLang(null, 'All');
+    }
 
-    return selLang ? selLang : document.getElementsByClassName('button-lang')[0];    // Return All as a fallback
+    return selLang;
 }
 
 
