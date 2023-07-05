@@ -34,6 +34,10 @@
     word-wrap: break-word;
     hyphens: auto;
 }
+.table-stats {
+    background-color: transparent !important;
+    color: inherit !important;
+}
 @media (max-width: 639.98px) {
     .button-voice {
         width: 100%;
@@ -78,6 +82,9 @@
 }
 .mode-light #tab-container .tabs li a:hover {
     background-color: hsl(0, 0%, 90%) !important;
+}
+.mode-light .table-stats td, .mode-light .table-stats th {
+    border-color: #eee !important;
 }
 
 /* DARK MODE SPECIFICS */
@@ -176,4 +183,7 @@
 .mode-dark .message-body {
     border-color: #444444 !important;
     color: inherit !important;
+}
+.mode-dark .table-stats td, .mode-dark .table-stats th {
+    border-color: #444444 !important;
 }

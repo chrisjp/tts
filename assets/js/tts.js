@@ -197,7 +197,15 @@ else if (currentPage === 'playlist') {
     isPlaylistPage = true;
     getPlaylist(urlParamPls, true, false);
 }
-
+else if (currentPage === 'stats') {
+    // STATS PAGE
+    document.getElementById('stats-voices-toggle').addEventListener('click', function(event) {
+        let tableRows = document.getElementsByClassName('table-row-voice');
+        for (let i = 0; i < tableRows.length; i++) {
+            if (parseInt(tableRows[i].dataset.pos) > 10) tableRows[i].classList.toggle('is-hidden');
+        }
+    });
+}
 
 /**
  * FUNCTIONS
@@ -301,10 +309,9 @@ function getStyleMode() {
  */
 function getCurrentPage()
 {
-    const thisPageName = window.location.pathname.split('/').reverse()[0]
-    if (thisPageName === 'playlist.php') return 'playlist';
-    else if (thisPageName === 'conversation.php') return 'conversation';
-    return 'demo';
+    let thisPageName = window.location.pathname.split('/').reverse()[0].replace('.php', '');
+    if (!thisPageName || thisPageName === 'index') return 'demo';
+    return thisPageName;
 }
 
 /**

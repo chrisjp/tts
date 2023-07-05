@@ -16,12 +16,18 @@ include 'include/header.php';
                 <div class="columns my-2">
 
                     <div class="column">
-                        <b>Total files: <?php echo $stats->total_files; ?></b><br />
-                        <b>Total playlists: <?php echo $stats->total_playlists; ?></b><br />
+                        <table class="table table-stats">
+                            <tbody>
+                                <tr><td class="has-text-weight-bold">Total files</td><td class="has-text-weight-bold"><?php echo $stats->total_files; ?></td></tr>
+                                <tr><td class="has-text-weight-bold">Total playlists</td><td class="has-text-weight-bold"><?php echo $stats->total_playlists; ?></td></tr>
+                            </tbody>
+                        </table>
                     </div>
 
                     <div class="column">
                         <p><b>Services used:</b></p>
+                        <table class="table table-stats">
+                            <tbody>
 
 <?php
 // Put data into an array and sort it in descending order
@@ -30,14 +36,20 @@ foreach ($stats->by_service as $serviceName => $servNumUses) {
     $serviceStats[$serviceName] = $servNumUses;
 }
 arsort($serviceStats);
+$pos = 0;
 foreach ($serviceStats as $serviceName => $servNumUses) {
-    echo $serviceName . ': ' . $servNumUses . '<br />' . PHP_EOL;
+    $pos++;
+    echo '<tr><td>' . $pos . '.</td><td>'. $serviceName . '</td><td>' . $servNumUses . '</td></tr>' . PHP_EOL;
 }
 ?>
+                            </tbody>
+                        </table>
                     </div>
 
                     <div class="column">
                         <p><b>Voices used:</b></p>
+                        <table class="table table-stats">
+                            <tbody>
 
 <?php
 // Put data into an array and sort it in descending order
@@ -46,10 +58,19 @@ foreach ($stats->by_voice as $voiceId => $voiceNumUses) {
     $voiceStats[$voiceId] = $voiceNumUses;
 }
 arsort($voiceStats);
+$pos = 0;
 foreach ($voiceStats as $voiceId => $voiceNumUses) {
-    echo $voiceId . ': ' . $voiceNumUses . '<br />' . PHP_EOL;
+    $pos++;
+    $voiceParts = explode(' - ', $voiceId);
+    $hiddenRow = $pos > 10 ? ' is-hidden' : '';
+    echo '<tr class="table-row-voice' . $hiddenRow . '" data-pos="' . $pos . '"><td>' . $pos . '.</td><td>'. $voiceParts[1] . '<br /><span class="is-size-7">' . $voiceParts[0] . '</span></td><td>' . $voiceNumUses . '</td></tr>' . PHP_EOL;
 }
 ?>
+                            </tbody>
+                            <tfoot>
+                                <tr><td colspan="3"><a id="stats-voices-toggle">Show/Hide full table</a></td></tr>
+                            </tfoot>
+                        </table>
                     </div>
 
                 </div>
