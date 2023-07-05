@@ -2,10 +2,13 @@
 include 'include/header.php';
 ?>
             <div class="box">
-                <p>Choose from <span id="voicecount" class="has-text-weight-bold">500+</span> voices from Amazon Polly (via Streamlabs), TikTok, CereProc, IBM Watson, Acapela, Oddcast, Google Translate.<br />
-                    Polly voices can be used for testing how Twitch.tv donations will sound as many streamers have TTS enabled via Streamlabs or StreamElements for this. <img src="https://cdn.frankerfacez.com/emoticon/109777/1" alt="FeelsGoodMan" /><br/>
-                    Also you may wish to check out the <a href="https://docs.google.com/document/d/1qLKdc3QArtn6PVuGf42EfoMuzvLE_ykWwU1RViEcrbU/edit?usp=sharing" target="_blank">"TTS Dossier"</a> for some <em>entertaining</em> ideas. <img src="https://cdn.frankerfacez.com/emoticon/381875/1" alt="KEKW" /></p>
-                <p>Finally, here's a <a href="https://gist.github.com/TETYYS/f1aa16b18fb619fc6c0f13ba4f9ae70d" target="_blank">list of characters</a> explaining how they are pronounced (specifically by Brian). <img src="https://cdn.frankerfacez.com/emoticon/239504/1" alt="5Head" /></p>
+                <p>
+                    Choose from <span id="voicecount" class="has-text-weight-bold">1000+</span> voices from Amazon Polly (via StreamElements/Streamlabs), Google Cloud Text-to-Speech (StreamElements), TikTok, CereProc, IBM Watson, Acapela, Oddcast, Microsoft Azure Speech (via Bing Translator), and Google Translate.<br />
+                    Use <b>StreamElements</b> or <b>Streamlabs</b> voices for testing how Twitch.tv donations will sound to streamers who have TTS enabled via those services. <img src="https://cdn.frankerfacez.com/emoticon/109777/1" alt="FeelsGoodMan" />
+                </p>
+                <p>
+                    The <a href="https://docs.google.com/document/d/1qLKdc3QArtn6PVuGf42EfoMuzvLE_ykWwU1RViEcrbU/edit?usp=sharing" target="_blank">"TTS Dossier"</a> may have some entertaining TTS ideas for you <img src="https://cdn.frankerfacez.com/emoticon/381875/1" alt="KEKW" /> and for reference, here's a <a href="https://gist.github.com/TETYYS/f1aa16b18fb619fc6c0f13ba4f9ae70d" target="_blank">list of characters</a> explaining how they are pronounced (specifically by Brian). <img src="https://cdn.frankerfacez.com/emoticon/239504/1" alt="5Head" />
+                </p>
                 
                 <hr />
                 
