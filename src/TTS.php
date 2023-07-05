@@ -90,7 +90,7 @@ class TTS
         if ($service !== null) {
             $this->setService($service);
         } else {
-            $this->setService('Polly');
+            $this->setService('Streamlabs');
         }
 
         if ($voice !== null) {

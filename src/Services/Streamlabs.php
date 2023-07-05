@@ -7,7 +7,7 @@ use ChrisJP\TTS\Request;
 use ChrisJP\TTS\ReturnObjectTrait;
 
 /**
- * Amazon Polly voices via Streamlabs' unofficial API
+ * Amazon Polly voices via Streamlabs' API
  * 
  * Streamlabs only supports Polly voices that use the 'standard' engine.
  * This means voices that only exist in their 'neural' engine will not work.
@@ -16,7 +16,7 @@ use ChrisJP\TTS\ReturnObjectTrait;
  * 
  * The full list of voices can be found here: https://docs.aws.amazon.com/polly/latest/dg/voicelist.html
  */
-class Polly implements Service 
+class Streamlabs implements Service 
 {
 
     use ReturnObjectTrait;
@@ -30,7 +30,7 @@ class Polly implements Service
      *
      * @var string
      */
-    private string $name = 'Amazon Polly via Streamlabs';
+    private string $name = 'Streamlabs (Amazon Polly)';
 
     /**
      * Short name of this service.
@@ -38,7 +38,7 @@ class Polly implements Service
      *
      * @var string
      */
-    private string $shortName = 'Polly';
+    private string $shortName = 'Streamlabs';
 
     /**
      * The default voice that will be used if one is not set.

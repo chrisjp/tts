@@ -16,7 +16,7 @@ document.getElementById('toggleStyleMode').addEventListener('click', function(ev
 if (getStyleMode() === 'mode-dark') toggleStyleMode();
 
 // Constants
-const defaultApi = 'Polly';
+const defaultApi = 'Streamlabs';
 const defaultVoice = 'Brian';
 const defaultLang = 'English';
 
@@ -332,8 +332,8 @@ function getSelectedVoice() {
 function getSelectedApi() {
     let selApi = document.querySelectorAll('.tab-api.is-active')[0];
     if (typeof selApi === 'undefined' || selApi === null) {
-        selApi = document.getElementById('tab-Polly'); // Fallback to Polly
-        selectApi(null, 'Polly');
+        selApi = document.getElementById('tab-Streamlabs'); // Fallback to Streamlabs
+        selectApi(null, 'Streamlabs');
     }
 
     return selApi;
