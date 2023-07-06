@@ -38,6 +38,13 @@
     background-color: transparent !important;
     color: inherit !important;
 }
+.box-currently-playing {
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/2/21/Speaker_Icon.svg');
+    background-position: top 4px right 4px;
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+}
+
 @media (max-width: 639.98px) {
     .button-voice {
         width: 100%;
@@ -85,6 +92,9 @@
 }
 .mode-light .table-stats td, .mode-light .table-stats th {
     border-color: #eee !important;
+}
+.mode-light .box-currently-playing {
+    background-color: #eee;
 }
 
 /* DARK MODE SPECIFICS */
@@ -186,4 +196,7 @@
 }
 .mode-dark .table-stats td, .mode-dark .table-stats th {
     border-color: #444444 !important;
+}
+.mode-dark .box-currently-playing {
+    background-color: #444;
 }

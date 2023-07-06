@@ -996,7 +996,7 @@ function editPlaylist() {
         addDialogueBox();
         if (null !== arrPlaylistDialogue[i]) {
             document.getElementsByName('con-voice[]')[i].value = arrPlaylistDialogue[i].service + '__' + arrPlaylistDialogue[i].voice.id;
-            document.getElementsByName('con-text[]')[i].innerText = arrPlaylistDialogue[i].text;
+            document.getElementsByName('con-text[]')[i].innerHTML = arrPlaylistDialogue[i].text;
         }
     }
 }
@@ -1321,39 +1321,74 @@ function updateProgress(currentPos, count) {
  */
 function addPlaylistToDOM() {
     let playlistHtml = '';
+    let buttonsHtml = '';
+    let trackNo = 0;
+    let shareButtonHtml = '<button id="btn-copy-playlist-url" type="button" class="button is-success">Share Playlist</button>';
 
     for (let i = 0; i < arrPlaylistDialogue.length; i++) {
         // Check this index isn't undefined (if it is it's probably audio we skipped over due to an error)
         if (arrPlaylistDialogue[i] !== undefined && arrPlaylistDialogue[i] !== null) {
-            playlistHtml += currentPage === 'playlist' ? '<div class="box"><div class="columns"><div class="column is-one-fifth">' : '';
-            playlistHtml += '<strong>' + arrPlaylistDialogue[i].voice.name + '</strong><br/>';
-            playlistHtml += currentPage === 'playlist' ? '<span id="btn-transcript-' + i + '" class="button is-small is-link">Show transcript</span></div><div class="column">' : '';
-            playlistHtml += '<audio controls preload="metadata" src="' + arrPlaylistDialogue[i].audio_url + '" title="TTS Audio - ' + arrPlaylistDialogue[i].voice.name + '" data-track-number="' + (i+1) + '" id="playlist-track-' + (i+1) + '"><p>Your browser does not support the <code>audio</code> element.</p></audio>';
-            playlistHtml += currentPage === 'playlist' ? '</div></div><blockquote class="is-hidden" id="transcript-' + i + '">' + arrPlaylistDialogue[i].text + '</blockquote></div>' : '<br/>';
+            trackNo = (i+1);
+            if (isPlaylistPage) {
+                playlistHtml += `<div class="columns is-vcentered">
+                <div class="column is-one-quarter tts-playlist-audio">
+                    <audio controls preload="metadata" src="${arrPlaylistDialogue[i].audio_url}" title="TTS Audio - ${arrPlaylistDialogue[i].voice.name}" data-track-number="${trackNo}" id="playlist-track-${trackNo}">
+                        <p>Your browser does not support the <code>audio</code> element.</p>
+                    </audio>
+                </div>
+                <div class="column tts-playlist-transcript">
+                    <div id="transcript-box-${trackNo}" class="box mt-0 mb-2 tts-transcript-box">
+                        <p class="mb-2"><span id="tts-voice-track-${trackNo}" class="has-text-weight-bold">${arrPlaylistDialogue[i].voice.name}</span>:</p>
+                        <blockquote id="tts-transcript-track-${trackNo}" class="ml-5">${arrPlaylistDialogue[i].text.replace(/(?:\r\n|\r|\n)/g, '<br>')}</blockquote>
+                    </div>
+                </div>
+                </div>`;
+            }
+            else {
+                // For the preview in the conversation editing page we keep things minimal
+                playlistHtml += `<strong>${arrPlaylistDialogue[i].voice.name}</strong><br />
+                    <audio controls preload="metadata" src="${arrPlaylistDialogue[i].audio_url}" title="TTS Audio - ${arrPlaylistDialogue[i].voice.name}" data-track-number="${trackNo}" id="playlist-track-${trackNo}">
+                        <p>Your browser does not support the <code>audio</code> element.</p>
+                    </audio><br />`;
+            }
         }
     }
-    playlistHtml += '<br /><br /><div class="field is-grouped"><div class="control"><button id="btn-copy-playlist-url" type="button" class="button is-success"">Share Playlist</button></div>';
+    
+    // Add buttons and all the HTML we've built up to the page
     if (isPlaylistPage) {
-        const voiceIds = [];
+        let voiceIds = [];
         for (let v = 0; v < arrPlaylistVoices.length; v++) {
             voiceIds.push(arrPlaylistVoices[v].id);
         }
-        playlistHtml += '<div class="control"><a href="./conversation.php?voices=' + Array.from(voiceIds).join(",") + '&amp;edit=' + urlParamPls + '" id="btn-edit-playlist" class="button is-success">Edit This Playlist</a></div>';
-    }
-    playlistHtml += '</div>';
+        buttonsHtml += '<a href="./conversation.php?voices=' + Array.from(voiceIds).join(",") + '&amp;edit=' + urlParamPls + '" id="btn-edit-playlist" class="button is-success">Edit This Playlist</a> ' + shareButtonHtml;
+        let playlistButtons = document.getElementById('playlist-buttons');
+        playlistButtons.innerHTML = buttonsHtml + playlistButtons.innerHTML;
 
+        playlistHtml = `
+        <div class="columns">
+            <div class="column is-one-quarter tts-playlist-audio">
+                <span class="has-text-weight-bold">Tracks:</span>
+            </div>
+            <div class="column tts-playlist-transcript">
+                <span class="has-text-weight-bold">Transcript:</span> (<a id="transcript-toggle">Show/Hide</a>)
+            </div>
+        </div>
+        ${playlistHtml}`;
+    }
+    else {
+        playlistHtml += '<br /><br /><div class="field is-grouped"><div class="control">' + shareButtonHtml + '</div></div>';
+    }
     document.getElementById('tts-playlist').innerHTML = playlistHtml;
 
     // Event listeners
     document.getElementById('btn-copy-playlist-url').addEventListener('click', function(event){sharePlaylist(document.getElementById('btn-copy-playlist-url'));});
     if (isPlaylistPage) {
-        for (let i = 0; i < arrPlaylistDialogue.length; i++) {
-            // Check this index isn't undefined (if it is it's probably audio we skipped over due to an error)
-            if (arrPlaylistDialogue[i] !== undefined && arrPlaylistDialogue[i] !== null) {
-                let transcriptBtn = 'btn-transcript-' + i;
-                document.getElementById(transcriptBtn).addEventListener('click', function(event){toggleTranscript(i);});
+        document.getElementById('transcript-toggle').addEventListener('click', function(event) {
+            let transcriptBoxes = document.getElementsByClassName('tts-transcript-box');
+            for (let i = 0; i < transcriptBoxes.length; i++){
+                transcriptBoxes[i].classList.toggle('is-hidden');
             }
-        }
+        });
     }
 }
 
@@ -1405,13 +1440,20 @@ function playPlaylist() {
         for (let i = 0; i < audioElements.length; i++) {
             audioElements[i].addEventListener('playing', function(e) {
                 //console.log('Audio playback started on track ' + e.target.dataset.trackNumber + ' at ' + e.target.currentTime + ' seconds.');
+                if (isPlaylistPage) document.getElementById('transcript-box-' + e.target.dataset.trackNumber).classList.add('box-currently-playing');
+            });
+            audioElements[i].addEventListener('pause', function(e) {
+                //console.log('Audio playback paused on track ' + e.target.dataset.trackNumber + ' at ' + e.target.currentTime + ' seconds.');
+                if (isPlaylistPage) document.getElementById('transcript-box-' + e.target.dataset.trackNumber).classList.remove('box-currently-playing');
             });
             audioElements[i].addEventListener('ended', function(e) {
                 //console.log('Audio playback has ended on track ' + e.target.dataset.trackNumber);
+                if (isPlaylistPage) document.getElementById('transcript-box-' + e.target.dataset.trackNumber).classList.remove('box-currently-playing');
                 playNext(parseInt(e.target.dataset.trackNumber) + 1);
             });
         }
 
+        // Play the first track
         audioElements[0].play();
     }
 }
@@ -1479,7 +1521,7 @@ function dialogueToArray(result) {
         const playlistIndex = parseInt(result.meta.playlist_index);
 
         let dialogue = {};
-        dialogue.voice = {}
+        dialogue.voice = {};
         dialogue.voice.id = result.meta.voice_id;
         dialogue.voice.name = result.meta.service + ' - ' + result.meta.voice_name;
         dialogue.service = result.meta.service;

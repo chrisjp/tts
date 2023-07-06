@@ -26,20 +26,14 @@ include 'include/header.php';
 ?>
             <div class="box">
                 <p id="listen-to-this-convo">Loading playlist...</p>
-                <p><span id="cnvrstn-duration">&nbsp;</span></p><br/><br/>
+                <p class="mb-5"><span id="cnvrstn-duration"></span></p>
 
-                <div class="columns">
-
-                    <div class="column">
-                        <div id="tts-playlist" class="content">
-                        </div>
-                    </div>
-
+                <div id="tts-playlist">
                 </div>
 
-                <p>
-                    <a href="conversation.php" class="button is-success">Make Your Own</a>
-                </p>
+                <div id="playlist-buttons" class="buttons is-centered mt-6">
+                    <a href="./conversation.php" class="button is-success">Make Your Own</a>
+                </div>
             </div>
 <?php
 include 'include/footer.php';
