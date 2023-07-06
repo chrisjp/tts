@@ -13,14 +13,14 @@ class Playlist extends TTS
      *
      * @var object
      */
-    private $plsResponse;
+    private object $plsResponse;
 
     /**
      * JSON encoded response to request for TTS playlist
      *
      * @var string
      */
-    private $plsResponseJSON = '';
+    private string $plsResponseJSON = '';
 
     /**
      * Saves playlist JSON to disk.
@@ -89,11 +89,11 @@ class Playlist extends TTS
      */
     public function buildPlaylistObject(bool $success, string|null $playlistUrl, string|null $json, string|null $errorMessage = null): object
     {
-        return (object)[
+        return (object) [
             'success'          => $success,
             'playlist_url'     => $playlistUrl,
             'json'             => $json,
-            'error_msg'        => $errorMessage
+            'error_msg'        => $errorMessage,
         ];
     }
 

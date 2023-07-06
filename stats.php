@@ -1,6 +1,6 @@
 <?php
 // Grab all the stuff we need
-require './vendor/autoload.php';
+require_once './vendor/autoload.php';
 
 use ChrisJP\TTS\Stats;
 
@@ -8,7 +8,7 @@ use ChrisJP\TTS\Stats;
 $tts = new Stats();
 $stats = $tts->stats();
 
-include 'include/header.php';
+require_once 'include/header.php';
 ?>
             <div class="box">
                 <h2 id="stats" class="subtitle is-4">Statistics</h2>
@@ -63,7 +63,10 @@ foreach ($voiceStats as $voiceId => $voiceNumUses) {
     $pos++;
     $voiceParts = explode(' - ', $voiceId);
     $hiddenRow = $pos > 10 ? ' is-hidden' : '';
-    echo '<tr class="table-row-voice' . $hiddenRow . '" data-pos="' . $pos . '"><td>' . $pos . '.</td><td>'. $voiceParts[1] . '<br /><span class="is-size-7">' . $voiceParts[0] . '</span></td><td>' . $voiceNumUses . '</td></tr>' . PHP_EOL;
+    echo '<tr class="table-row-voice' . $hiddenRow . '" data-pos="' . $pos . '">' . PHP_EOL;
+    echo '<td>' . $pos . '.</td><td>'. $voiceParts[1] . '<br /><span class="is-size-7">' . $voiceParts[0] . '</span></td>' . PHP_EOL;
+    echo '<td>' . $voiceNumUses . '</td>' . PHP_EOL;
+    echo '</tr>' . PHP_EOL;
 }
 ?>
                             </tbody>
@@ -81,4 +84,4 @@ foreach ($voiceStats as $voiceId => $voiceNumUses) {
                 </p>
             </div>
 <?php
-include 'include/footer.php';
+require_once 'include/footer.php';

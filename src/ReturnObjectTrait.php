@@ -23,13 +23,13 @@ trait ReturnObjectTrait
             $info = 'HTTP status: ' . $curlInfo['http_code'] . '; Total transfer time: ' . $curlInfo['total_time'] . ' seconds.';
         }
 
-        return (object)[
+        return (object) [
             'success'          => $success,
             'audio_url'        => $audioUrl,
             'info'             => $info,
             'error_msg'        => $errorMessage,
             'service_response' => $serviceResponse,
-            'meta'             => $meta
+            'meta'             => $meta,
         ];
     }
 }

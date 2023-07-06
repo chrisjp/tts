@@ -3,7 +3,7 @@
 header('Content-Type: application/json');
 
 // Grab all the stuff we need
-require './vendor/autoload.php';
+require_once './vendor/autoload.php';
 use ChrisJP\TTS\TTS;
 
 // Instantiate the TTS class

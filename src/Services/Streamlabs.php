@@ -47,7 +47,6 @@ class Streamlabs implements Service
      */
     private string $defaultVoice = 'Brian';
 
-
     public function __construct()
     {
         // Nothing to do here

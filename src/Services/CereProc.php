@@ -141,14 +141,15 @@ class CereProc implements Service
         $cookieKey = base_convert(mt_rand(), 10, 16);
 
         // XML to send as the payload
-        $payload = '<speakExtended key=\'' . $cookieKey . '\'><voice>' . $voice . '</voice><text>' . $text . '</text><audioFormat>' . $this->audioFormat . '</audioFormat></speakExtended>';
+        $payload = '<speakExtended key="' . $cookieKey . '"><voice>' . $voice . '</voice><text>' . $text . '</text><audioFormat>' . $this->audioFormat . '</audioFormat></speakExtended>';
 
         // Mimic headers sent by their demo website
-        $headers = ['content-type: text/plain;charset=UTF-8',
-                    'user-agent: ' . $_SERVER['HTTP_USER_AGENT'],
-                    'cookie: Drupal.visitor.liveDemo=' . $cookieKey,
-                    'referer: ' . $this::demoSite,
-                    'origin: https://www.cereproc.com',
+        $headers = [
+            'content-type: text/plain;charset=UTF-8',
+            'user-agent: ' . $_SERVER['HTTP_USER_AGENT'],
+            'cookie: Drupal.visitor.liveDemo=' . $cookieKey,
+            'referer: ' . $this::demoSite,
+            'origin: https://www.cereproc.com',
         ];
 
         $request = new Request($this::baseURL);
@@ -179,7 +180,7 @@ class CereProc implements Service
 
         // $response will be in XML format, but since we can't access the name of the root element
         // (which is either <url> or <error>) from a SimpleXMLElement object, we have to manually check
-        // NOTE: CURLOPT_HEADER must be set to false in the initial for the following code to work
+        // for it with strpos()
         $xml = simplexml_load_string($response);
 
         if (array_key_exists('http_code', $curlInfo) && $curlInfo['http_code'] === 200) {

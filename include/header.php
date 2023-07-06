@@ -5,7 +5,7 @@ if (__FILE__ === $_SERVER['SCRIPT_FILENAME']) {
     exit;
 }
 
-require './vendor/autoload.php';
+require_once './vendor/autoload.php';
 use ChrisJP\TTS\TTS;
 $tts = new TTS();
 
@@ -39,4 +39,3 @@ $tabHighlight = 'is-active has-text-weight-bold';
                     </ul>
                 </div>
             </div>
-

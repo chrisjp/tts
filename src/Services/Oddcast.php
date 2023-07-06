@@ -47,7 +47,6 @@ class Oddcast implements Service
      */
     private string $defaultVoice = '3-3-1';
 
-
     public function __construct()
     {
         // Nothing to do here
@@ -117,7 +116,7 @@ class Oddcast implements Service
             'ACC'     => $accountID,
             'API'     => '',
             'SESSION' => '',
-            'CS'      => md5($engineId . $languageId . $voiceId . $text . $is_utf8 . $ext . $accountID . $secretID)
+            'CS'      => md5($engineId . $languageId . $voiceId . $text . $is_utf8 . $ext . $accountID . $secretID),
         ];
 
         $request = new Request($this::baseURL);

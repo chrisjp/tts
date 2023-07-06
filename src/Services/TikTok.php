@@ -45,7 +45,6 @@ class TikTok implements Service
      */
     private string $defaultVoice = 'en_uk_001';
 
-
     public function __construct()
     {
         // Nothing to do here

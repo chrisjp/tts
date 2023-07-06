@@ -58,7 +58,6 @@ class BingTranslator implements Service
      */
     private string $defaultVoice = 'en-US-JennyNeural';
 
-
     public function __construct()
     {
         // Nothing to do here
@@ -107,7 +106,7 @@ class BingTranslator implements Service
         $headers = [
             'Origin: https://bing.com',
             'Referer: https://www.bing.com/translator',
-            'User-Agent: ' . $_SERVER['HTTP_USER_AGENT']
+            'User-Agent: ' . $_SERVER['HTTP_USER_AGENT'],
         ];
 
         // Step 1 - Make a simple GET request to the Bing Translator site
@@ -156,7 +155,7 @@ class BingTranslator implements Service
         $params = [
             'ssml'  => $ssml,
             'token' => $paramsAPH[1],
-            'key'   => $paramsAPH[0]
+            'key'   => $paramsAPH[0],
         ];
 
         // IG and IID need to be appeneded to the baseURL

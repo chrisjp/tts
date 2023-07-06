@@ -42,7 +42,6 @@ class Acapela implements Service
      */
     private string $defaultVoice = 'sharon22k';
 
-
     public function __construct()
     {
         // Nothing to do here

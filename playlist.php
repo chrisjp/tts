@@ -1,6 +1,6 @@
 <?php
 // Grab all the stuff we need
-require './vendor/autoload.php';
+require_once './vendor/autoload.php';
 
 use ChrisJP\TTS\Playlist;
 
@@ -22,7 +22,7 @@ if ($ttsPls->tryingToLoadPlaylist()) {
 }
 
 // If we got this far we're viewing a playlist
-include 'include/header.php';
+require_once 'include/header.php';
 ?>
             <div class="box">
                 <p id="listen-to-this-convo">Loading playlist...</p>
@@ -36,4 +36,4 @@ include 'include/header.php';
                 </div>
             </div>
 <?php
-include 'include/footer.php';
+require_once 'include/footer.php';

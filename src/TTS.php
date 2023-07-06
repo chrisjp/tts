@@ -19,63 +19,63 @@ class TTS
      *
      * @var Service|null
      */
-    private $service;
+    private Service $service;
 
     /**
      * ID of voice to use
      *
      * @var string 
      */
-    private $voice;
+    private string $voice = '';
 
     /**
      * Human-friendly name of the voice ID
      *
      * @var string 
      */
-    private $voiceName;
+    private string $voiceName = '';
 
     /**
      * The text that should be spoken
      *
      * @var string
      */
-    private $textToSpeak = '';
+    private string $textToSpeak = '';
 
     /**
      * Index of this TTS within a playlist
      *
      * @var integer
      */
-    private $playlistIndex = 0;
+    private int $playlistIndex = 0;
 
     /**
      * response to request for TTS audio
      *
      * @var object
      */
-    private $response;
+    private object $response;
 
     /**
      * JSON encoded response to request for TTS audio
      *
      * @var string
      */
-    private $responseJSON = '';
+    private string $responseJSON = '';
 
     /**
      * The last error message received.
      *
      * @var string
      */
-    private $lastErrorMessage = '';
+    private string $lastErrorMessage = '';
 
     /**
      * Full path to AUDIO_DIR
      *
      * @var string
      */
-    private $pathToAudioDir = '';
+    private string $pathToAudioDir = '';
 
     public function __construct($service = null, $voice = null)
     {
@@ -325,12 +325,12 @@ class TTS
     {
         // Add details of the original request to our returned data in case we need to use it in the frontend
         // or for debugging purposes. meta will have a null value at this point.
-        $returnedData->meta = (object)[
+        $returnedData->meta = (object) [
             'service'        => $this->service->getName(),
             'voice_id'       => $this->voice,
             'voice_name'     => $this->voiceName,
             'text'           => $this->textToSpeak,
-            'playlist_index' => $this->playlistIndex
+            'playlist_index' => $this->playlistIndex,
         ];
 
         // For convenience save as both the object and a JSON-encoded version
@@ -408,12 +408,12 @@ class TTS
                         // Save transcription alongside it
                         if (SAVE_TXT) {
                             $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
-                            $transcript = (object)[
+                            $transcript = (object) [
                                 'text'      => $this->textToSpeak,
                                 'voice'     => $this->voice,
                                 'service'   => $this->service->getName(),
                                 'timestamp' => time(),
-                                'referer'   => $referer
+                                'referer'   => $referer,
                             ];
                             $putTxt = file_put_contents($this->pathToAudioDir . str_replace('.mp3', '.json', $audioFileName), json_encode($transcript));
                         }

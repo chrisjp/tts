@@ -50,12 +50,12 @@ class Request
      * If no parameters are passed to this a simple GET will be performed on the URL
      *
      * @param string $payload
-     * @param boolean $POST
+     * @param boolean $post
      * @param array|null $headers
      * @param boolean $headerInOutput
      * @return $this
      */
-    public function sendRequest(array|string $payload = '', bool $POST = true, array|null $headers = [], bool $headerInOutput = false)
+    public function sendRequest(array|string $payload = '', bool $post = true, array|null $headers = [], bool $headerInOutput = false)
     {
         // The data being sent with this request needs to be a string
         // If an array has been passed use http_build_query() to generate a URL-encoded query string
@@ -65,12 +65,12 @@ class Request
         $ch = curl_init();
 
         // Set base URL to send request to, appending our payload as a query string if this is a GET
-        $URL = $POST ? $this->baseURL : $this->baseURL . $payload;
-        curl_setopt($ch, CURLOPT_URL, $URL);
+        $url = $post ? $this->baseURL : $this->baseURL . $payload;
+        curl_setopt($ch, CURLOPT_URL, $url);
 
         // If a POST request, add the payload
-        if ($POST) {
-            curl_setopt($ch, CURLOPT_POST, $POST);
+        if ($post) {
+            curl_setopt($ch, CURLOPT_POST, $post);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
         }
 

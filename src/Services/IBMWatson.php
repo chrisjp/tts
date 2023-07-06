@@ -45,7 +45,6 @@ class IBMWatson implements Service
      */
     private string $defaultVoice = 'en-GB_CharlotteV3Voice';
 
-
     public function __construct()
     {
         // Nothing to do here

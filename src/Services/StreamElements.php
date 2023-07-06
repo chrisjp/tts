@@ -50,7 +50,6 @@ class StreamElements implements Service
      */
     private string $defaultVoice = 'Brian';
 
-
     public function __construct()
     {
         // Nothing to do here

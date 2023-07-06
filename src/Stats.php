@@ -14,35 +14,35 @@ class Stats extends TTS
      *
      * @var array
      */
-    private $audioFileArray = [];
+    private array $audioFileArray = [];
 
     /**
      * An array of every playlist JSON file in AUDIO_DIR
      *
      * @var array
      */
-    private $playlistFileArray = [];
+    private array $playlistFileArray = [];
 
     /**
      * count($this->$audioFileArray)
      *
      * @var integer
      */
-    private $audioCount = 0;
+    private int $audioCount = 0;
 
     /**
      * count($this->$playlistFileArray)
      *
      * @var integer
      */
-    private $plsCount = 0;
+    private int $plsCount = 0;
 
     /**
      * Filename to save stats to - will be saved in AUDIO_DIR
      *
      * @var string
      */
-    private $cachedStatsFile = 'stats.json';
+    private string $cachedStatsFile = 'stats.json';
 
     /**
      * Amount of time to cache stats for (in minutes)
@@ -50,21 +50,21 @@ class Stats extends TTS
      *
      * @var integer
      */
-    private $cacheAgeMins = 60;
+    private int $cacheAgeMins = 60;
 
     /**
      * Object containing all the stats
      *
      * @var object
      */
-    private $statsObject;
+    private object $statsObject;
 
     /**
      * JSON-encoded string of the stats object
      *
      * @var string
      */
-    private $statsJSON = '';
+    private string $statsJSON = '';
 
     /**
      * Returns stats, JSON-encoded if $asJSON is true
@@ -102,12 +102,12 @@ class Stats extends TTS
 
         $breakdownByVoice = $this->getBreakdownByVoice();
 
-        $this->statsObject = (object)[
+        $this->statsObject = (object) [
             'total_files'     => $this->audioCount,
             'total_playlists' => $this->plsCount,
             'by_service'      => $breakdownByService,
             'by_voice'        => $breakdownByVoice,
-            'gen_time'        => time() 
+            'gen_time'        => time(),
         ];
         $this->statsJSON = json_encode($this->statsObject);
 
