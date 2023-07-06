@@ -10,42 +10,42 @@
 export function updateURLParameter(url, param, paramVal)
 {
     let TheAnchor = null;
-    let newAdditionalURL = "";
-    let tempArray = url.split("?");
+    let newAdditionalURL = '';
+    const tempArray = url.split('?');
     let baseURL = tempArray[0];
     let additionalURL = tempArray[1];
-    let temp = "";
-    paramVal = typeof paramVal === 'undefined' ? '' : paramVal
+    let temp = '';
+    paramVal = typeof paramVal === 'undefined' ? '' : paramVal;
 
     if (additionalURL) {
-        let tmpAnchor = additionalURL.split("#");
-        let TheParams = tmpAnchor[0];
-            TheAnchor = tmpAnchor[1];
-        if(TheAnchor)
+        const tmpAnchor = additionalURL.split('#');
+        const TheParams = tmpAnchor[0];
+              TheAnchor = tmpAnchor[1];
+        if (TheAnchor)
             additionalURL = TheParams;
 
-        tempArray = additionalURL.split("&");
+        tempArray = additionalURL.split('&');
 
-        for (let i=0; i<tempArray.length; i++) {
-            if(tempArray[i].split('=')[0] != param) {
+        for (let i = 0; i < tempArray.length; i++) {
+            if (tempArray[i].split('=')[0] !== param) {
                 newAdditionalURL += temp + tempArray[i];
-                temp = "&";
+                temp = '&';
             }
         }
     }
     else {
-        let tmpAnchor = baseURL.split("#");
-        let TheParams = tmpAnchor[0];
-            TheAnchor  = tmpAnchor[1];
+        const tmpAnchor = baseURL.split('#');
+        const TheParams = tmpAnchor[0];
+              TheAnchor = tmpAnchor[1];
 
         if (TheParams)
             baseURL = TheParams;
     }
 
-    if (TheAnchor) paramVal += "#" + TheAnchor;
+    if (TheAnchor) paramVal += '#' + TheAnchor;
 
-    let rows_txt = temp + "" + param + "=" + paramVal;
-    return baseURL + "?" + newAdditionalURL + rows_txt;
+    const rows_txt = temp + '' + param + '=' + paramVal;
+    return baseURL + '?' + newAdditionalURL + rows_txt;
 }
 
 /**
@@ -72,15 +72,15 @@ export function setNewUrl(newUrl)
  */
 export function timeSince(thisDate, pastDate)
 {
-    let secondsPast = (thisDate.getTime() - pastDate.getTime()) / 1000;
+    const secondsPast = (thisDate.getTime() - pastDate.getTime()) / 1000;
     if (secondsPast < 60) {
         return parseInt(secondsPast) + ' seconds ago';
     }
     if (secondsPast < 3600) {
-        return parseInt(secondsPast/60) + ' minutes ago';
+        return parseInt(secondsPast / 60) + ' minutes ago';
     }
     else {
-        return parseInt(secondsPast/3600) + ' hours ago';
+        return parseInt(secondsPast / 3600) + ' hours ago';
     }
 }
 
