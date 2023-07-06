@@ -31,7 +31,7 @@ in the directory to generate the autoloader classes.
 Please check the generated `config.php` file and adjust any values as you see fit. Take note of the step to acquire a valid TikTok session ID value if you intend to use those voices, as these will not generate any audio without one. Lastly, ensure the `AUDIO_DIR` exists and is writable, especially if you have changed it from the default value. Composer will have attempted to create the default directory for you, and the script itself will always try to create your configured directory if it does not exist. But depending on how your PHP is set up this may not be possible.
 
 ## Usage notes
-Many of the services used aren't intended for professional/commercial use or are utilising a live demo, and as such they have limitations. As a reminder: You should only be using this to test how your text sounds in various voices. If you need to use TTS for commercial purposes please check out the services' respective websites linked above for more information.
+Many of the services used aren't intended for professional/commercial use or are utilising a live demo, and as such they have limitations. As a reminder: You should only be using this to test how your text sounds in various voices. If you need to use TTS for commercial purposes please check out the services' respective websites linked below for more information.
 
 Regarding URL validity, it is recommended you enable local saving in `config.php` if you'll be requiring access to the audio again in the near future. The same advice goes for services that return the audio as a data URI, as this can be inconvenient for sharing when message length is a concern.
 
