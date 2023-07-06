@@ -2,6 +2,10 @@
 
 namespace ChrisJP\TTS;
 
+/**
+ * The Request class handles the sending and receiving of API requests using cURL methods.
+ * 
+ */
 class Request
 {
 
@@ -19,7 +23,7 @@ class Request
      *
      * @var integer
      */
-    private int $timeout;
+    private int $timeout = 30;
 
     /**
      * Stores the output from curl_getinfo()

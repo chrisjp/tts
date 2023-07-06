@@ -4,6 +4,10 @@ namespace ChrisJP\TTS;
 
 use ChrisJP\TTS\Services\Service;
 
+/**
+ * The main TTS class handling requests for spoken text
+ * 
+ */
 class TTS
 {
     use ReturnObjectTrait;

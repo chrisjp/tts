@@ -2,8 +2,6 @@
 
 namespace ChrisJP\TTS;
 
-use ChrisJP\TTS\Services\Service;
-
 /**
  * Methods to calculate various stats
  * 

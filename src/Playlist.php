@@ -2,8 +2,9 @@
 
 namespace ChrisJP\TTS;
 
-use ChrisJP\TTS\Services\Service;
-
+/**
+ * Extends the TTS class with methods for loading and saving playlists
+ */
 class Playlist extends TTS
 {
 
