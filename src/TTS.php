@@ -322,7 +322,7 @@ class TTS
         // Add details of the original request to our returned data in case we need to use it in the frontend
         // or for debugging purposes. meta will have a null value at this point.
         $returnedData->meta = (object)[
-            'service'        => $this->service->getShortName(),
+            'service'        => $this->service->getName(),
             'voice_id'       => $this->voice,
             'voice_name'     => $this->voiceName,
             'text'           => $this->textToSpeak,

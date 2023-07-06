@@ -41,7 +41,7 @@ class BingTranslator implements Service
      *
      * @var string
      */
-    private string $name = 'Bing Translate';
+    private string $name = 'Bing Translator';
 
     /**
      * Short name of this service.

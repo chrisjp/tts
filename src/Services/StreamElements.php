@@ -33,7 +33,7 @@ class StreamElements implements Service
      *
      * @var string
      */
-    private string $name = 'StreamElements (Amazon Polly and Google TTS)';
+    private string $name = 'StreamElements';
 
     /**
      * Short name of this service.

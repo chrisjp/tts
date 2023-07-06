@@ -30,7 +30,7 @@ class Streamlabs implements Service
      *
      * @var string
      */
-    private string $name = 'Streamlabs (Amazon Polly)';
+    private string $name = 'Streamlabs';
 
     /**
      * Short name of this service.
