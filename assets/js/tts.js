@@ -1127,9 +1127,10 @@ function updateSelectedVoices() {
             updateTextareaAttributes(allSelects[i]);    // update the <select>'s corresponding textarea attributes
         }
     }
-    else if (voiceCount > 0 && allSelects.length === 0) {
+    else if (voiceCount > 0 && allSelects.length === 0 && !urlParamEdit) {
         // Or if we have at least 1 voice chosen but no <select>s in the DOM (for dialogue) we can automatically
-        // add a dialogue box for convenience
+        // add a dialogue box for convenience. No need if we're editing a playlist though, as dialogue boxes
+        // will be added and populated when the JSON is loaded in.
         addDialogueBox();
     }
 }
