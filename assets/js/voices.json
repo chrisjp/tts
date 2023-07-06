@@ -429,9 +429,10 @@
             {"vid": "en_us_rocket", "name": "Rocket (Guardians of the Galaxy)", "flag": "US", "lang": "English", "accent": "American", "gender": "O", "customEmoji": "\uD83E\uDD9D"},
             {"vid": "en_female_madam_leota", "name": "Madame Leota", "flag": "US", "lang": "English", "accent": "", "gender": "O", "customEmoji": "\uD83D\uDD2E"},
             {"vid": "en_male_ghosthost", "name": "Ghost Host", "flag": "US", "lang": "English", "accent": "", "gender": "O"},
-            {"vid": "en_male_pirate", "name": "Pirate", "flag": "US", "lang": "English", "accent": "", "gender": "O", "customEmoji": "\uD83C\uDFF4\u200D\u2620\uFE0F"},
-            {"vid": "en_male_grinch", "name": "Grinch (Trickster)", "flag": "US", "lang": "English", "accent": "", "gender": "O"},
             {"vid": "en_male_wizard", "name": "Wizard (Magician)", "flag": "US", "lang": "English", "accent": "", "gender": "O", "customEmoji": "\uD83E\uDDD9\u200D\u2642\uFE0F"},
+            {"vid": "en_male_pirate", "name": "Pirate", "flag": "US", "lang": "English", "accent": "", "gender": "O", "customEmoji": "\uD83C\uDFF4\u200D\u2620\uFE0F"},
+            {"vid": "en_male_santa", "name": "Santa", "flag": "US", "lang": "English", "accent": "", "gender": "O", "customEmoji": "\uD83C\uDF85"},
+            {"vid": "en_male_grinch", "name": "Grinch (Trickster)", "flag": "US", "lang": "English", "accent": "", "gender": "O"},
             {"vid": "en_female_f08_salut_damour", "name": "Song: Alto (Cottagecore)", "flag": "US", "lang": "English", "accent": "", "gender": "F"},
             {"vid": "en_female_f08_warmy_breeze", "name": "Song: Warmy Breeze (Open Mic)", "flag": "US", "lang": "English", "accent": "", "gender": "F"},
             {"vid": "en_female_ht_f08_halloween", "name": "Song: Halloween (Opera)", "flag": "US", "lang": "English", "accent": "", "gender": "F"},
@@ -457,8 +458,13 @@
             {"vid": "br_003", "name": "Brazilian Female 2", "flag": "BR", "lang": "Portuguese", "accent": "Brazilian", "gender": "F"},
             {"vid": "br_004", "name": "Brazilian Female 3", "flag": "BR", "lang": "Portuguese", "accent": "Brazilian", "gender": "F"},
             {"vid": "br_005", "name": "Brazilian Male", "flag": "BR", "lang": "Portuguese", "accent": "Brazilian", "gender": "M"},
-            {"vid": "es_002", "name": "Spanish Male", "flag": "ES", "lang": "Spanish", "accent": "Spain", "gender": "M"},
-            {"vid": "es_mx_002", "name": "Warm", "flag": "MX", "lang": "Spanish", "accent": "Mexico", "gender": "M"}
+            {"vid": "es_002", "name": "Spanish Male", "flag": "ES", "lang": "Spanish", "accent": "", "gender": "M"},
+            {"vid": "es_male_m3", "name": "Julio", "flag": "ES", "lang": "Spanish", "accent": "", "gender": "M"},
+            {"vid": "es_female_f6", "name": "Alejandra", "flag": "ES", "lang": "Spanish", "accent": "", "gender": "F"},
+            {"vid": "es_female_fp1", "name": "Mariana", "flag": "ES", "lang": "Spanish", "accent": "", "gender": "F"},
+            {"vid": "es_mx_002", "name": "Warm", "flag": "MX", "lang": "Spanish", "accent": "Mexico", "gender": "M"},
+            {"vid": "es_mx_male_transformer", "name": "Optimus Prime (Mexican)", "flag": "MX", "lang": "Spanish", "accent": "Mexico", "gender": "O", "customEmoji": "\uD83E\uDD16"},
+            {"vid": "es_mx_female_supermom", "name": "Super Mom", "flag": "MX", "lang": "Spanish", "accent": "Mexico", "gender": "O"}
         ]
     },
     "IBM Watson":
