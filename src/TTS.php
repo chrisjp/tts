@@ -408,7 +408,14 @@ class TTS
                         // Save transcription alongside it
                         if (SAVE_TXT) {
                             $referer = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
-                            $putTxt = file_put_contents($this->pathToAudioDir . str_replace('.mp3', '.txt', $audioFileName), $this->textToSpeak . PHP_EOL . PHP_EOL . 'Referer: ' . $referer);
+                            $transcript = (object)[
+                                'text'      => $this->textToSpeak,
+                                'voice'     => $this->voice,
+                                'service'   => $this->service->getName(),
+                                'timestamp' => time(),
+                                'referer'   => $referer
+                            ];
+                            $putTxt = file_put_contents($this->pathToAudioDir . str_replace('.mp3', '.json', $audioFileName), json_encode($transcript));
                         }
     
                         if ($put) return $audioFileUrl;
