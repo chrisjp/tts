@@ -17,6 +17,19 @@ It was inspired by Peter Cunha's [similar tool](https://github.com/petercunha/tt
 - Plain old HTML5 and vanilla JavaScript (PHP >=8 required for full functionality)
 - Conversations - create a conversation using multiple TTS voices and share it as a playlist of TTS audio clips.
 
+## Using
+The basic requirements are some kind of web server with PHP >= 8.0 installed and a working copy of composer. A Docker compose file is included to handle all this for you.
+
+`docker compose up`
+
+If not using Docker I'll assume you've already got this repo on a server; you'll need to run
+
+`composer install`
+
+in the directory to generate the autoloader classes.
+
+Please check the generated `config.php` file and adjust any values as you see fit. Take note of the step to acquire a valid TikTok session ID value if you intend to use those voices, as these will not generate any audio without one. Lastly, ensure the `AUDIO_DIR` exists and is writable, especially if you have changed it from the default value. Composer will have attempted to create the default directory for you, and the script itself will always try to create your configured directory if it does not exist. But depending on how your PHP is set up this may not be possible.
+
 ## Usage notes
 Many of the services used aren't intended for professional/commercial use or are utilising a live demo, and as such they have limitations. As a reminder: You should only be using this to test how your text sounds in various voices. If you need to use TTS for commercial purposes please check out the services' respective websites linked above for more information.
 
