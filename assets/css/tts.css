@@ -29,6 +29,22 @@
 #tab-container .tabs ul {
     border-bottom: 0;
 }
+#tts-error-text {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+}
+.table-stats {
+    background-color: transparent !important;
+    color: inherit !important;
+}
+.box-currently-playing {
+    background-image: url('../img/Speaker_Icon.svg');
+    background-position: top 4px right 4px;
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+}
+
 @media (max-width: 639.98px) {
     .button-voice {
         width: 100%;
@@ -50,7 +66,6 @@
 @media (min-width: 1280px) and (max-width: 1407px) {
     .column-voices {
         flex: none;
-        width: 60% !important;
     }
 }
 
@@ -74,6 +89,12 @@
 }
 .mode-light #tab-container .tabs li a:hover {
     background-color: hsl(0, 0%, 90%) !important;
+}
+.mode-light .table-stats td, .mode-light .table-stats th {
+    border-color: #eee !important;
+}
+.mode-light .box-currently-playing {
+    background-color: #eee;
 }
 
 /* DARK MODE SPECIFICS */
@@ -172,4 +193,10 @@
 .mode-dark .message-body {
     border-color: #444444 !important;
     color: inherit !important;
+}
+.mode-dark .table-stats td, .mode-dark .table-stats th {
+    border-color: #444444 !important;
+}
+.mode-dark .box-currently-playing {
+    background-color: #444;
 }

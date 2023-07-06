@@ -1,58 +1,33 @@
 <?php
-$v = '1.41';
+require_once 'include/header.php';
 ?>
-<!doctype html>
-<html lang="en" class="mode-light has-background-white-bis">
-    <head>
-        <meta charset="utf-8">
-        <title>Text-to-Speech (TTS) StreamElements Demo Simulator Emulator Generator Tool Thing</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css" integrity="sha512-HqxHUkJM0SYcbvxUw5P60SzdOTy/QVwA1JJrvaXJv4q7lmbDZCmZaqz01UPOaQveoxfYRv1tHozWGPMcuTBuvQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link rel="stylesheet" href="assets/css/tts.css?v=<?php echo $v ?>">
-        <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    </head>
-    <body>
-    <section class="section">
-        <div class="container">
-            <div id="toggleStyleMode" class="is-pulled-right toggle-style" onclick="toggleStyleMode(true);">💡</div>
-            <h1 class="title is-2">Text-to-Speech Simulator</h1>
-            <p class="subtitle is-4">A simple web app demonstrating how text sounds in different TTS voices.</p>
-
-            <div id="tab-container">
-                <div class="tabs is-centered">
-                    <ul>
-                    <li class="is-active has-text-weight-bold"><a href="./">Demo</a></li>
-                    <li class=""><a href="conversation.php">Conversation</a></li>
-                    </ul>
-                </div>
-            </div>
-
             <div class="box">
-                <p>Choose from <span id="voicecount" class="has-text-weight-bold">500+</span> voices from Amazon Polly (via Streamlabs), TikTok, CereProc, IBM Watson, Acapela, Oddcast, Google Translate.<br />
-                    Polly voices can be used for testing how Twitch.tv donations will sound as many streamers have TTS enabled via Streamlabs or StreamElements for this. <img src="https://cdn.frankerfacez.com/emoticon/109777/1" alt="FeelsGoodMan" /><br/>
-                    Also you may wish to check out the <a href="https://docs.google.com/document/d/1qLKdc3QArtn6PVuGf42EfoMuzvLE_ykWwU1RViEcrbU/edit?usp=sharing" target="_blank">"TTS Dossier"</a> for some <em>entertaining</em> ideas. <img src="https://cdn.frankerfacez.com/emoticon/381875/1" alt="KEKW" /></p>
-                <p>Finally, here's a <a href="https://gist.github.com/TETYYS/f1aa16b18fb619fc6c0f13ba4f9ae70d" target="_blank">list of characters</a> explaining how they are pronounced (specifically by Brian). <img src="https://cdn.frankerfacez.com/emoticon/239504/1" alt="5Head" /></p>
+                <p>
+                    Choose from <span id="voicecount" class="has-text-weight-bold">1000+</span> voices from Amazon Polly (via StreamElements/Streamlabs), Google Cloud Text-to-Speech (StreamElements), TikTok, CereProc, IBM Watson, Acapela, Oddcast, Microsoft Azure Speech (via Bing Translator), and Google Translate.<br />
+                    Use <b>StreamElements</b> or <b>Streamlabs</b> voices for testing how Twitch.tv donations will sound to streamers who have TTS enabled via those services. <img src="https://cdn.frankerfacez.com/emoticon/109777/1" alt="FeelsGoodMan" />
+                </p>
+                <p>
+                    The <a href="https://docs.google.com/document/d/1qLKdc3QArtn6PVuGf42EfoMuzvLE_ykWwU1RViEcrbU/edit?usp=sharing" target="_blank">"TTS Dossier"</a> may have some entertaining TTS ideas for you <img src="https://cdn.frankerfacez.com/emoticon/381875/1" alt="KEKW" /> and for reference, here's a <a href="https://gist.github.com/TETYYS/f1aa16b18fb619fc6c0f13ba4f9ae70d" target="_blank">list of characters</a> explaining how they are pronounced (specifically by Brian). <img src="https://cdn.frankerfacez.com/emoticon/239504/1" alt="5Head" />
+                </p>
                 
                 <hr />
                 
                 <div id="filters">
                     <div id="filter-api" class="tabs is-toggle is-centered is-small"></div>
-                    <div id="filter-sex" class="tabs is-toggle is-centered is-small"></div>
-                    <div id="lang-selection" class="buttons are-small"></div>
+                    <div id="filter-gender" class="tabs is-toggle is-centered is-small"></div>
+                    <div id="lang-selection" class="buttons is-centered are-small"></div>
                 </div>
 
                 <hr />
                 
                 <div class="columns">
                     
-                    <div class="column column-voices">
+                    <div class="column is-half column-voices">
                         <div id="voice-selection" class="buttons is-centered">
                         </div>
                     </div>
                     
-                    <div class="column">
+                    <div class="column is-half">
                         <form action="" method="post">
                             <div class="field is-horizontal">
                                 <div class="field-body">
@@ -80,19 +55,21 @@ $v = '1.41';
                             
                             <div class="field is-horizontal">
                                 <div class="field-body">
-                                    <div class="field is-grouped">
+                                    <div class="field">
                                         <div class="control">
                                             <div id="tts-player" class="control is-pulled-left is-hidden">
-                                            </div>
-                                        </div>
-                                        <div class="control">
-                                            <div id="tts-error" class="message is-pulled-left is-small is-hidden">
-                                                <div id="tts-error-text" class="message-body"></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="block">
+                                <div id="tts-error" class="message is-small is-hidden">
+                                    <div id="tts-error-text" class="message-body"></div>
+                                </div>
+                            </div>
+
                         </form>
                     </div>
                 
@@ -101,31 +78,10 @@ $v = '1.41';
                 <hr />
                 
                 <div id="recents">
-                    <h3 class="title is-4">Your Recent Chatter <button type="button" class="button is-small is-danger" onclick="clearShares();">Clear All</button></h3>
+                    <h3 class="title is-4">Your Recent Chatter <button id="btn-clear-shares" type="button" class="button is-small is-danger">Clear All</button></h3>
                     <div id="recentTTS">
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <footer class="footer">
-        <div class="content has-text-centered">
-            <p class="is-size-7-touch">
-                TTS Demo by <a href="https://chrisphillips.uk">Chris Phillips</a><br />
-                Powered by: <a href="https://aws.amazon.com/polly/">Amazon Polly</a> (via <a href="https://streamlabs.com/">Streamlabs</a> API)
-                // <a href="https://cereproc.com/">CereProc</a>
-                // <a href="https://tiktok.com">TikTok</a>
-                // <a href="https://www.ibm.com/cloud/watson-text-to-speech/">IBM Watson</a>
-                // <a href="https://www.acapela-group.com/demos/">Acapela</a>
-                // <a href="https://www.oddcast.com/ttsdemo/index.php">Oddcast</a>
-                // <a href="https://translate.google.com/">Google Translate</a>
-            </p>
-            <p>
-                <a href="https://github.com/chrisjp/tts"><img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/github.svg" width="32" height="32" alt="GitHub" /></a>
-            </p>
-        </div>
-    </footer>
-    <!-- JS -->
-    <script src="assets/js/tts.js?v=<?php echo $v ?>"></script>
-    </body>
-</html>
+<?php
+require_once 'include/footer.php';

@@ -1,936 +1,228 @@
-// Amazon Polly voice list: https://docs.aws.amazon.com/polly/latest/dg/voicelist.html
-const ttsServices = {
-    'Polly':
-    {
-        charLimit: 550,
-        countBytes: true,
-        voices: [
-            {vid: 'Brian', name: 'Brian', flag: 'GB', lang: 'English', accent: 'British', sex: 'M'},
-            {vid: 'Amy', name: 'Amy', flag: 'GB', lang: 'English', accent: 'British', sex: 'F'},
-            {vid: 'Emma', name: 'Emma', flag: 'GB', lang: 'English', accent: 'British', sex: 'F'},
-            {vid: 'Geraint', name: 'Geraint', flag: 'GB-WLS', lang: 'English', accent: 'Welsh', sex: 'M'},
-            {vid: 'Russell', name: 'Russell', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'M'},
-            {vid: 'Nicole', name: 'Nicole', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'F'},
-            //{vid: 'Olivia', name: 'Olivia', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'F'},
-            {vid: 'Joey', name: 'Joey', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'Justin', name: 'Justin', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            //{vid: 'Kevin', name: 'Kevin', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'Matthew', name: 'Matthew', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'Ivy', name: 'Ivy', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'Joanna', name: 'Joanna', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'Kendra', name: 'Kendra', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'Kimberly', name: 'Kimberly', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'Salli', name: 'Salli', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            //{vid: 'Aria', name: 'Aria', flag: 'NZ', lang: 'English', accent: 'New Zealand', sex: 'F'},
-            //{vid: 'Ayanda', name: 'Ayanda', flag: 'ZA', lang: 'English', accent: 'South African', sex: 'F'},
-            {vid: 'Raveena', name: 'Raveena', flag: 'IN', lang: 'English', accent: 'Indian', sex: 'F'},
-            {vid: 'Zeina', name: 'Zeina', flag: 'ARAB', lang: 'Arabic', accent: '', sex: 'F'},
-            {vid: 'Zhiyu', name: 'Zhiyu', flag: 'CN', lang: 'Chinese', accent: 'Mandarin', sex: 'F'},
-            {vid: 'Mads', name: 'Mads', flag: 'DK', lang: 'Danish', accent: '', sex: 'M'},
-            {vid: 'Naja', name: 'Naja', flag: 'DK', lang: 'Danish', accent: '', sex: 'F'},
-            {vid: 'Ruben', name: 'Ruben', flag: 'NL', lang: 'Dutch', accent: '', sex: 'M'},
-            {vid: 'Lotte', name: 'Lotte', flag: 'NL', lang: 'Dutch', accent: '', sex: 'F'},
-            {vid: 'Mathieu', name: 'Mathieu', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
-            {vid: 'Celine', name: 'Céline', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'Lea', name: 'Léa', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'Chantal', name: 'Chantal', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'F'},
-            //{vid: 'Gabrielle', name: 'Gabrielle', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'F'},
-            {vid: 'Hans', name: 'Hans', flag: 'DE', lang: 'German', accent: '', sex: 'M'},
-            {vid: 'Marlene', name: 'Marlene', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            {vid: 'Vicki', name: 'Vicki', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            {vid: 'Aditi', name: 'Aditi (+English)', flag: 'IN', lang: 'Hindi', accent: '', sex: 'F'},
-            {vid: 'Karl', name: 'Karl', flag: 'IS', lang: 'Icelandic', accent: '', sex: 'M'},
-            {vid: 'Dora', name: 'Dóra', flag: 'IS', lang: 'Icelandic', accent: '', sex: 'F'},
-            {vid: 'Giorgio', name: 'Giorgio', flag: 'IT', lang: 'Italian', accent: '', sex: 'M'},
-            {vid: 'Carla', name: 'Carla', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
-            {vid: 'Bianca', name: 'Bianca', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
-            {vid: 'Takumi', name: 'Takumi', flag: 'JP', lang: 'Japanese', accent: '', sex: 'M'},
-            {vid: 'Mizuki', name: 'Mizuki', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
-            {vid: 'Seoyeon', name: 'Seoyeon', flag: 'KR', lang: 'Korean', accent: '', sex: 'F'},
-            {vid: 'Liv', name: 'Liv', flag: 'NO', lang: 'Norwegian', accent: '', sex: 'F'},
-            {vid: 'Jacek', name: 'Jacek', flag: 'PL', lang: 'Polish', accent: '', sex: 'M'},
-            {vid: 'Jan', name: 'Jan', flag: 'PL', lang: 'Polish', accent: '', sex: 'M'},
-            {vid: 'Ewa', name: 'Ewa', flag: 'PL', lang: 'Polish', accent: '', sex: 'F'},
-            {vid: 'Maja', name: 'Maja', flag: 'PL', lang: 'Polish', accent: '', sex: 'F'},
-            {vid: 'Ricardo', name: 'Ricardo', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'M'},
-            {vid: 'Camila', name: 'Camila', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'F'},
-            {vid: 'Vitoria', name: 'Vitória', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'F'},
-            {vid: 'Cristiano', name: 'Cristiano', flag: 'PT', lang: 'Portuguese', accent: 'European', sex: 'M'},
-            {vid: 'Ines', name: 'Inês', flag: 'PT', lang: 'Portuguese', accent: 'European', sex: 'F'},
-            {vid: 'Carmen', name: 'Carmen', flag: 'RO', lang: 'Romanian', accent: '', sex: 'F'},
-            {vid: 'Maxim', name: 'Maxim', flag: 'RU', lang: 'Russian', accent: '', sex: 'M'},
-            {vid: 'Tatyana', name: 'Tatyana', flag: 'RU', lang: 'Russian', accent: '', sex: 'F'},
-            {vid: 'Enrique', name: 'Enrique', flag: 'ES', lang: 'Spanish', accent: 'European', sex: 'M'},
-            {vid: 'Conchita', name: 'Conchita', flag: 'ES', lang: 'Spanish', accent: 'European', sex: 'F'},
-            {vid: 'Lucia', name: 'Lucia', flag: 'ES', lang: 'Spanish', accent: 'European', sex: 'F'},
-            {vid: 'Mia', name: 'Mia', flag: 'MX', lang: 'Spanish', accent: 'Mexican', sex: 'F'},
-            {vid: 'Miguel', name: 'Miguel', flag: 'US', lang: 'Spanish', accent: 'American', sex: 'M'},
-            {vid: 'Lupe', name: 'Lupe', flag: 'US', lang: 'Spanish', accent: 'American', sex: 'F'},
-            {vid: 'Penelope', name: 'Penélope', flag: 'US', lang: 'Spanish', accent: 'American', sex: 'F'},
-            {vid: 'Astrid', name: 'Astrid', flag: 'SE', lang: 'Swedish', accent: '', sex: 'F'},
-            {vid: 'Filiz', name: 'Filiz', flag: 'TR', lang: 'Turkish', accent: '', sex: 'M'},
-            {vid: 'Gwyneth', name: 'Gwyneth', flag: 'GB-WLS', lang: 'Welsh', accent: '', sex: 'F'},
-        ],
-    },
-    'CereProc':
-    {
-        charLimit: 2000,
-        countBytes: true,
-        voices: [
-            // English - England
-            {vid: 'Amy', name: 'Amy', flag: 'GB', lang: 'English', accent: 'Southern England', sex: 'F'},
-            {vid: 'Amy-CereWave', name: 'Amy (CereWave)', flag: 'GB', lang: 'English', accent: 'Southern England', sex: 'F'},
-            {vid: 'Ben-CereWave', name: 'Ben (CereWave)', flag: 'GB', lang: 'English', accent: 'Southern England', sex: 'M'},
-            {vid: 'Claire-CereWave', name: 'Claire', flag: 'GB', lang: 'English', accent: 'Lancashire', sex: 'F'},
-            {vid: 'Demon', name: 'Demon', flag: 'GB', lang: 'English', accent: 'England', sex: 'N', customEmoji: '\uD83D\uDE08'},
-            {vid: 'Demon-CereWave', name: 'Demon (CereWave)', flag: 'GB', lang: 'English', accent: 'England', sex: 'N', customEmoji: '\uD83D\uDE08'},
-            {vid: 'Giles', name: 'Giles', flag: 'GB', lang: 'English', accent: 'Southern England', sex: 'M'},
-            {vid: 'Giles-CereWave', name: 'Giles (CereWave)', flag: 'GB', lang: 'English', accent: 'Southern England', sex: 'M'},
-            {vid: 'Goblin', name: 'Goblin', flag: 'GB', lang: 'English', accent: 'Black Country', sex: 'N', customEmoji: '\uD83D\uDC7A'},
-            {vid: 'Goblin-CereWave', name: 'Goblin (CereWave)', flag: 'GB', lang: 'English', accent: 'Black Country', sex: 'N', customEmoji: '\uD83D\uDC7A'},
-            {vid: 'Jack', name: 'Jack', flag: 'GB', lang: 'English', accent: 'Southern England', sex: 'M'},
-            {vid: 'Jack-CereWave', name: 'Jack (CereWave)', flag: 'GB', lang: 'English', accent: 'Southern England', sex: 'M'},
-            {vid: 'Jess', name: 'Jess', flag: 'GB', lang: 'English', accent: 'Northern England', sex: 'F'},
-            {vid: 'Jess-CereWave', name: 'Jess (CereWave)', flag: 'GB', lang: 'English', accent: 'Northern England', sex: 'F'},
-            {vid: 'Lauren', name: 'Lauren', flag: 'GB', lang: 'English', accent: 'Southern England', sex: 'F'},
-            {vid: 'Lauren-CereWave', name: 'Lauren (CereWave)', flag: 'GB', lang: 'English', accent: 'Southern England', sex: 'F'},
-            {vid: 'Lily-CereWave', name: 'Lily (CereWave)', flag: 'GB', lang: 'English', accent: 'Southern England', sex: 'F'},
-            {vid: 'Pixie', name: 'Pixie', flag: 'GB', lang: 'English', accent: 'England', sex: 'N', customEmoji: '\uD83E\uDDDA'},
-            {vid: 'Pixie-CereWave', name: 'Pixie (CereWave)', flag: 'GB', lang: 'English', accent: 'England', sex: 'N', customEmoji: '\uD83E\uDDDA'},
-            {vid: 'Robot', name: 'Robot', flag: 'GB', lang: 'English', accent: 'England', sex: 'N', customEmoji: '\uD83E\uDD16'},
-            {vid: 'Robot-CereWave', name: 'Robot (CereWave)', flag: 'GB', lang: 'English', accent: 'England', sex: 'N', customEmoji: '\uD83E\uDD16'},
-            {vid: 'Sarah', name: 'Sarah', flag: 'GB', lang: 'English', accent: 'Southern England', sex: 'F'},
-            {vid: 'Sarah-CereWave', name: 'Sarah (CereWave)', flag: 'GB', lang: 'English', accent: 'Southern England', sex: 'F'},
-            {vid: 'Sue', name: 'Sue', flag: 'GB', lang: 'English', accent: 'Black Country', sex: 'F'},
-            {vid: 'Sue-CereWave', name: 'Sue (CereWave)', flag: 'GB', lang: 'English', accent: 'Black Country', sex: 'F'},
-            {vid: 'William', name: 'William', flag: 'GB', lang: 'English', accent: 'Southern England', sex: 'M'},
-            {vid: 'William-CereWave', name: 'William (CereWave)', flag: 'GB', lang: 'English', accent: 'Southern England', sex: 'M'},
-            // English - Ireland
-            {vid: 'Caitlin', name: 'Caitlin', flag: 'IE', lang: 'English', accent: 'Ireland', sex: 'F'},
-            {vid: 'Caitlin-CereWave', name: 'Caitlin (CereWave)', flag: 'IE', lang: 'English', accent: 'Ireland', sex: 'F'},
-            // English - Scotland
-            {vid: 'Andrew', name: 'Andrew', flag: 'GB-SCT', lang: 'English', accent: 'Scotland', sex: 'M'},
-            {vid: 'Andrew-CereWave', name: 'Andrew (CereWave)', flag: 'GB-SCT', lang: 'English', accent: 'Scotland', sex: 'M'},
-            {vid: 'Dodo-CereWave', name: 'Dodo (CereWave)', flag: 'GB-SCT', lang: 'English', accent: 'Glasgow, Scotland', sex: 'M'},
-            {vid: 'Heather', name: 'Heather', flag: 'GB-SCT', lang: 'English', accent: 'Scotland', sex: 'F'},
-            {vid: 'Heather-CereWave', name: 'Heather (CereWave)', flag: 'GB-SCT', lang: 'English', accent: 'Scotland', sex: 'F'},
-            {vid: 'Kirsty', name: 'Kirsty', flag: 'GB-SCT', lang: 'English', accent: 'Scotland', sex: 'F'},
-            {vid: 'Kirsty-CereWave', name: 'Kirsty (CereWave)', flag: 'GB-SCT', lang: 'English', accent: 'Scotland', sex: 'F'},
-            {vid: 'Mairi', name: 'Mairi', flag: 'GB-SCT', lang: 'English', accent: 'Scotland', sex: 'F'},
-            {vid: 'Mairi-CereWave', name: 'Mairi (CereWave)', flag: 'GB-SCT', lang: 'English', accent: 'Scotland', sex: 'F'},
-            {vid: 'Stuart', name: 'Stuart', flag: 'GB-SCT', lang: 'English', accent: 'Scotland', sex: 'M'},
-            {vid: 'Stuart-CereWave', name: 'Stuart (CereWave)', flag: 'GB-SCT', lang: 'English', accent: 'Scotland', sex: 'M'},
-            // English - American
-            {vid: 'Adam', name: 'Adam', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'Adam-CereWave', name: 'Adam (CereWave)', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'Andy', name: 'Andy', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'Andy-CereWave', name: 'Andy (CereWave)', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'Carolyn', name: 'Carolyn', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'Carolyn-CereWave', name: 'Carolyn (CereWave)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'Ghost', name: 'Ghost', flag: 'US', lang: 'English', accent: 'American', sex: 'N', customEmoji: '\uD83D\uDC7B'},
-            {vid: 'Ghost-CereWave', name: 'Ghost (CereWave)', flag: 'US', lang: 'English', accent: 'American', sex: 'N', customEmoji: '\uD83D\uDC7B'},
-            {vid: 'Hannah', name: 'Hannah', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'Hannah-CereWave', name: 'Hannah (CereWave)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'Isabella', name: 'Isabella', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'Isabella-CereWave', name: 'Isabella (CereWave)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'Jordan', name: 'Jordan', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'Jordan-CereWave', name: 'Jordan (CereWave)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'Katherine', name: 'Katherine', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'Katherine-CereWave', name: 'Katherine (CereWave)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'Megan', name: 'Megan', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'Megan-CereWave', name: 'Megan (CereWave)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'Nathan', name: 'Nathan', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'Nathan-CereWave', name: 'Nathan (CereWave)', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'Sam-CereWave', name: 'Sam (CereWave)', flag: 'US', lang: 'English', accent: 'American (non-binary)', sex: 'N'},
-            // English - French accent
-            {vid: 'Nicole', name: 'Nicole', flag: 'FR', lang: 'English', accent: 'French', sex: 'F'},
-            {vid: 'Nicole-CereWave', name: 'Nicole (CereWave)', flag: 'FR', lang: 'English', accent: 'French', sex: 'F'},
-            // Other languages
-            {vid: 'Rita', name: 'Rita', flag: 'ES-CT', lang: 'Catalan', accent: '', sex: 'F'},
-            {vid: 'Rita-CereWave', name: 'Rita (CereWave)', flag: 'ES-CT', lang: 'Catalan', accent: '', sex: 'F'},
-            {vid: 'Mailin-CereWave', name: 'Mailin (CereWave)', flag: 'CN', lang: 'Chinese', accent: '', sex: 'F'},
-            {vid: 'Marie-CereWave', name: 'Marie (CereWave)', flag: 'DK', lang: 'Danish', accent: '', sex: 'F'},
-            {vid: 'Ada', name: 'Ada', flag: 'NL', lang: 'Dutch', accent: '', sex: 'F'},
-            {vid: 'Ada-CereWave', name: 'Ada (CereWave)', flag: 'NL', lang: 'Dutch', accent: '', sex: 'F'},
-            {vid: 'Laurent', name: 'Laurent', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
-            {vid: 'Laurent-CereWave', name: 'Laurent (CereWave)', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
-            {vid: 'Suzanne', name: 'Suzanne', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'Suzanne-CereWave', name: 'Suzanne (CereWave)', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'Florence', name: 'Florence', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'F'},
-            {vid: 'Florence-CereWave', name: 'Florence (CereWave)', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'F'},
-            {vid: 'Peig', name: 'Peig', flag: 'IE', lang: 'Gaelic', accent: 'Irish', sex: 'F'},
-            {vid: 'Peig-CereWave', name: 'Peig (CereWave)', flag: 'IE', lang: 'Gaelic', accent: 'Irish', sex: 'F'},
-            {vid: 'Ceitidh', name: 'Ceitidh', flag: 'GB-SCT', lang: 'Gaelic', accent: 'Scottish', sex: 'F'},
-            {vid: 'Ceitidh-CereWave', name: 'Ceitidh (CereWave)', flag: 'GB-SCT', lang: 'Gaelic', accent: 'Scottish', sex: 'F'},
-            {vid: 'Alex', name: 'Alex', flag: 'DE', lang: 'German', accent: '', sex: 'M'},
-            {vid: 'Alex-CereWave', name: 'Alex (CereWave)', flag: 'DE', lang: 'German', accent: '', sex: 'M'},
-            {vid: 'Gudrun', name: 'Gudrun', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            {vid: 'Gudrun-CereWave', name: 'Gudrun (CereWave)', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            {vid: 'Leopold', name: 'Leopold', flag: 'AT', lang: 'German', accent: 'Austrian', sex: 'M'},
-            {vid: 'Leopold-CereWave', name: 'Leopold (CereWave)', flag: 'AT', lang: 'German', accent: 'Austrian', sex: 'M'},
-            {vid: 'Dario', name: 'Dario', flag: 'IT', lang: 'Italian', accent: '', sex: 'M'},
-            {vid: 'Dario-CereWave', name: 'Dario (CereWave)', flag: 'IT', lang: 'Italian', accent: '', sex: 'M'},
-            {vid: 'Francesco-CereWave', name: 'Francesco (CereWave)', flag: 'IT', lang: 'Italian', accent: '', sex: 'M'},
-            {vid: 'Laura', name: 'Laura', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
-            {vid: 'Laura-CereWave', name: 'Laura (CereWave)', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
-            {vid: 'Nicoletta-CereWave', name: 'Nicoletta (CereWave)', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
-            {vid: 'Yuki', name: 'Yuki', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
-            {vid: 'Yuki-CereWave', name: 'Yuki (CereWave)', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
-            {vid: 'Egle', name: 'Eglė', flag: 'LT', lang: 'Lithuanian', accent: '', sex: 'F'},
-            {vid: 'Egle-CereWave', name: 'Eglė (CereWave)', flag: 'LT', lang: 'Lithuanian', accent: '', sex: 'F'},
-            {vid: 'Mantas', name: 'Mantas', flag: 'LT', lang: 'Lithuanian', accent: '', sex: 'M'},
-            {vid: 'Mantas-CereWave', name: 'Mantas (CereWave)', flag: 'LT', lang: 'Lithuanian', accent: '', sex: 'M'},
-            {vid: 'Clara', name: 'Clara', flag: 'NO', lang: 'Norwegian', accent: 'Bokmål', sex: 'F'},
-            {vid: 'Clara-CereWave', name: 'Clara (CereWave)', flag: 'NO', lang: 'Norwegian', accent: 'Bokmål', sex: 'F'},
-            {vid: 'Hulda', name: 'Hulda', flag: 'NO', lang: 'Norwegian', accent: 'Nynorsk', sex: 'F'},
-            {vid: 'Hulda-CereWave', name: 'Hulda (CereWave)', flag: 'NO', lang: 'Norwegian', accent: 'Nynorsk', sex: 'F'},
-            {vid: 'Pola', name: 'Pola', flag: 'PL', lang: 'Polish', accent: '', sex: 'F'},
-            {vid: 'Pola-CereWave', name: 'Pola (CereWave)', flag: 'PL', lang: 'Polish', accent: '', sex: 'F'},
-            {vid: 'Gabriel', name: 'Gabriel', flag: 'BR', lang: 'Portuguese', accent: 'Brazil', sex: 'M'},
-            {vid: 'Gabriel-CereWave', name: 'Gabriel (CereWave)', flag: 'BR', lang: 'Portuguese', accent: 'Brazil', sex: 'M'},
-            {vid: 'Lucia', name: 'Lúcia', flag: 'PT', lang: 'Portuguese', accent: 'Portugal', sex: 'F'},
-            {vid: 'Lucia-CereWave', name: 'Lúcia (CereWave)', flag: 'PT', lang: 'Portuguese', accent: 'Portugal', sex: 'F'},
-            {vid: 'Daria', name: 'Daria', flag: 'RO', lang: 'Romanian', accent: '', sex: 'F'},
-            {vid: 'Daria-CereWave', name: 'Daria (CereWave)', flag: 'RO', lang: 'Romanian', accent: '', sex: 'F'},
-            {vid: 'Avrora', name: 'Avrora', flag: 'RU', lang: 'Russian', accent: '', sex: 'F'},
-            {vid: 'Avrora-CereWave', name: 'Avrora (CereWave)', flag: 'RU', lang: 'Russian', accent: '', sex: 'F'},
-            {vid: 'Ana', name: 'Ana', flag: 'MX', lang: 'Spanish', accent: 'Mexico', sex: 'F'},
-            {vid: 'Ana-CereWave', name: 'Ana (CereWave)', flag: 'MX', lang: 'Spanish', accent: 'Mexico', sex: 'F'},
-            {vid: 'Sara', name: 'Sara', flag: 'ES', lang: 'Spanish', accent: 'Spain', sex: 'F'},
-            {vid: 'Sara-CereWave', name: 'Sara (CereWave)', flag: 'ES', lang: 'Spanish', accent: 'Spain', sex: 'F'},
-            {vid: 'Ylva', name: 'Ylva', flag: 'SE', lang: 'Swedish', accent: '', sex: 'F'},
-            {vid: 'Ylva-CereWave', name: 'Ylva (CereWave)', flag: 'SE', lang: 'Swedish', accent: '', sex: 'F'},
-        ],
-    },
-    'TikTok':
-    {
-        charLimit: 300,
-        countBytes: true,
-        voices: [
-            // ENGLISH
-            {vid: 'en_uk_001', name: 'UK Male 1', flag: 'GB', lang: 'English', accent: 'England', sex: 'M'},
-            {vid: 'en_uk_003', name: 'UK Male 2', flag: 'GB', lang: 'English', accent: 'England', sex: 'M'},
-            {vid: 'en_female_emotional', name: 'UK Female', flag: 'GB', lang: 'English', accent: 'England', sex: 'F'},
-            {vid: 'en_au_001', name: 'AU Female', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'F'},
-            {vid: 'en_au_002', name: 'AU Male', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'M'},
-            {vid: 'en_us_001', name: 'US Female 1', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'en_us_002', name: 'US Female 2', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'en_us_006', name: 'US Male 1', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'en_us_007', name: 'US Male 2', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'en_us_009', name: 'US Male 3', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'en_us_010', name: 'US Male 4', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'en_male_narration', name: 'US Male Narrator', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'en_male_funny', name: 'US Male Funny', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            // DISNEY
-            {vid: 'en_us_ghostface', name: 'Ghost Face', flag: 'US', lang: 'English', accent: 'American', sex: 'N', customEmoji: '\uD83D\uDC7B'},
-            {vid: 'en_us_chewbacca', name: 'Chewbacca', flag: '', lang: 'English', accent: '', sex: 'N', customEmoji: '\uD83D\uDC3B'},
-            {vid: 'en_us_c3po', name: 'C-3PO', flag: '', lang: 'English', accent: '', sex: 'N', customEmoji: '\uD83E\uDD16'},
-            {vid: 'en_us_stormtrooper', name: 'Stormtrooper', flag: 'US', lang: 'English', accent: 'American', sex: 'N', customEmoji: '\uD83D\uDC68\u200D\uD83D\uDE80'},
-            {vid: 'en_us_stitch', name: 'Stitch', flag: '', lang: 'English', accent: '', sex: 'N', customEmoji: '\uD83D\uDC28'},
-            {vid: 'en_us_rocket', name: 'Rocket', flag: 'US', lang: 'English', accent: 'American', sex: 'N', customEmoji: '\uD83E\uDD9D'},
-            // ENGLISH SINGING
-            {vid: 'en_female_f08_salut_damour', name: 'Song - Salut d\'amour', flag: 'US', lang: 'English', accent: '', sex: 'F'},
-            {vid: 'en_female_f08_warmy_breeze', name: 'Song - Warmy Breeze', flag: 'US', lang: 'English', accent: '', sex: 'F'},
-            {vid: 'en_male_m03_lobby', name: 'Song - Lobby', flag: 'US', lang: 'English', accent: '', sex: 'M'},
-            {vid: 'en_male_m03_sunshine_soon', name: 'Song - Sunshine Soon', flag: 'US', lang: 'English', accent: '', sex: 'M'},
-            // FRENCH
-            {vid: 'fr_001', name: 'French Male 1', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
-            {vid: 'fr_002', name: 'French Male 2', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
-            // GERMAN
-            {vid: 'de_001', name: 'German Female', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            {vid: 'de_002', name: 'German Male', flag: 'DE', lang: 'German', accent: '', sex: 'M'},
-            // INDONESIAN
-            {vid: 'id_001', name: 'Indonesian Female', flag: 'ID', lang: 'Indonesian', accent: '', sex: 'F'},
-            // JAPANESE
-            {vid: 'jp_001', name: 'Japanese Female 1', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
-            {vid: 'jp_003', name: 'Japanese Female 2', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
-            {vid: 'jp_005', name: 'Japanese Female 3', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
-            {vid: 'jp_006', name: 'Japanese Male', flag: 'JP', lang: 'Japanese', accent: '', sex: 'M'},
-            // KOREAN
-            {vid: 'kr_002', name: 'Korean Male', flag: 'KR', lang: 'Korean', accent: '', sex: 'M'},
-            {vid: 'kr_004', name: 'Korean Male', flag: 'KR', lang: 'Korean', accent: '', sex: 'M'},
-            {vid: 'kr_003', name: 'Korean Female', flag: 'KR', lang: 'Korean', accent: '', sex: 'F'},
-            // PORTUGUESE
-            //{vid: 'br_001', name: 'Brazilian Female 1', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'F'},
-            {vid: 'br_003', name: 'Brazilian Female 1', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'F'},
-            {vid: 'br_004', name: 'Brazilian Female 2', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'F'},
-            {vid: 'br_005', name: 'Brazilian Male', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'M'},
-            // SPANISH
-            {vid: 'es_002', name: 'Spanish Male', flag: 'ES', lang: 'Spanish', accent: 'Spain', sex: 'M'},
-            {vid: 'es_mx_002', name: 'Mexican Male', flag: 'MX', lang: 'Spanish', accent: 'Mexico', sex: 'M'},
-        ],
-    },
-    'IBM Watson':
-    {
-        charLimit: 5000,
-        countBytes: false,
-        voices: [
-            {vid: 'en-GB_CharlotteV3Voice', name: 'Charlotte', flag: 'GB', lang: 'English', accent: 'British', sex: 'F'},
-            {vid: 'en-GB_JamesV3Voice', name: 'James', flag: 'GB', lang: 'English', accent: 'British', sex: 'M'},
-            {vid: 'en-GB_KateV3Voice', name: 'Kate', flag: 'GB', lang: 'English', accent: 'British', sex: 'F'},
-            {vid: 'en-AU_JackExpressive', name: 'Jack (Expressive)', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'M'},
-            {vid: 'en-AU_HeidiExpressive', name: 'Heidi (Expressive)', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'F'},
-            {vid: 'en-US_AllisonV3Voice', name: 'Allison', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'en-US_AllisonExpressive', name: 'Allison (Expressive)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'en-US_EmilyV3Voice', name: 'Emily', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'en-US_EmmaExpressive', name: 'Emma (Expressive)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'en-US_HenryV3Voice', name: 'Henry', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'en-US_KevinV3Voice', name: 'Kevin', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'en-US_LisaV3Voice', name: 'Lisa', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'en-US_LisaExpressive', name: 'Lisa (Expressive)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'en-US_MichaelV3Voice', name: 'Michael', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'en-US_MichaelExpressive', name: 'Michael (Expressive)', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'en-US_OliviaV3Voice', name: 'Olivia', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'nl-NL_MerelV3Voice', name: 'Merel', flag: 'NL', lang: 'Dutch', accent: '', sex: 'F'},
-            {vid: 'fr-FR_NicolasV3Voice', name: 'Nicolas', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
-            {vid: 'fr-FR_ReneeV3Voice', name: 'Renee', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'fr-CA_LouiseV3Voice', name: 'Louise', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'F'},
-            {vid: 'de-DE_BirgitV3Voice', name: 'Birgit', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            {vid: 'de-DE_DieterV3Voice', name: 'Dieter', flag: 'DE', lang: 'German', accent: '', sex: 'M'},
-            {vid: 'de-DE_ErikaV3Voice', name: 'Erika', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            {vid: 'it-IT_FrancescaV3Voice', name: 'Francesca', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
-            {vid: 'ja-JP_EmiV3Voice', name: 'Emi', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
-            {vid: 'ko-KR_JinV3Voice', name: 'Jin', flag: 'KR', lang: 'Korean', accent: '', sex: 'F'},
-            {vid: 'pt-BR_IsabelaV3Voice', name: 'Isabela', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'F'},
-            {vid: 'es-ES_EnriqueV3Voice', name: 'Enrique', flag: 'ES', lang: 'Spanish', accent: 'Castilian', sex: 'M'},
-            {vid: 'es-ES_LauraV3Voice', name: 'Laura', flag: 'ES', lang: 'Spanish', accent: 'Castilian', sex: 'F'},
-            {vid: 'es-LA_SofiaV3Voice', name: 'Sofia', flag: 'MX', lang: 'Spanish', accent: 'Latin American', sex: 'F'},
-            //{vid: 'es-US_SofiaV3Voice', name: 'Sofia', flag: 'US', lang: 'Spanish', accent: 'American', sex: 'F'},
-        ],
-    },
-    'Acapela':
-    {
-        charLimit: 2000,
-        countBytes: false,
-        voices: [
-            // English
-            {vid: 'graham22k', name: 'Graham', flag: 'GB', lang: 'English', accent: '', sex: 'M'},
-            {vid: 'harry22k', name: 'Harry', flag: 'GB', lang: 'English', accent: '', sex: 'M'},
-            {vid: 'lucy22k', name: 'Lucy', flag: 'GB', lang: 'English', accent: '', sex: 'F'},
-            {vid: 'lucy_nt22k', name: 'Lucy (neural)', flag: 'GB', lang: 'English', accent: '', sex: 'F'},
-            {vid: 'peter22k', name: 'Peter', flag: 'GB', lang: 'English', accent: '', sex: 'M'},
-            {vid: 'peter_nt22k', name: 'Peter (neural)', flag: 'GB', lang: 'English', accent: '', sex: 'M'},
-            {vid: 'peterhappy22k', name: 'Peter, Happy', flag: 'GB', lang: 'English', accent: '', sex: 'M'},
-            {vid: 'petersad22k', name: 'Peter, Sad', flag: 'GB', lang: 'English', accent: '', sex: 'M'},
-            {vid: 'queenelizabeth22k', name: 'Queen Elizabeth', flag: 'GB', lang: 'English', accent: '', sex: 'F'},
-            {vid: 'queenelizabeth_nt22k', name: 'Queen Elizabeth (neural)', flag: 'GB', lang: 'English', accent: '', sex: 'F'},
-            {vid: 'rachel22k', name: 'Rachel', flag: 'GB', lang: 'English', accent: '', sex: 'F'},
-            {vid: 'rachel_nt22k', name: 'Rachel (neural)', flag: 'GB', lang: 'English', accent: '', sex: 'F'},
-            {vid: 'rosie22k', name: 'Rosie', flag: 'GB', lang: 'English', accent: '', sex: 'F'},
-            {vid: 'sophiabtob22k', name: 'Sophia btob', flag: 'GB', lang: 'English', accent: '', sex: 'F'},
-            {vid: 'sophiabtob_nt22k', name: 'Sophia btob (neural)', flag: 'GB', lang: 'English', accent: '', sex: 'F'},
-            {vid: 'rhona22k', name: 'Rhona', flag: 'GB-SCT', lang: 'English', accent: 'Scottish', sex: 'F'},
-            {vid: 'rhona_nt22k', name: 'Rhona (neural)', flag: 'GB-SCT', lang: 'English', accent: 'Scottish', sex: 'F'},
-            {vid: 'liam22k', name: 'Liam', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'M'},
-            {vid: 'lisa22k', name: 'Lisa', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'F'},
-            {vid: 'lisa_nt22k', name: 'Lisa (neural)', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'F'},
-            {vid: 'olivia22k', name: 'Olivia', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'F'},
-            {vid: 'tyler22k', name: 'Tyler', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'M'},
-            {vid: 'tyler_nt22k', name: 'Tyler (neural)', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'M'},
-            {vid: 'deepa22k', name: 'Deepa', flag: 'IN', lang: 'English', accent: 'Indian', sex: 'F'},
-            {vid: 'deepa_nt22k', name: 'Deepa (neural)', flag: 'IN', lang: 'English', accent: 'Indian', sex: 'F'},
-            {vid: 'nizareng22k', name: 'Nizareng', flag: 'ARAB', lang: 'English', accent: 'Middle East', sex: 'M'},
-            {vid: 'nizareng_nt22k', name: 'Nizareng (neural)', flag: 'ARAB', lang: 'English', accent: 'Middle East', sex: 'M'},
-            {vid: 'darius22k', name: 'Darius', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'darius_nt22k', name: 'Darius (neural)', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'ella22k', name: 'Ella', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'emilioenglish22k', name: 'Emilio', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'josh22k', name: 'Josh', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'karen22k', name: 'Karen', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'karen_nt22k', name: 'Karen (neural)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'kenny22k', name: 'Kenny', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'laura22k', name: 'Laura', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'laura_nt22k', name: 'Laura (neural)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'lily22k', name: 'Lily', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'lily_nt22k', name: 'Lily (neural)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'micah22k', name: 'Micah', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'nelly22k', name: 'Nelly', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'rod22k', name: 'Rod', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'rod_nt22k', name: 'Rod (neural)', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'ryan22k', name: 'Ryan', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'ryan_nt22k', name: 'Ryan (neural)', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'saul22k', name: 'Saul', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'saul_nt22k', name: 'Saul (neural)', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'scott22k', name: 'Scott', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'sharon22k', name: 'Sharon', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'sharon_nt22k', name: 'Sharon (neural)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'tamira22k', name: 'Tamira', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'tamira_nt22k', name: 'Tamira (neural)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'taylor22k', name: 'Taylor', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'taylor_nt22k', name: 'Taylor (neural)', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'tracy22k', name: 'Tracy', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'tracy_nt22k', name: 'Tracy (neural)', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'valeriaenglish22k', name: 'Valeria', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'will22k', name: 'Will', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'will_nt22k', name: 'Will (neural)', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'willhappy22k', name: 'Will, Happy', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'willsad22k', name: 'Will, Sad', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'willfromafar22k', name: 'Will, From Afar', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'willupclose22k', name: 'Will, Up Close', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'willbadguy22k', name: 'Will, Bad Guy', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'willoldman22k', name: 'Will, Old Man', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: 'willlittlecreature22k', name: 'Will, Little Creature', flag: 'US', lang: 'English', accent: '', sex: 'M'},
-            // Arabic
-            {vid: 'leila22k', name: 'Leila', flag: 'ARAB', lang: 'Arabic', accent: '', sex: 'F'},
-            {vid: 'leila_nt22k', name: 'Leila (neural)', flag: 'ARAB', lang: 'Arabic', accent: '', sex: 'F'},
-            {vid: 'jalal22k', name: 'Jalal', flag: 'ARAB', lang: 'Arabic', accent: '', sex: 'M'},
-            {vid: 'jalal_nt22k', name: 'Jalal (neural)', flag: 'ARAB', lang: 'Arabic', accent: '', sex: 'M'},
-            {vid: 'mehdi22k', name: 'Mehdi', flag: 'ARAB', lang: 'Arabic', accent: '', sex: 'M'},
-            {vid: 'mehdi_nt22k', name: 'Mehdi (neural)', flag: 'ARAB', lang: 'Arabic', accent: '', sex: 'M'},
-            {vid: 'nizar22k', name: 'Nizar', flag: 'ARAB', lang: 'Arabic', accent: '', sex: 'M'},
-            {vid: 'nizar_nt22k', name: 'Nizar (neural)', flag: 'ARAB', lang: 'Arabic', accent: '', sex: 'M'},
-            {vid: 'salma22k', name: 'Salma', flag: 'ARAB', lang: 'Arabic', accent: '', sex: 'F'},
-            {vid: 'salma_nt22k', name: 'Salma (neural)', flag: 'ARAB', lang: 'Arabic', accent: '', sex: 'F'},
-            // Catalan
-            {vid: 'laia22k', name: 'Laia', flag: 'ES-CT', lang: 'Catalan', accent: '', sex: 'F'},
-            {vid: 'laia_nt22k', name: 'Laia (neural)', flag: 'ES-CT', lang: 'Catalan', accent: '', sex: 'F'},
-            // Chinese
-            {vid: 'lulu22k', name: 'Lulu', flag: 'CN', lang: 'Chinese', accent: 'Mandarin', sex: 'F'},
-            {vid: 'lulu_nt22k', name: 'Lulu (neural)', flag: 'CN', lang: 'Chinese', accent: 'Mandarin', sex: 'F'},
-            // Czech
-            {vid: 'eliska22k', name: 'Eliska', flag: 'CZ', lang: 'Czech', accent: '', sex: 'F'},
-            {vid: 'eliska_nt22k', name: 'Eliska (neural)', flag: 'CZ', lang: 'Czech', accent: '', sex: 'F'},
-            // Danish
-            {vid: 'mette22k', name: 'Mette', flag: 'DK', lang: 'Danish', accent: '', sex: 'F'},
-            {vid: 'mette_nt22k', name: 'Mette (neural)', flag: 'DK', lang: 'Danish', accent: '', sex: 'F'},
-            {vid: 'rasmus22k', name: 'Rasmus', flag: 'DK', lang: 'Danish', accent: '', sex: 'M'},
-            {vid: 'rasmus_nt22k', name: 'Rasmus (neural)', flag: 'DK', lang: 'Danish', accent: '', sex: 'M'},
-            {vid: 'rikke22k', name: 'Rikke', flag: 'DK', lang: 'Danish', accent: '', sex: 'F'},
-            {vid: 'rikke_nt22k', name: 'Rikke (neural)', flag: 'DK', lang: 'Danish', accent: '', sex: 'F'},
-            // Dutch
-            {vid: 'daan22k', name: 'Daan', flag: 'NL', lang: 'Dutch', accent: '', sex: 'M'},
-            {vid: 'daan_nt22k', name: 'Daan (neural)', flag: 'NL', lang: 'Dutch', accent: '', sex: 'M'},
-            {vid: 'femke22k', name: 'Femke', flag: 'NL', lang: 'Dutch', accent: '', sex: 'F'},
-            {vid: 'femke_nt22k', name: 'Femke (neural)', flag: 'NL', lang: 'Dutch', accent: '', sex: 'F'},
-            {vid: 'jasmijn22k', name: 'Jasmijn', flag: 'NL', lang: 'Dutch', accent: '', sex: 'F'},
-            {vid: 'jasmijn_nt22k', name: 'Jasmijn (neural)', flag: 'NL', lang: 'Dutch', accent: '', sex: 'F'},
-            {vid: 'max22k', name: 'Max', flag: 'NL', lang: 'Dutch', accent: '', sex: 'M'},
-            {vid: 'max_nt22k', name: 'Max (neural)', flag: 'NL', lang: 'Dutch', accent: '', sex: 'M'},
-            {vid: 'tessabtob22k', name: 'Tessa btob', flag: 'NL', lang: 'Dutch', accent: '', sex: 'F'},
-            {vid: 'tessabtob_nt22k', name: 'Tessa btob (neural)', flag: 'NL', lang: 'Dutch', accent: '', sex: 'F'},
-            {vid: 'christinabtob22k', name: 'Christina btob', flag: 'BE', lang: 'Dutch', accent: 'Belgian', sex: 'F'},
-            {vid: 'christinabtob_nt22k', name: 'Christina btob (neural)', flag: 'BE', lang: 'Dutch', accent: 'Belgian', sex: 'F'},
-            {vid: 'jeroen22k', name: 'Jeroen', flag: 'BE', lang: 'Dutch', accent: 'Belgian', sex: 'M'},
-            {vid: 'jeroen_nt22k', name: 'Jeroen (neural)', flag: 'BE', lang: 'Dutch', accent: 'Belgian', sex: 'M'},
-            {vid: 'jeroenhappy22k', name: 'Jeroen, Happy', flag: 'BE', lang: 'Dutch', accent: 'Belgian', sex: 'M'},
-            {vid: 'jeroensad22k', name: 'Jeroen, Sad', flag: 'BE', lang: 'Dutch', accent: 'Belgian', sex: 'M'},
-            {vid: 'sofie22k', name: 'Sofie', flag: 'BE', lang: 'Dutch', accent: 'Belgian', sex: 'F'},
-            {vid: 'sofie_nt22k', name: 'Sofie (neural)', flag: 'BE', lang: 'Dutch', accent: 'Belgian', sex: 'F'},
-            {vid: 'zoe22k', name: 'Zoe', flag: 'BE', lang: 'Dutch', accent: 'Belgian', sex: 'F'},
-            {vid: 'zoe_nt22k', name: 'Zoe (neural)', flag: 'BE', lang: 'Dutch', accent: 'Belgian', sex: 'F'},
-            // Faroese
-            {vid: 'hanna22k', name: 'Hanna', flag: 'FO', lang: 'Faroese', accent: '', sex: 'M'},
-            {vid: 'hanna_nt22k', name: 'Hanna (neural)', flag: 'FO', lang: 'Faroese', accent: '', sex: 'M'},
-            {vid: 'hanus22k', name: 'Hanus', flag: 'FO', lang: 'Faroese', accent: '', sex: 'M'},
-            {vid: 'hanus_nt22k', name: 'Hanus (neural)', flag: 'FO', lang: 'Faroese', accent: '', sex: 'M'},
-            // Finnish
-            {vid: 'sanna22k', name: 'Sanna', flag: 'FI', lang: 'Finnish', accent: '', sex: 'F'},
-            {vid: 'sanna_nt22k', name: 'Sanna (neural)', flag: 'FI', lang: 'Finnish', accent: '', sex: 'F'},
-            // French
-            {vid: 'alice22k', name: 'Alice', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'alice_nt22k', name: 'Alice (neural)', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'anais22k', name: 'Anais', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'anais_nt22k', name: 'Anais (neural)', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'anaisbtob22k', name: 'Anais btob', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'anaisbtob_nt22k', name: 'Anais btob (neural)', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'antoine22k', name: 'Antoine', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
-            {vid: 'antoine_nt22k', name: 'Antoine (neural)', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
-            {vid: 'antoinehappy22k', name: 'Antoine, Happy', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
-            {vid: 'antoinesad22k', name: 'Antoine, Sad', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
-            {vid: 'antoinefromafar22k', name: 'Antoine, From Afar', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
-            {vid: 'antoineupclose22k', name: 'Antoine, Up Close', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
-            {vid: 'bruno22k', name: 'Bruno', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
-            {vid: 'bruno_nt22k', name: 'Bruno (neural)', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
-            {vid: 'claire22k', name: 'Claire', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'claire_nt22k', name: 'Claire (neural)', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'constance22k', name: 'Constance', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'constance_nt22k', name: 'Constance (neural)', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'elise22k', name: 'Elise', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'julie22k', name: 'Julie', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'julie_nt22k', name: 'Julie (neural)', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'manon22k', name: 'Manon', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'manon_nt22k', name: 'Manon (neural)', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'margaux22k', name: 'Margaux', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'margaux_nt22k', name: 'Margaux (neural)', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'margauxhappy22k', name: 'Margaux, Happy', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'margauxsad22k', name: 'Margaux, Sad', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'valentin22k', name: 'Valentin', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
-            {vid: 'anthony22k', name: 'Anthony', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'M'},
-            {vid: 'anthony_nt22k', name: 'Anthony (neural)', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'M'},
-            {vid: 'louise22k', name: 'Louise', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'F'},
-            {vid: 'louise_nt22k', name: 'Louise (neural)', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'F'},
-            {vid: 'alice-be22k', name: 'Alice', flag: 'BE', lang: 'French', accent: 'Belgian', sex: 'F'},
-            {vid: 'alice-be_nt22k', name: 'Alice (neural)', flag: 'BE', lang: 'French', accent: 'Belgian', sex: 'F'},
-            {vid: 'anais-be22k', name: 'Anais', flag: 'BE', lang: 'French', accent: 'Belgian', sex: 'F'},
-            {vid: 'anais-be_nt22k', name: 'Anais (neural)', flag: 'BE', lang: 'French', accent: 'Belgian', sex: 'F'},
-            {vid: 'antoine-be22k', name: 'Antoine', flag: 'BE', lang: 'French', accent: 'Belgian', sex: 'M'},
-            {vid: 'antoine-be_nt22k', name: 'Antoine (neural)', flag: 'BE', lang: 'French', accent: 'Belgian', sex: 'M'},
-            {vid: 'antoinehappy-be22k', name: 'Antoine, Happy', flag: 'BE', lang: 'French', accent: 'Belgian', sex: 'M'},
-            {vid: 'antoinesad-be22k', name: 'Antoine, Sad', flag: 'BE', lang: 'French', accent: 'Belgian', sex: 'M'},
-            {vid: 'antoinefromafar-be22k', name: 'Antoine, From Afar', flag: 'BE', lang: 'French', accent: 'Belgian', sex: 'M'},
-            {vid: 'antoineupclose-be22k', name: 'Antoine, Up Close', flag: 'BE', lang: 'French', accent: 'Belgian', sex: 'M'},
-            {vid: 'bruno-be22k', name: 'Bruno', flag: 'BE', lang: 'French', accent: 'Belgian', sex: 'M'},
-            {vid: 'bruno-be_nt22k', name: 'Bruno (neural)', flag: 'BE', lang: 'French', accent: 'Belgian', sex: 'M'},
-            {vid: 'claire-be22k', name: 'Claire', flag: 'BE', lang: 'French', accent: 'Belgian', sex: 'F'},
-            {vid: 'claire-be_nt22k', name: 'Claire (neural)', flag: 'BE', lang: 'French', accent: 'Belgian', sex: 'F'},
-            {vid: 'elise-be22k', name: 'Elise', flag: 'BE', lang: 'French', accent: 'Belgian', sex: 'F'},
-            {vid: 'julie-be22k', name: 'Julie', flag: 'BE', lang: 'French', accent: 'Belgian', sex: 'F'},
-            {vid: 'julie-be_nt22k', name: 'Julie (neural)', flag: 'BE', lang: 'French', accent: 'Belgian', sex: 'F'},
-            {vid: 'manon-be22k', name: 'Manon', flag: 'BE', lang: 'French', accent: 'Belgian', sex: 'F'},
-            {vid: 'manon-be_nt22k', name: 'Manon (neural)', flag: 'BE', lang: 'French', accent: 'Belgian', sex: 'F'},
-            {vid: 'margaux-be22k', name: 'Margaux', flag: 'BE', lang: 'French', accent: 'Belgian', sex: 'F'},
-            {vid: 'margaux-be_nt22k', name: 'Margaux (neural)', flag: 'BE', lang: 'French', accent: 'Belgian', sex: 'F'},
-            {vid: 'margauxhappy-be22k', name: 'Margaux, Happy', flag: 'BE', lang: 'French', accent: 'Belgian', sex: 'F'},
-            {vid: 'margauxsad-be22k', name: 'Margaux, Sad', flag: 'BE', lang: 'French', accent: 'Belgian', sex: 'F'},
-            {vid: 'valentin-be22k', name: 'Valentin', flag: 'BE', lang: 'French', accent: 'Belgian', sex: 'M'},
-            // German
-            {vid: 'andreas22k', name: 'Andreas', flag: 'DE', lang: 'German', accent: '', sex: 'M'},
-            {vid: 'andreas_nt22k', name: 'Andreas (neural)', flag: 'DE', lang: 'German', accent: '', sex: 'M'},
-            {vid: 'ankebtob22k', name: 'Anke btob', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            {vid: 'ankebtob_nt22k', name: 'Anke btob (neural)', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            {vid: 'claudia22k', name: 'Claudia', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            {vid: 'claudia_nt22k', name: 'Claudia (neural)', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            {vid: 'claudiasmile22k', name: 'Claudia, Happy', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            {vid: 'jonas22k', name: 'Jonas', flag: 'DE', lang: 'German', accent: '', sex: 'M'},
-            {vid: 'julia22k', name: 'Julia', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            {vid: 'julia_nt22k', name: 'Julia (neural)', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            {vid: 'klaus22k', name: 'Klaus', flag: 'DE', lang: 'German', accent: '', sex: 'M'},
-            {vid: 'klaus_nt22k', name: 'Klaus (neural)', flag: 'DE', lang: 'German', accent: '', sex: 'M'},
-            {vid: 'lea22k', name: 'Lea', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            {vid: 'sarah22k', name: 'Sarah', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            {vid: 'sarah_nt22k', name: 'Sarah (neural)', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            // Greek
-            {vid: 'dimitris22k', name: 'Dimitris', flag: 'GR', lang: 'Greek', accent: '', sex: 'M'},
-            {vid: 'dimitris_nt22k', name: 'Dimitris (neural)', flag: 'GR', lang: 'Greek', accent: '', sex: 'M'},
-            {vid: 'dimitrishappy22k', name: 'Dimitris, Happy', flag: 'GR', lang: 'Greek', accent: '', sex: 'M'},
-            {vid: 'dimitrissad22k', name: 'Dimitris, Sad', flag: 'GR', lang: 'Greek', accent: '', sex: 'M'},
-            // Italian
-            {vid: 'alessio22k', name: 'Alessio', flag: 'IT', lang: 'Italian', accent: '', sex: 'M'},
-            {vid: 'aurora22k', name: 'Aurora', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
-            {vid: 'barbarabtob22k', name: 'Barbara btob', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
-            {vid: 'barbarabtob_nt22k', name: 'Barbara btob', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
-            {vid: 'chiara22k', name: 'Chiara', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
-            {vid: 'chiara_nt22k', name: 'Chiara (neural)', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
-            {vid: 'fabiana22k', name: 'Fabiana', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
-            {vid: 'fabiana_nt22k', name: 'Fabiana (neural)', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
-            {vid: 'vittorio22k', name: 'Vittorio', flag: 'IT', lang: 'Italian', accent: '', sex: 'M'},
-            {vid: 'vittorio_nt22k', name: 'Vittorio (neural)', flag: 'IT', lang: 'Italian', accent: '', sex: 'M'},
-            // Japanese
-            {vid: 'sakura22k', name: 'Sakura', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
-            {vid: 'sakura_nt22k', name: 'Sakura (neural)', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
-            // Korean
-            {vid: 'minji22k', name: 'Minji', flag: 'KR', lang: 'Korean', accent: '', sex: 'F'},
-            {vid: 'minji_nt22k', name: 'Minji (neural)', flag: 'KR', lang: 'Korean', accent: '', sex: 'F'},
-            // Northern Sámi
-            // commented out due to SOUND_GENERATION_ERROR
-            //{vid: 'biera_hmm_22k', name: 'Biera', flag: '', lang: 'Northern Sámi', accent: '', sex: 'F'},
-            //{vid: 'elle_hmm_22k', name: 'Elle', flag: '', lang: 'Northern Sámi', accent: '', sex: 'F'},
-            // Norwegian
-            {vid: 'bente22k', name: 'Bente', flag: 'NO', lang: 'Norwegian', accent: '', sex: 'F'},
-            {vid: 'bente_nt22k', name: 'Bente (neural)', flag: 'NO', lang: 'Norwegian', accent: '', sex: 'F'},
-            {vid: 'elias22k', name: 'Elias', flag: 'NO', lang: 'Norwegian', accent: '', sex: 'M'},
-            {vid: 'emilie22k', name: 'Emilie', flag: 'NO', lang: 'Norwegian', accent: '', sex: 'F'},
-            {vid: 'ida22k', name: 'Ida', flag: 'NO', lang: 'Norwegian', accent: '', sex: 'F'},
-            {vid: 'ida_nt22k', name: 'Ida (neural)', flag: 'NO', lang: 'Norwegian', accent: '', sex: 'F'},
-            {vid: 'kari22k', name: 'Kari', flag: 'NO', lang: 'Norwegian', accent: '', sex: 'F'},
-            {vid: 'kari_nt22k', name: 'Kari (neural)', flag: 'NO', lang: 'Norwegian', accent: '', sex: 'F'},
-            {vid: 'olav22k', name: 'Olav', flag: 'NO', lang: 'Norwegian', accent: '', sex: 'M'},
-            {vid: 'olav_nt22k', name: 'Olav', flag: 'NO', lang: 'Norwegian', accent: '', sex: 'M'},
-            // Polish
-            {vid: 'ania22k', name: 'Ania', flag: 'PL', lang: 'Polish', accent: '', sex: 'F'},
-            {vid: 'ania_nt22k', name: 'Ania (neural)', flag: 'PL', lang: 'Polish', accent: '', sex: 'F'},
-            {vid: 'gosia22k', name: 'Gosia', flag: 'PL', lang: 'Polish', accent: '', sex: 'F'},
-            {vid: 'gosia_nt22k', name: 'Gosia (neural)', flag: 'PL', lang: 'Polish', accent: '', sex: 'F'},
-            // Portuguese
-            {vid: 'isabel22k', name: 'Isabel', flag: 'PT', lang: 'Portuguese', accent: 'European', sex: 'F'},
-            {vid: 'isabel_nt22k', name: 'Isabel (neural)', flag: 'PT', lang: 'Portuguese', accent: 'European', sex: 'F'},
-            {vid: 'gabriela22k', name: 'Gabriela', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'F'},
-            {vid: 'gabriela_nt22k', name: 'Gabriela (neural)', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'F'},
-            {vid: 'marcia22k', name: 'Marcia', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'F'},
-            {vid: 'marcia_nt22k', name: 'Marcia (neural)', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'F'},
-            {vid: 'sergio22k', name: 'Sergio', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'M'},
-            {vid: 'sergio_nt22k', name: 'Sergio (neural)', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'M'},
-            // Russian
-            {vid: 'alyona22k', name: 'Alyona', flag: 'RU', lang: 'Russian', accent: '', sex: 'F'},
-            {vid: 'alyona_nt22k', name: 'Alyona (neural)', flag: 'RU', lang: 'Russian', accent: '', sex: 'F'},
-            {vid: 'lena22k', name: 'Lena', flag: 'RU', lang: 'Russian', accent: '', sex: 'F'},
-            {vid: 'lena_nt22k', name: 'Lena (neural)', flag: 'RU', lang: 'Russian', accent: '', sex: 'F'},
-            // Spanish
-            {vid: 'anabtob22k', name: 'Ana btob', flag: 'ES', lang: 'Spanish', accent: 'Spain', sex: 'F'},
-            {vid: 'anabtob_nt22k', name: 'Ana btob (neural)', flag: 'ES', lang: 'Spanish', accent: 'Spain', sex: 'F'},
-            {vid: 'antonio22k', name: 'Antonio', flag: 'ES', lang: 'Spanish', accent: 'Spain', sex: 'M'},
-            {vid: 'antonio_nt22k', name: 'Antonio (neural)', flag: 'ES', lang: 'Spanish', accent: 'Spain', sex: 'M'},
-            {vid: 'elenabtob22k', name: 'Elena btob', flag: 'ES', lang: 'Spanish', accent: 'Spain', sex: 'F'},
-            {vid: 'elenabtob_nt22k', name: 'Elena btob (neural)', flag: 'ES', lang: 'Spanish', accent: 'Spain', sex: 'F'},
-            {vid: 'ines22k', name: 'Ines', flag: 'ES', lang: 'Spanish', accent: 'Spain', sex: 'F'},
-            {vid: 'ines_nt22k', name: 'Ines (neural)', flag: 'ES', lang: 'Spanish', accent: 'Spain', sex: 'F'},
-            {vid: 'maria22k', name: 'Maria', flag: 'ES', lang: 'Spanish', accent: 'Spain', sex: 'F'},
-            {vid: 'maria_nt22k', name: 'Maria (neural)', flag: 'ES', lang: 'Spanish', accent: 'Spain', sex: 'F'},
-            {vid: 'emilio22k', name: 'Emilio', flag: 'US', lang: 'Spanish', accent: 'American', sex: 'M'},
-            {vid: 'rodrigo22k', name: 'Rodrigo', flag: 'US', lang: 'Spanish', accent: 'American', sex: 'M'},
-            {vid: 'rodrigo_nt22k', name: 'Rodrigo (neural)', flag: 'US', lang: 'Spanish', accent: 'American', sex: 'M'},
-            {vid: 'rosa22k', name: 'Rosa', flag: 'US', lang: 'Spanish', accent: 'American', sex: 'F'},
-            {vid: 'rosa_nt22k', name: 'Rosa (neural)', flag: 'US', lang: 'Spanish', accent: 'American', sex: 'F'},
-            {vid: 'valeria22k', name: 'Valeria', flag: 'US', lang: 'Spanish', accent: 'American', sex: 'F'},
-            // Swedish
-            {vid: 'elin22k', name: 'Elin', flag: 'SE', lang: 'Swedish', accent: '', sex: 'F'},
-            {vid: 'elin_nt22k', name: 'Elin (neural)', flag: 'SE', lang: 'Swedish', accent: '', sex: 'F'},
-            {vid: 'emil22k', name: 'Emil', flag: 'SE', lang: 'Swedish', accent: '', sex: 'M'},
-            {vid: 'emil_nt22k', name: 'Emil (neural)', flag: 'SE', lang: 'Swedish', accent: '', sex: 'M'},
-            {vid: 'emma22k', name: 'Emma', flag: 'SE', lang: 'Swedish', accent: '', sex: 'F'},
-            {vid: 'emma_nt22k', name: 'Emma (neural)', flag: 'SE', lang: 'Swedish', accent: '', sex: 'F'},
-            {vid: 'erik22k', name: 'Erik', flag: 'SE', lang: 'Swedish', accent: '', sex: 'M'},
-            {vid: 'erik_nt22k', name: 'Erik (neural)', flag: 'SE', lang: 'Swedish', accent: '', sex: 'M'},
-            {vid: 'filip22k', name: 'Filip', flag: 'SE', lang: 'Swedish', accent: '', sex: 'M'},
-            {vid: 'freja22k', name: 'Freja', flag: 'SE', lang: 'Swedish', accent: '', sex: 'F'},
-            {vid: 'kal22k', name: 'Kal', flag: 'SE', lang: 'Swedish', accent: 'Gothenburg', sex: 'M'},
-            {vid: 'kal_nt22k', name: 'Kal (neural)', flag: 'SE', lang: 'Swedish', accent: 'Gothenburg', sex: 'M'},
-            {vid: 'mia22k', name: 'Mia', flag: 'SE', lang: 'Swedish', accent: 'Scanian', sex: 'F'},
-            {vid: 'mia_nt22k', name: 'Mia (neural)', flag: 'SE', lang: 'Swedish', accent: 'Scanian', sex: 'F'},
-            {vid: 'samuel22k', name: 'Samuel', flag: 'FI', lang: 'Swedish', accent: 'Finland', sex: 'M'},
-            {vid: 'samuel_nt22k', name: 'Samuel (neural)', flag: 'FI', lang: 'Swedish', accent: 'Finland', sex: 'M'},
-            // Turkish
-            {vid: 'ipek22k', name: 'Ipek', flag: 'TR', lang: 'Turkish', accent: '', sex: 'F'},
-            {vid: 'ipek_nt22k', name: 'Ipek (neural)', flag: 'TR', lang: 'Turkish', accent: '', sex: 'F'},
-            {vid: 'zeynep22k', name: 'Zeynep', flag: 'TR', lang: 'Turkish', accent: '', sex: 'F'},
-            {vid: 'zeynep_nt22k', name: 'Zeynep (neural)', flag: 'TR', lang: 'Turkish', accent: '', sex: 'F'},
-        ],
-    },
-    'Oddcast':
-    {
-        charLimit: 600,
-        countBytes: false,
-        voices: [           // Voice IDs are not unique as they belong to an engine and a language. Our IDs are in the format 'voiceId-engineId-languageId'
-            // English
-            {vid: '4-3-1', name: 'Bridget', flag: 'GB', lang: 'English', accent: 'British', sex: 'F'},
-            {vid: '6-2-1', name: 'Catherine', flag: 'GB', lang: 'English', accent: 'British', sex: 'F'},
-            {vid: '5-4-1', name: 'Daniel', flag: 'GB', lang: 'English', accent: 'British', sex: 'M'},
-            {vid: '4-2-1', name: 'Elizabeth', flag: 'GB', lang: 'English', accent: 'British', sex: 'F'},
-            {vid: '5-3-1', name: 'Hugh', flag: 'GB', lang: 'English', accent: 'British', sex: 'M'},
-            {vid: '2-7-1', name: 'Oliver', flag: 'GB', lang: 'English', accent: 'British', sex: 'M'},
-            {vid: '1-7-1', name: 'Olivia', flag: 'GB', lang: 'English', accent: 'British', sex: 'F'},
-            {vid: '7-4-1', name: 'Serena', flag: 'GB', lang: 'English', accent: 'British', sex: 'F'},
-            {vid: '5-2-1', name: 'Simon', flag: 'GB', lang: 'English', accent: 'British', sex: 'M'},
-            {vid: '12-4-1', name: 'Fiona', flag: 'GB-SCT', lang: 'English', accent: 'Scottish', sex: 'F'},
-            {vid: '8-4-1', name: 'Moira', flag: 'IE', lang: 'English', accent: 'Irish', sex: 'F'},
-            {vid: '9-2-1', name: 'Alan', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'M'},
-            {vid: '10-2-1', name: 'Grace', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'F'},
-            {vid: '4-4-1', name: 'Karen', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'F'},
-            {vid: '10-4-1', name: 'Lee', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'M'},
-            {vid: '3-7-1', name: 'Matilda', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'F'},
-            {vid: '13-4-1', name: 'Tessa', flag: 'ZA', lang: 'English', accent: 'South African', sex: 'F'},
-            {vid: '5-7-1', name: 'Lakshmi', flag: 'IN', lang: 'English', accent: 'Indian', sex: 'F'},
-            {vid: '6-7-1', name: 'Prashant', flag: 'IN', lang: 'English', accent: 'Indian', sex: 'M'},
-            {vid: '9-4-1', name: 'Sangeeta', flag: 'IN', lang: 'English', accent: 'Indian', sex: 'F'},
-            {vid: '11-2-1', name: 'Veena', flag: 'IN', lang: 'English', accent: 'Indian', sex: 'F'},
-            {vid: '7-2-1', name: 'Allison', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: '6-3-1', name: 'Ashley', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: '8-3-1', name: 'Beth', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: '7-7-1', name: 'Brenda', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: '2-2-1', name: 'Dave', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: '7-3-1', name: 'James', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: '2-4-1', name: 'Jill', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: '3-3-1', name: 'Julie', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: '1-3-1', name: 'Kate', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: '2-3-1', name: 'Paul', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: '11-4-1', name: 'Samantha', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: '8-2-1', name: 'Steven', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            {vid: '1-2-1', name: 'Susan', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: '3-4-1', name: 'Tom', flag: 'US', lang: 'English', accent: 'American', sex: 'M'},
-            // Arabic
-            {vid: '1-7-27', name: 'Amina', flag: 'ARAB', lang: 'Arabic', accent: '', sex: 'F'},
-            {vid: '2-7-27', name: 'Jamal', flag: 'ARAB', lang: 'Arabic', accent: '', sex: 'M'},
-            {vid: '2-2-27', name: 'Laila', flag: 'ARAB', lang: 'Arabic', accent: '', sex: 'F'},
-            {vid: '1-4-27', name: 'Maged', flag: 'ARAB', lang: 'Arabic', accent: '', sex: 'M'},
-            {vid: '1-2-27', name: 'Tarik', flag: 'ARAB', lang: 'Arabic', accent: '', sex: 'M'},
-            // Basque
-            {vid: '1-4-22', name: 'Arantxa', flag: 'ES-PV', lang: 'Basque', accent: '', sex: 'F'},
-            // Catalan
-            {vid: '3-2-5', name: 'Empar', flag: 'ES-CT', lang: 'Catalan', accent: 'Valencian', sex: 'F'},
-            {vid: '2-2-5', name: 'Jordi', flag: 'ES-CT', lang: 'Catalan', accent: '', sex: 'M'},
-            {vid: '1-2-5', name: 'Montserrat', flag: 'ES-CT', lang: 'Catalan', accent: '', sex: 'F'},
-            {vid: '1-4-5', name: 'Nuria', flag: 'ES-CT', lang: 'Catalan', accent: '', sex: 'F'},
-            // Chinese
-            {vid: '3-3-10', name: 'Hui', flag: 'CN', lang: 'Chinese', accent: 'Mandarin', sex: 'F'},
-            {vid: '5-3-10', name: 'Kiang', flag: 'CN', lang: 'Chinese', accent: 'Mandarin', sex: 'M'},
-            {vid: '4-3-10', name: 'Liang', flag: 'CN', lang: 'Chinese', accent: 'Mandarin', sex: 'M'},
-            {vid: '1-2-10', name: 'Linlin', flag: 'CN', lang: 'Chinese', accent: 'Mandarin', sex: 'F'},
-            {vid: '2-2-10', name: 'Lisheng', flag: 'CN', lang: 'Chinese', accent: 'Mandarin', sex: 'F'},
-            {vid: '4-4-10', name: 'Ting-Ting', flag: 'CN', lang: 'Chinese', accent: 'Mandarin', sex: 'F'},
-            {vid: '4-7-10', name: 'Chan', flag: 'HK', lang: 'Chinese', accent: 'Cantonese', sex: 'M'},
-            {vid: '6-3-10', name: 'Kaho', flag: 'HK', lang: 'Chinese', accent: 'Cantonese', sex: 'M'},
-            {vid: '7-3-10', name: 'Kayan', flag: 'HK', lang: 'Chinese', accent: 'Cantonese', sex: 'F'},
-            {vid: '1-4-10', name: 'Sin-Ji', flag: 'HK', lang: 'Chinese', accent: 'Cantonese', sex: 'F'},
-            {vid: '3-7-10', name: 'Yan', flag: 'HK', lang: 'Chinese', accent: 'Cantonese', sex: 'F'},
-            {vid: '2-7-10', name: 'Chia-hao', flag: 'TW', lang: 'Chinese', accent: 'Taiwanese', sex: 'M'},
-            {vid: '1-7-10', name: 'Chia-ling', flag: 'TW', lang: 'Chinese', accent: 'Taiwanese', sex: 'F'},
-            {vid: '2-4-10', name: 'Ya-Ling', flag: 'TW', lang: 'Chinese', accent: 'Taiwanese', sex: 'F'},
-            {vid: '8-3-10', name: 'Yafang', flag: 'TW', lang: 'Chinese', accent: 'Taiwanese', sex: 'F'},
-            // Czech
-            {vid: '1-7-18', name: 'Pavla', flag: 'CZ', lang: 'Czech', accent: '', sex: 'F'},
-            {vid: '1-4-18', name: 'Zuzana', flag: 'CZ', lang: 'Czech', accent: '', sex: 'F'},
-            // Danish
-            {vid: '1-7-19', name: 'Dagny', flag: 'DK', lang: 'Danish', accent: '', sex: 'F'},
-            {vid: '2-7-19', name: 'Erik', flag: 'DK', lang: 'Danish', accent: '', sex: 'M'},
-            {vid: '1-2-19', name: 'Frida', flag: 'DK', lang: 'Danish', accent: '', sex: 'F'},
-            {vid: '1-4-19', name: 'Ida', flag: 'DK', lang: 'Danish', accent: '', sex: 'F'},
-            {vid: '2-2-19', name: 'Magnus', flag: 'DK', lang: 'Danish', accent: '', sex: 'M'},
-            // Dutch
-            {vid: '2-4-11', name: 'Claire', flag: 'NL', lang: 'Dutch', accent: '', sex: 'F'},
-            {vid: '2-7-11', name: 'Dirk', flag: 'NL', lang: 'Dutch', accent: '', sex: 'M'},
-            {vid: '1-7-11', name: 'Famke', flag: 'NL', lang: 'Dutch', accent: '', sex: 'F'},
-            {vid: '2-2-11', name: 'Saskia', flag: 'NL', lang: 'Dutch', accent: '', sex: 'F'},
-            {vid: '1-2-11', name: 'Willem', flag: 'NL', lang: 'Dutch', accent: '', sex: 'M'},
-            {vid: '4-4-11', name: 'Xander', flag: 'NL', lang: 'Dutch', accent: '', sex: 'M'},
-            {vid: '1-4-11', name: 'Ellen', flag: 'BE', lang: 'Dutch', accent: 'Belgian', sex: 'F'},
-            // Esperanto
-            {vid: '1-2-31', name: 'Ludoviko', flag: 'ESPER', lang: 'Esperanto', accent: '', sex: 'M'},
-            // Filipino (Tagalog)
-            {vid: '2-7-32', name: 'Datu', flag: 'PH', lang: 'Filipino (Tagalog)', accent: '', sex: 'M'},
-            {vid: '1-7-32', name: 'Mayumi', flag: 'PH', lang: 'Filipino (Tagalog)', accent: '', sex: 'F'},
-            // Finnish
-            {vid: '2-2-23', name: 'Marko', flag: 'FI', lang: 'Finnish', accent: '', sex: 'M'},
-            {vid: '1-4-23', name: 'Mikko', flag: 'FI', lang: 'Finnish', accent: '', sex: 'M'},
-            {vid: '1-2-23', name: 'Milla', flag: 'FI', lang: 'Finnish', accent: '', sex: 'F'},
-            {vid: '1-7-23', name: 'Sanna', flag: 'FI', lang: 'Finnish', accent: '', sex: 'F'},
-            // French
-            {vid: '2-7-4', name: 'Antoine', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
-            {vid: '1-7-4', name: 'Beatrice', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: '2-2-4', name: 'Bernard', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
-            {vid: '4-2-4', name: 'Florence', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: '3-2-4', name: 'Jolie', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: '4-3-4', name: 'Louis', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
-            {vid: '3-3-4', name: 'Roxane', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: '3-4-4', name: 'Sebastien', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
-            {vid: '5-4-4', name: 'Thomas', flag: 'FR', lang: 'French', accent: '', sex: 'M'},
-            {vid: '4-4-4', name: 'Virginie', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: '5-2-4', name: 'Charlotte', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'F'},
-            {vid: '1-3-4', name: 'Chloe', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'F'},
-            {vid: '1-4-4', name: 'Felix', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'M'},
-            {vid: '4-7-4', name: 'Gaspard', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'M'},
-            {vid: '2-4-4', name: 'Julie', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'F'},
-            {vid: '2-3-4', name: 'Leo', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'M'},
-            {vid: '3-7-4', name: 'Leonie', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'F'},
-            {vid: '6-2-4', name: 'Olivier', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'M'},
-            // Galician
-            {vid: '1-2-15', name: 'Carmela', flag: 'ES-GA', lang: 'Galician', accent: '', sex: 'F'},
-            // German
-            {vid: '3-4-3', name: 'Anna', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            {vid: '2-7-3', name: 'Heinz', flag: 'DE', lang: 'German', accent: '', sex: 'M'},
-            {vid: '1-7-3', name: 'Hilda', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            {vid: '3-2-3', name: 'Katrin', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            {vid: '1-3-3', name: 'Lena', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            {vid: '2-2-3', name: 'Stefan', flag: 'DE', lang: 'German', accent: '', sex: 'M'},
-            {vid: '1-4-3', name: 'Steffi', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            {vid: '2-3-3', name: 'Tim', flag: 'DE', lang: 'German', accent: '', sex: 'M'},
-            {vid: '2-4-3', name: 'Yannick', flag: 'DE', lang: 'German', accent: '', sex: 'M'},
-            // Greek
-            {vid: '1-2-8', name: 'Afroditi', flag: 'GR', lang: 'Greek', accent: '', sex: 'F'},
-            {vid: '1-4-8', name: 'Alexandros', flag: 'GR', lang: 'Greek', accent: '', sex: 'M'},
-            {vid: '1-7-8', name: 'Eleni', flag: 'GR', lang: 'Greek', accent: '', sex: 'F'},
-            {vid: '2-7-8', name: 'Giorgos', flag: 'GR', lang: 'Greek', accent: '', sex: 'M'},
-            {vid: '3-2-8', name: 'Nikos', flag: 'GR', lang: 'Greek', accent: '', sex: 'M'},
-            // Hindi
-            {vid: '2-7-24', name: 'Karan', flag: 'IN', lang: 'Hindi', accent: '', sex: 'M'},
-            {vid: '1-4-24', name: 'Lekha', flag: 'IN', lang: 'Hindi', accent: '', sex: 'F'},
-            {vid: '1-7-24', name: 'Swathi', flag: 'IN', lang: 'Hindi', accent: '', sex: 'F'},
-            // Hungarian
-            {vid: '1-4-29', name: 'Eszter', flag: 'HU', lang: 'Hungarian', accent: '', sex: 'F'},
-            {vid: '1-7-29', name: 'Flora', flag: 'HU', lang: 'Hungarian', accent: '', sex: 'F'},
-            // Indonesian
-            {vid: '2-7-28', name: 'Bintang', flag: 'ID', lang: 'Indonesian', accent: '', sex: 'M'},
-            {vid: '1-4-28', name: 'Damayanti', flag: 'ID', lang: 'Indonesian', accent: '', sex: 'F'},
-            {vid: '1-7-28', name: 'Putri', flag: 'ID', lang: 'Indonesian', accent: '', sex: 'F'},
-            // Italian
-            {vid: '2-7-7', name: 'Alessandro', flag: 'IT', lang: 'Italian', accent: '', sex: 'M'},
-            {vid: '1-7-7', name: 'Bianca', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
-            {vid: '1-3-7', name: 'Elisa', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
-            {vid: '10-2-7', name: 'Federica', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
-            {vid: '9-2-7', name: 'Giulia', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
-            {vid: '5-2-7', name: 'Luca', flag: 'IT', lang: 'Italian', accent: '', sex: 'M'},
-            {vid: '6-2-7', name: 'Marcello', flag: 'IT', lang: 'Italian', accent: '', sex: 'M'},
-            {vid: '8-2-7', name: 'Matteo', flag: 'IT', lang: 'Italian', accent: '', sex: 'M'},
-            {vid: '1-2-7', name: 'Paola', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
-            {vid: '1-4-7', name: 'Paolo', flag: 'IT', lang: 'Italian', accent: '', sex: 'M'},
-            {vid: '7-2-7', name: 'Raffaele', flag: 'IT', lang: 'Italian', accent: '', sex: 'M'},
-            {vid: '2-3-7', name: 'Roberto', flag: 'IT', lang: 'Italian', accent: '', sex: 'M'},
-            {vid: '2-2-7', name: 'Silvana', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
-            {vid: '2-4-7', name: 'Silvia', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
-            {vid: '3-2-7', name: 'Valentina', flag: 'IT', lang: 'Italian', accent: '', sex: 'F'},
-            // Japanese
-            {vid: '6-3-12', name: 'Haruka', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
-            {vid: '5-3-12', name: 'Hikari', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
-            {vid: '1-7-12', name: 'Himari', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
-            {vid: '2-7-12', name: 'Kaito', flag: 'JP', lang: 'Japanese', accent: '', sex: 'M'},
-            {vid: '1-4-12', name: 'Kyoko', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
-            {vid: '3-3-12', name: 'Misaki', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
-            {vid: '7-3-12', name: 'Ryo', flag: 'JP', lang: 'Japanese', accent: '', sex: 'M'},
-            {vid: '4-3-12', name: 'Sayaka', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
-            {vid: '2-3-12', name: 'Show', flag: 'JP', lang: 'Japanese', accent: '', sex: 'M'},
-            {vid: '8-3-12', name: 'Takeru', flag: 'JP', lang: 'Japanese', accent: '', sex: 'M'},
-            // Korean
-            {vid: '7-3-13', name: 'Dayoung', flag: 'KR', lang: 'Korean', accent: '', sex: 'F'},
-            {vid: '4-3-13', name: 'Hyeryun', flag: 'KR', lang: 'Korean', accent: '', sex: 'F'},
-            {vid: '8-3-13', name: 'Hyuna', flag: 'KR', lang: 'Korean', accent: '', sex: 'F'},
-            {vid: '10-3-13', name: 'Jihun', flag: 'KR', lang: 'Korean', accent: '', sex: 'M'},
-            {vid: '5-3-13', name: 'Jimin', flag: 'KR', lang: 'Korean', accent: '', sex: 'F'},
-            {vid: '2-3-13', name: 'Junwoo', flag: 'KR', lang: 'Korean', accent: '', sex: 'M'},
-            {vid: '1-4-13', name: 'Narae', flag: 'KR', lang: 'Korean', accent: '', sex: 'F'},
-            {vid: '6-3-13', name: 'Sena', flag: 'KR', lang: 'Korean', accent: '', sex: 'F'},
-            {vid: '1-3-13', name: 'Yumi', flag: 'KR', lang: 'Korean', accent: '', sex: 'F'},
-            {vid: '9-3-13', name: 'Yura', flag: 'KR', lang: 'Korean', accent: '', sex: 'F'},
-            // Norwegian
-            {vid: '1-7-20', name: 'Dagrun', flag: 'NO', lang: 'Norwegian', accent: '', sex: 'F'},
-            {vid: '2-2-20', name: 'Henrik', flag: 'NO', lang: 'Norwegian', accent: '', sex: 'M'},
-            {vid: '2-7-20', name: 'Lars', flag: 'NO', lang: 'Norwegian', accent: '', sex: 'M'},
-            {vid: '2-4-20', name: 'Stine', flag: 'NO', lang: 'Norwegian', accent: '', sex: 'F'},
-            {vid: '1-2-20', name: 'Vilde', flag: 'NO', lang: 'Norwegian', accent: '', sex: 'F'},
-            // Polish
-            {vid: '1-4-14', name: 'Agata', flag: 'PL', lang: 'Polish', accent: '', sex: 'F'},
-            {vid: '1-7-14', name: 'Danota', flag: 'PL', lang: 'Polish', accent: '', sex: 'F'},
-            {vid: '2-2-14', name: 'Krzysztof', flag: 'PL', lang: 'Polish', accent: '', sex: 'M'},
-            {vid: '2-7-14', name: 'Wojciech', flag: 'PL', lang: 'Polish', accent: '', sex: 'M'},
-            {vid: '1-2-14', name: 'Zosia', flag: 'PL', lang: 'Polish', accent: '', sex: 'F'},
-            // Portuguese
-            {vid: '2-7-6', name: 'Antonio', flag: 'PT', lang: 'Portuguese', accent: 'European', sex: 'M'},
-            {vid: '3-4-6', name: 'Joana', flag: 'PT', lang: 'Portuguese', accent: 'European', sex: 'F'},
-            {vid: '3-7-6', name: 'Leonor', flag: 'PT', lang: 'Portuguese', accent: 'European', sex: 'F'},
-            {vid: '4-7-6', name: 'Tiago', flag: 'PT', lang: 'Portuguese', accent: 'European', sex: 'M'},
-            {vid: '1-7-6', name: 'Ana', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'F'},
-            {vid: '1-3-6', name: 'Helena', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'F'},
-            {vid: '2-3-6', name: 'Rafael', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'M'},
-            {vid: '2-4-6', name: 'Raquel', flag: 'BR', lang: 'Portuguese', accent: 'Brazilian', sex: 'F'},
-            // Romanian
-            {vid: '1-2-30', name: 'Ioana', flag: 'RO', lang: 'Romanian', accent: '', sex: 'F'},
-            {vid: '1-4-30', name: 'Simona', flag: 'RO', lang: 'Romanian', accent: '', sex: 'F'},
-            // Russian
-            {vid: '2-2-21', name: 'Dmitri', flag: 'RU', lang: 'Russian', accent: '', sex: 'M'},
-            {vid: '2-4-21', name: 'Milena', flag: 'RU', lang: 'Russian', accent: '', sex: 'F'},
-            {vid: '1-2-21', name: 'Olga', flag: 'RU', lang: 'Russian', accent: '', sex: 'F'},
-            // Slovak
-            {vid: '1-7-37', name: 'Eliska', flag: 'SK', lang: 'Slovak', accent: '', sex: 'F'},
-            {vid: '3-4-37', name: 'Nadeja', flag: 'SK', lang: 'Slovak', accent: '', sex: 'F'},
-            // Spanish
-            {vid: '1-2-2', name: 'Carmen', flag: 'ES', lang: 'Spanish', accent: 'Castilian', sex: 'F'},
-            {vid: '6-2-2', name: 'Jorge', flag: 'ES', lang: 'Spanish', accent: 'Castilian', sex: 'M'},
-            {vid: '2-2-2', name: 'Juan', flag: 'ES', lang: 'Spanish', accent: 'Castilian', sex: 'M'},
-            {vid: '9-2-2', name: 'Leonor', flag: 'ES', lang: 'Spanish', accent: 'Castilian', sex: 'F'},
-            {vid: '4-3-2', name: 'Lola', flag: 'ES', lang: 'Spanish', accent: 'Castilian', sex: 'F'},
-            {vid: '5-3-2', name: 'Manuel', flag: 'ES', lang: 'Spanish', accent: 'Castilian', sex: 'M'},
-            {vid: '1-4-2', name: 'Duardo', flag: 'ES', lang: 'Spanish', accent: '', sex: 'M'},
-            {vid: '3-4-2', name: 'Monica', flag: 'ES', lang: 'Spanish', accent: '', sex: 'F'},
-            {vid: '7-2-2', name: 'Carlos', flag: 'US', lang: 'Spanish', accent: 'American', sex: 'M'},
-            {vid: '8-2-2', name: 'Soledad', flag: 'US', lang: 'Spanish', accent: 'American', sex: 'F'},
-            {vid: '10-2-2', name: 'Ximena', flag: 'US', lang: 'Spanish', accent: 'American', sex: 'F'},
-            {vid: '4-2-2', name: 'Diego', flag: 'AR', lang: 'Spanish', accent: 'Argentine', sex: 'M'},
-            {vid: '3-2-2', name: 'Francisca', flag: 'CL', lang: 'Spanish', accent: 'Chilean', sex: 'F'},
-            {vid: '5-2-2', name: 'Esperanza', flag: 'MX', lang: 'Spanish', accent: 'Mexican', sex: 'F'},
-            {vid: '2-3-2', name: 'Francisco', flag: 'MX', lang: 'Spanish', accent: 'Mexican', sex: 'M'},
-            {vid: '3-3-2', name: 'Gloria', flag: 'MX', lang: 'Spanish', accent: 'Mexican', sex: 'F'},
-            {vid: '5-4-2', name: 'Javier', flag: 'MX', lang: 'Spanish', accent: 'Mexican', sex: 'M'},
-            {vid: '4-4-2', name: 'Paulina', flag: 'MX', lang: 'Spanish', accent: 'Mexican', sex: 'F'},
-            {vid: '1-3-2', name: 'Violeta', flag: 'MX', lang: 'Spanish', accent: 'Mexican', sex: 'F'},
-            // Swedish
-            {vid: '1-4-9', name: 'Alva', flag: 'SE', lang: 'Swedish', accent: '', sex: 'F'},
-            {vid: '1-2-9', name: 'Annika', flag: 'SE', lang: 'Swedish', accent: '', sex: 'F'},
-            {vid: '1-7-9', name: 'Astrid', flag: 'SE', lang: 'Swedish', accent: '', sex: 'F'},
-            {vid: '2-7-9', name: 'Gustav', flag: 'SE', lang: 'Swedish', accent: '', sex: 'M'},
-            {vid: '3-4-9', name: 'Oskar', flag: 'SE', lang: 'Swedish', accent: '', sex: 'M'},
-            {vid: '2-2-9', name: 'Sven', flag: 'SE', lang: 'Swedish', accent: '', sex: 'M'},
-            // Thai
-            {vid: '1-4-26', name: 'Narisa', flag: 'TH', lang: 'Thai', accent: '', sex: 'F'},
-            {vid: '1-3-26', name: 'Sarawut', flag: 'TH', lang: 'Thai', accent: '', sex: 'M'},
-            {vid: '2-3-26', name: 'Somsi', flag: 'TH', lang: 'Thai', accent: '', sex: 'F'},
-            // Turkish
-            {vid: '1-4-16', name: 'Aylin', flag: 'TR', lang: 'Turkish', accent: '', sex: 'F'},
-            {vid: '2-7-16', name: 'Eymen', flag: 'TR', lang: 'Turkish', accent: '', sex: 'M'},
-            {vid: '1-2-16', name: 'Kerem', flag: 'TR', lang: 'Turkish', accent: '', sex: 'M'},
-            {vid: '3-2-16', name: 'Selin', flag: 'TR', lang: 'Turkish', accent: '', sex: 'F'},
-            {vid: '1-7-16', name: 'Zehra', flag: 'TR', lang: 'Turkish', accent: '', sex: 'F'},
-            {vid: '2-2-16', name: 'Zeynep', flag: 'TR', lang: 'Turkish', accent: '', sex: 'F'},
-            // Ukrainian
-            {vid: '1-7-40', name: 'Vira', flag: 'UA', lang: 'Ukrainian', accent: '', sex: 'F'},
-        ],
-    },
-    'Google Translate':
-    {
-        charLimit: 200,
-        countBytes: false,
-        voices: [
-            {vid: 'en-gb', name: '', flag: 'GB', lang: 'English', accent: 'England', sex: 'F'},
-            {vid: 'en-us', name: '', flag: 'US', lang: 'English', accent: 'American', sex: 'F'},
-            {vid: 'en-au', name: '', flag: 'AU', lang: 'English', accent: 'Australian', sex: 'F'},
-            {vid: 'en-in', name: '', flag: 'IN', lang: 'English', accent: 'Indian', sex: 'F'},
-            {vid: 'af', name: '', flag: 'ZA', lang: 'Afrikaans', accent: '', sex: 'F'},
-            {vid: 'sq', name: '', flag: 'AL', lang: 'Albanian', accent: '', sex: 'M'},
-            {vid: 'ar', name: '', flag: 'ARAB', lang: 'Arabic', accent: '', sex: 'F'},
-            {vid: 'bn-bd', name: '', flag: 'BD', lang: 'Bengali', accent: '', sex: 'F'},
-            {vid: 'bs', name: '', flag: 'BA', lang: 'Bosnian', accent: '', sex: 'M'},
-            {vid: 'bg', name: '', flag: 'BG', lang: 'Bulgarian', accent: '', sex: 'F'},
-            {vid: 'ca', name: '', flag: 'ES-CT', lang: 'Catalan', accent: '', sex: 'F'},
-            {vid: 'zh-cn', name: '', flag: 'CN', lang: 'Chinese (Simplified)', accent: '', sex: 'F'},
-            {vid: 'zh-tw', name: '', flag: 'TW', lang: 'Chinese (Traditional)', accent: '', sex: 'F'},
-            {vid: 'hr', name: '', flag: 'HR', lang: 'Croatian', accent: '', sex: 'F'},
-            {vid: 'cs-cz', name: '', flag: 'CZ', lang: 'Czech', accent: '', sex: 'F'},
-            {vid: 'da-dk', name: '', flag: 'DK', lang: 'Danish', accent: '', sex: 'F'},
-            {vid: 'nl-nl', name: '', flag: 'NL', lang: 'Dutch', accent: '', sex: 'F'},
-            {vid: 'et-ee', name: '', flag: 'EE', lang: 'Estonian', accent: '', sex: 'M'},
-            {vid: 'tl-ph', name: '', flag: 'PH', lang: 'Filipino (Tagalog)', accent: '', sex: 'F'},
-            {vid: 'fi-fi', name: '', flag: 'FI', lang: 'Finnish', accent: '', sex: 'F'},
-            {vid: 'fr-fr', name: '', flag: 'FR', lang: 'French', accent: '', sex: 'F'},
-            {vid: 'fr-ca', name: '', flag: 'CA', lang: 'French', accent: 'Canadian', sex: 'F'},
-            {vid: 'de-de', name: '', flag: 'DE', lang: 'German', accent: '', sex: 'F'},
-            {vid: 'el-gr', name: '', flag: 'GR', lang: 'Greek', accent: '', sex: 'F'},
-            {vid: 'gu', name: '', flag: 'IN', lang: 'Gujarati', accent: '', sex: 'F'},
-            {vid: 'he', name: '', flag: 'IL', lang: 'Hebrew', accent: '', sex: 'F'},
-            {vid: 'hi-in', name: '', flag: 'IN', lang: 'Hindi', accent: '', sex: 'F'},
-            {vid: 'hu-hu', name: '', flag: 'HU', lang: 'Hungarian', accent: '', sex: 'F'},
-            {vid: 'is', name: '', flag: 'IS', lang: 'Icelandic', accent: '', sex: 'F'},
-            {vid: 'id-id', name: '', flag: 'ID', lang: 'Indonesian', accent: '', sex: 'F'},
-            {vid: 'it-it', name: '', flag: 'IT', lang: 'Italian', accent: '', sex: 'M'},
-            {vid: 'ja-jp', name: '', flag: 'JP', lang: 'Japanese', accent: '', sex: 'F'},
-            {vid: 'jw-id', name: '', flag: 'ID', lang: 'Javanese', accent: '', sex: 'F'},
-            {vid: 'kn', name: '', flag: 'IN', lang: 'Kannada', accent: '', sex: 'F'},
-            {vid: 'km-kh', name: '', flag: 'KH', lang: 'Khmer', accent: '', sex: 'F'},
-            {vid: 'ko-kr', name: '', flag: 'KR', lang: 'Korean', accent: '', sex: 'M'},
-            {vid: 'la', name: '', flag: '', lang: 'Latin', accent: '', sex: 'M'},
-            {vid: 'lv', name: '', flag: 'LV', lang: 'Latvian', accent: '', sex: 'M'},
-            {vid: 'ms', name: '', flag: 'MY', lang: 'Malay', accent: '', sex: 'F'},
-            {vid: 'ml-in', name: '', flag: 'IN', lang: 'Malayalam', accent: '', sex: 'F'},
-            {vid: 'mr-in', name: '', flag: 'IN', lang: 'Marathi', accent: '', sex: 'F'},
-            {vid: 'my-mm', name: '', flag: 'MM', lang: 'Myanmar (Burmese)', accent: '', sex: 'F'},
-            {vid: 'ne-np', name: '', flag: 'NP', lang: 'Nepali', accent: '', sex: 'F'},
-            {vid: 'nb-no', name: '', flag: 'NO', lang: 'Norwegian', accent: '', sex: 'F'},
-            {vid: 'pl-pl', name: '', flag: 'PL', lang: 'Polish', accent: '', sex: 'M'},
-            {vid: 'pt-pt', name: '', flag: 'PT', lang: 'Portuguese', accent: 'Europe', sex: 'F'},
-            {vid: 'pt-br', name: '', flag: 'BR', lang: 'Portuguese', accent: 'Brazil', sex: 'F'},
-            {vid: 'ro-ro', name: '', flag: 'RO', lang: 'Romanian', accent: '', sex: 'F'},
-            {vid: 'ru-ru', name: '', flag: 'RU', lang: 'Russian', accent: '', sex: 'F'},
-            {vid: 'sr', name: '', flag: 'RS', lang: 'Serbian', accent: '', sex: 'F'},
-            {vid: 'si-lk', name: '', flag: 'LK', lang: 'Sinhala', accent: '', sex: 'F'},
-            {vid: 'sk-sk', name: '', flag: 'SK', lang: 'Slovak', accent: '', sex: 'F'},
-            {vid: 'es-es', name: '', flag: 'ES', lang: 'Spanish', accent: 'Spain', sex: 'F'},
-            {vid: 'es-mx', name: '', flag: 'MX', lang: 'Spanish', accent: 'Mexico', sex: 'F'},
-            {vid: 'su-sd', name: '', flag: 'SD', lang: 'Sudanese', accent: '', sex: 'F'},
-            {vid: 'sw', name: '', flag: 'TZ', lang: 'Swahili', accent: '', sex: 'M'},
-            {vid: 'sv-se', name: '', flag: 'SE', lang: 'Swedish', accent: '', sex: 'F'},
-            {vid: 'ta-in', name: '', flag: 'IN', lang: 'Tamil', accent: '', sex: 'F'},
-            {vid: 'te-in', name: '', flag: 'IN', lang: 'Telugu', accent: '', sex: 'F'},
-            {vid: 'th-th', name: '', flag: 'TH', lang: 'Thai', accent: '', sex: 'F'},
-            {vid: 'tr-tr', name: '', flag: 'TR', lang: 'Turkish', accent: '', sex: 'F'},
-            {vid: 'uk-ua', name: '', flag: 'UA', lang: 'Ukrainian', accent: '', sex: 'F'},
-            {vid: 'ur', name: '', flag: 'PK', lang: 'Urdu', accent: '', sex: 'F'},
-            {vid: 'vi-vn', name: '', flag: 'VN', lang: 'Vietnamese', accent: '', sex: 'F'},
-        ],
-    },
-};
+import * as helper from './helpers.js';
+// import ttsServices from './voices.json' assert {type: 'json'};
+// Imagine living in a timeline where a popular browser didn't support this simple one-liner.
+// Firefox *still* doesn't support imports with assertions so we have to resort to fetch()
 
-// Return an object containing CSS class names depending on if we're displaying light mode or dark mode
+// Load in all the voices for each supported service
+let ttsServices = '';
+let getVoices = await fetch('./assets/js/voices.json');
+if (getVoices.ok) ttsServices = await getVoices.json();
+else console.error("HTTP-Error: " + getVoices.status);
+
+// Load CSS class names
+let styles = styleClasses();
+// If we detect the user wants dark mode we'll switch to that
+document.getElementById('toggleStyleMode').addEventListener('click', function(event){toggleStyleMode(true);});
+if (getStyleMode() === 'mode-dark') toggleStyleMode();
+
+// Constants
+const defaultApi = 'StreamElements';
+const defaultVoice = 'Brian';
+const defaultLang = 'English';
+
+// Demo URL paramaters
+const url = new URL(window.location.href);
+let urlParamVoice = url.searchParams.get('voice');
+let urlParamApi = url.searchParams.get('service');
+let urlParamLang = url.searchParams.get('lang');
+let urlParamGender = url.searchParams.get('g');
+let urlParamText = url.searchParams.get('text');
+// Conversations/Playlists URL parameters
+let urlParamVoices = url.searchParams.get('voices');
+let urlParamPls = url.searchParams.get('pls');
+let urlParamEdit = url.searchParams.get('edit');
+
+// Conversations/Playlists variables
+let objConversation = {};
+let arrPlaylistVoices = [];
+let arrPlaylistDialogue = [];
+let currentPos = -1;
+let voiceSelectHTML = '<option value="">-- None --</option>';
+let isPlaylistPage = false;
+let lastTrackNo = -1;
+
+
+// Perform various functions depending on the page we've loaded
+const currentPage = getCurrentPage();
+
+if (currentPage === 'demo') {
+    // DEMO PAGE
+
+    // Iterate over each group of voices
+    let buttonsHtml = '', selVoice, voiceName = '', voiceAccent = '', voiceCount = 0, langs = [];
+    let selApi = !urlParamApi || urlParamApi === 'All' ? ' is-active' : '';
+    let filterApiHtml = '<li class="tab tab-api has-text-weight-bold' + selApi + '" id="tab-All"><a>All</a></li>';
+    for (let voiceGroup in ttsServices) {
+        let voices = ttsServices[voiceGroup].voices;
+
+        // Add a tab for this API
+        selApi = urlParamApi === voiceGroup ? ' is-active' : '';
+        filterApiHtml += '<li class="tab tab-api' + selApi +'" id="tab-' + voiceGroup.replace(' ', '') + '"><a>' + voiceGroup + '</a></li>';
+
+        // Add a button to act as a heading for this API's voices
+        buttonsHtml += '<a class="button button-voice button-heading ' + styles.button_bg + ' ' + styles.button_fg + ' has-text-left has-text-weight-bold is-fullwidth no-hover" data-api="' + voiceGroup + '">' + voiceGroup + '</a>' + "\n";
+
+        // Loop through this API's voices
+        for (let i = 0; i < voices.length; i++) {
+            // Set voice name
+            voiceName = voices[i].name;
+            if (voiceName.length === 0) {
+                // If the voice is not named, use the language
+                voiceName = voices[i].lang;
+                // Include accent/region if applicable
+                if (voices[i].accent.length > 0) {
+                    voiceName += ' (' +  voices[i].accent + ')';
+                }
+            } else {
+                // Append language and accent/region if applicable
+                voiceAccent = voices[i].accent.length > 0 ? ', ' + voices[i].accent : '';
+                voiceName += ' (' + voices[i].lang + voiceAccent + ')';
+            }
+            // Add button
+            selVoice = ((urlParamVoice === voices[i].vid) && (urlParamApi === voiceGroup)) || ( (!urlParamApi || !urlParamVoice) && (defaultVoice === voices[i].vid) && (defaultApi === voiceGroup) ) ? ' is-success selected-voice' : '';
+            buttonsHtml += '<button type="button" class="button button-voice ' + styles.button_fg + ' is-rounded' + selVoice + '" title="' + voiceName + '" data-vid="' + voices[i].vid + '" data-api="' + voiceGroup + '" data-lang="' + voices[i].lang + '" data-gender="' + voices[i].gender + '" data-charlimit="' + ttsServices[voiceGroup].charLimit + '">' +
+                        '<span class="voice-flag">' + countryCodeToEmoji(voices[i].flag) + '</span><span class="voice-name">' + voiceName +
+                        '</span><span class="voice-gender">' + genderLetterToEmoji(voices[i]) + '</span></button>' + "\n";
+
+            // Add language to array if necessary
+            if (voices[i].lang && langs.indexOf(voices[i].lang) === -1) langs.push(voices[i].lang);
+        }
+
+        voiceCount += voices.length;
+    }
+
+    // Loop through languages
+    langs.sort();
+    let selLang = urlParamLang === 'All' ? ' is-success selected-lang' : ' ' + styles.button_fg + ' is-hidden';
+    let langHtml = '<button type="button" class="button button-lang ' + styles.button_fg + ' is-rounded has-text-weight-bold' + selLang + '" data-lang="All">All</button>' + "\n";
+    for (let i = 0; i < langs.length; i++) {
+        selLang = (urlParamLang === langs[i]) || ( !urlParamLang && (defaultLang === langs[i]) ) ? ' is-success selected-lang' : ' is-light is-hidden';
+        langHtml += '<button type="button" class="button button-lang ' + styles.button_fg + ' is-rounded' + selLang + '" data-lang="' + langs[i] + '">' + langs[i] + '</button>' + "\n";
+    }
+
+    // Genders
+    let genders = ['Male', 'Female', 'Other'];
+    let selGender = !urlParamGender || urlParamGender.toUpperCase() === 'A' ? ' is-active' : '';
+    let filterGenderHtml = '<li class="tab tab-gender has-text-weight-bold' + selGender + '" id="tab-A"><a>All</a></li>';
+    for (let i = 0; i < genders.length; i++) {
+        selGender = (urlParamGender && urlParamGender.toUpperCase() === genders[i].charAt(0)) ? ' is-active' : '';
+        filterGenderHtml += '<li class="tab tab-gender' + selGender +'" id="tab-' + genders[i].charAt(0) + '"><a>' + genders[i] + '</a></li>';
+    }
+
+    // Insert API and Gender filters
+    document.getElementById('filter-api').innerHTML = '<ul><li class="tab"><a class="has-text-weight-bold no-hover" disabled>API</a></li>' + filterApiHtml + '</ul>';
+    document.getElementById('filter-gender').innerHTML = '<ul><li class="tab"><a class="has-text-weight-bold no-hover" disabled>Gender</a></li>' + filterGenderHtml + '</ul>';
+
+    // Insert buttons
+    document.getElementById('voice-selection').innerHTML = buttonsHtml;
+    document.getElementById('lang-selection').innerHTML = '<button id="toggleLangs" class="button ' + styles.button_fg + ' has-text-weight-bold">Language (show/hide)</button>' + langHtml;
+
+    // Show exact voice count
+    document.getElementById('voicecount').innerHTML = voiceCount;
+
+    // Add Event Listeners
+    let buttons = document.querySelectorAll('button.button-voice');
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener('click', selectVoice);
+    }
+    let apiTabs = document.getElementsByClassName('tab-api');
+    for (let i = 0; i < apiTabs.length; i++) {
+        apiTabs[i].addEventListener('click', selectApi);
+    }
+    let genderTabs = document.getElementsByClassName('tab-gender');
+    for (let i = 0; i < genderTabs.length; i++) {
+        genderTabs[i].addEventListener('click', selectGender);
+    }
+    let langTabs = document.getElementsByClassName('button-lang');
+    for (let i = 0; i < langTabs.length; i++) {
+        langTabs[i].addEventListener('click', selectLang);
+    }
+    document.getElementById('toggleLangs').addEventListener('click', toggleLangs);
+    document.getElementById('btn-clear-shares').addEventListener('click', clearShares);
+    document.getElementById('playbutton').addEventListener('click', generateTTSUrl);
+    document.getElementById('copylinkbutton').addEventListener('click', copyToClipboard);
+    document.getElementById('text').addEventListener('input', handleTextInput);
+
+    // We may need to update the character limit if a different voice was selected by default via URL paramaters
+    setCharLimit();
+
+    // If lang isn't set via URL parameters let's make sure we start by only showing default (English) voices
+    // which in turn will call updateVoiceList()
+    // Otherwise we'll call updateVoiceList() directly to ensure any filters set by URL params are accounted for
+    if (!urlParamLang) selectLang(null, defaultLang);
+    else updateVoiceList();
+
+    // If there is text present in the URL, put it in the textarea and play the audio
+    if (urlParamText !== null && decodeURIComponent(urlParamText).trim().length > 0) {
+        let textarea = document.getElementById('text');
+        textarea.value = urlParamText;
+        textarea.dispatchEvent(new Event('input'));     // setting value doesn't trigger an input event so we manually dispatch this
+        generateTTSUrl();
+    }
+
+    // Ensure recent shares is populated if there are any
+    updateRecentShares();
+}
+else if (currentPage === 'conversation') {
+    // CONVERSATION PAGE
+    document.getElementById('btn-add-voice').addEventListener('click', addVoiceSelect);
+    document.getElementById('btn-add-con').addEventListener('click', addDialogueBox);
+    document.getElementById('btn-speak-con').addEventListener('click', generateConversation);
+
+    // Generate HTML <option>s for the voice <select>s and add it to the DOM
+    generateSelectHtml();
+    populateSelects(null);
+
+    // Pre-select voices if we have URL params
+    if (urlParamVoices) {
+        let selVoices = [];
+        selVoices = urlParamVoices.split(',');
+        for (let i = 1; i <= selVoices.length; i++) {
+            const selectId = 'voice_' + i;
+            if (selVoices[i-1]) {
+                if (document.getElementById(selectId) === null) addVoiceSelect();
+                document.getElementById(selectId).value = selVoices[i-1];
+            }
+        }
+        updateSelectedVoices();
+    }
+
+    // Editing an existing playlist?
+    if (urlParamEdit !== null) {
+        getPlaylist(urlParamEdit, false, true);
+    }
+}
+else if (currentPage === 'playlist') {
+    // PLAYLIST PAGE
+    isPlaylistPage = true;
+    getPlaylist(urlParamPls, true, false);
+}
+else if (currentPage === 'stats') {
+    // STATS PAGE
+    document.getElementById('stats-voices-toggle').addEventListener('click', function(event) {
+        let tableRows = document.getElementsByClassName('table-row-voice');
+        for (let i = 0; i < tableRows.length; i++) {
+            if (parseInt(tableRows[i].dataset.pos) > 10) tableRows[i].classList.toggle('is-hidden');
+        }
+    });
+}
+
+/**
+ * FUNCTIONS
+ */
+
+
+/**
+ * Define CSS class names for various elements for if we're displaying light or dark mode
+ *
+ * @param {string} mode
+ * @return {Object} 
+ */
 function styleClasses(mode) {
-    var styles = {};
-    mode = (mode == 'mode-dark') ? 'mode-dark' : 'mode-light';
+    let styles = {};
+    mode = (mode === 'mode-dark') ? 'mode-dark' : 'mode-light';
 
-    if (mode == 'mode-dark') {
+    if (mode === 'mode-dark') {
         styles = {
             html_bg: 'has-background-black-bis',
             button_fg: 'is-dark',
@@ -947,49 +239,58 @@ function styleClasses(mode) {
     return styles;
 }
 
-// Toggle between light mode and dark mode, if manually toggling we'll set a cookie
-// to remember the user's preference
+/**
+ * Toggle between light mode and dark mode
+ * if manually toggling set a cookie to remember the user's preference
+ * 
+ * @param {boolean} clicked True if the user manually clicked on the button to change mode
+ */
 function toggleStyleMode(clicked) {
-    var htmlTag = document.getElementsByTagName('html')[0];
-    var curMode = htmlTag.classList[0];
-    var newMode = curMode == 'mode-dark' ? 'mode-light' : 'mode-dark';
-    var newStyles = styleClasses(newMode);
+    let htmlTag = document.getElementsByTagName('html')[0];
+    let curMode = htmlTag.classList[0];
+    let newMode = curMode === 'mode-dark' ? 'mode-light' : 'mode-dark';
+    let newStyles = styleClasses(newMode);
 
     htmlTag.classList.remove(curMode, styles.html_bg);
     htmlTag.classList.add(newMode, newStyles.html_bg);
 
     // Swap out all the button classes
-    var buttonsVoice = document.querySelectorAll('.button-voice');
-    var buttonsCopyandLang = document.querySelectorAll('.button-copy, .button-lang, #toggleLangs');
+    let buttonsVoice = document.querySelectorAll('.button-voice');
+    let buttonsCopyandLang = document.querySelectorAll('.button-copy, .button-lang, #toggleLangs');
 
-    for (var i = 0; i < buttonsVoice.length; i++) {
+    for (let i = 0; i < buttonsVoice.length; i++) {
         buttonsVoice[i].classList.remove(styles.button_bg, styles.button_fg);
         buttonsVoice[i].classList.add(newStyles.button_bg, newStyles.button_fg);
     }
-    for (var i = 0; i < buttonsCopyandLang.length; i++) {
+    for (let i = 0; i < buttonsCopyandLang.length; i++) {
         buttonsCopyandLang[i].classList.remove(styles.button_fg);
         buttonsCopyandLang[i].classList.add(newStyles.button_fg);
     }
 
+    // Update global variable
     styles = newStyles;
 
     // Set cookie if toggle was manually clicked
     if (clicked) {
-        var d = new Date();
+        let d = new Date();
         d.setTime(d.getTime() + (365 * 24 * 60 * 60 * 1000));
         document.cookie = "style=" + newMode + ";expires=" + d.toUTCString() + ";path=/;secure";
     }
 }
 
-// Get the user's preferred style mode. Order or preference:
-// 1. cookie value
-// 2. prefers-color-scheme set to 'dark' via the OS
-// 3. fall back to light mode
+/**
+ * Get user's preferred style mode. Order of preference is as follows:
+ * 1. Cookie value
+ * 2. prefers-color-scheme set to 'dark' via the OS
+ * 3. light mode
+ *
+ * @return {string} 
+ */
 function getStyleMode() {
     // Check for cookie first
-    var value = "; " + document.cookie;
-    var parts = value.split("; style=");
-    if (parts.length == 2) {
+    let value = "; " + document.cookie;
+    let parts = value.split("; style=");
+    if (parts.length === 2) {
         return parts.pop().split(";").shift();
     } else {
         // Check for OS dark mode
@@ -1001,202 +302,135 @@ function getStyleMode() {
     return 'mode-light';
 }
 
-// Load css classes
-var styles = styleClasses();
-// If we detect the user wants dark mode we'll switch to that
-if (getStyleMode() == 'mode-dark') toggleStyleMode();
+/**
+ * Returns the current page name minus '.php'
+ *
+ * @return {string} 
+ */
+function getCurrentPage()
+{
+    let thisPageName = window.location.pathname.split('/').reverse()[0].replace('.php', '');
+    if (!thisPageName || thisPageName === 'index') return 'demo';
+    return thisPageName;
+}
 
-// Current URL paramaters
-const url = new URL(window.location.href);
-var urlParamVoice = url.searchParams.get('voice');
-var urlParamApi = url.searchParams.get('service');
-var urlParamLang = url.searchParams.get('lang');
-var urlParamSex = url.searchParams.get('s');
-var urlParamText = url.searchParams.get('text');
-
-// Iterate over each group of voices
-var buttonsHtml = '', selVoice, voiceName = '', voiceAccent = '', voiceCount = 0, langs = [];
-const defaultApi = 'Polly';
-const defaultVoice = 'Brian';
-const defaultLang = 'English';
-
-var selApi = !urlParamApi || urlParamApi == 'All' ? ' is-active' : '';
-var filterApiHtml = '<li class="tab tab-api has-text-weight-bold' + selApi + '" id="tab-All"><a>All</a></li>';
-for (var voiceGroup in ttsServices) {
-    var voices = ttsServices[voiceGroup].voices;
-
-    // Add a tab for this API
-    selApi = urlParamApi == voiceGroup ? ' is-active' : '';
-    filterApiHtml += '<li class="tab tab-api' + selApi +'" id="tab-' + voiceGroup.replace(' ', '') + '"><a>' + voiceGroup + '</a></li>';
-
-    // Add a button to act as a heading for this API's voices
-    buttonsHtml += '<a class="button button-voice button-heading ' + styles.button_bg + ' ' + styles.button_fg + ' has-text-left has-text-weight-bold is-fullwidth no-hover" data-api="' + voiceGroup + '">' + voiceGroup + '</a>' + "\n";
-
-    // Loop through this API's voices
-    for (var i = 0; i < voices.length; i++) {
-        // Set voice name
-        voiceName = voices[i].name;
-        if (voiceName.length == 0) {
-            // If the voice is not named, use the language
-            voiceName = voices[i].lang;
-            // Include accent/region if applicable
-            if (voices[i].accent.length > 0) {
-                voiceName += ' (' +  voices[i].accent + ')';
-            }
-        } else {
-            // Append language and accent/region if applicable
-            voiceAccent = voices[i].accent.length > 0 ? ', ' + voices[i].accent : '';
-            voiceName += ' (' + voices[i].lang + voiceAccent + ')';
-        }
-        // Add button
-        selVoice = ((urlParamVoice == voices[i].vid) && (urlParamApi == voiceGroup)) || ( (!urlParamApi || !urlParamVoice) && (defaultVoice == voices[i].vid) && (defaultApi == voiceGroup) ) ? ' is-success selected-voice' : '';
-        buttonsHtml += '<button type="button" class="button button-voice ' + styles.button_fg + ' is-rounded' + selVoice + '" title="' + voiceName + '" data-vid="' + voices[i].vid + '" data-api="' + voiceGroup + '" data-lang="' + voices[i].lang + '" data-sex="' + voices[i].sex + '" data-charlimit="' + ttsServices[voiceGroup].charLimit + '">' +
-                      '<span class="voice-flag">' + countryCodeToEmoji(voices[i].flag) + '</span><span class="voice-name">' + voiceName +
-                      '</span><span class="voice-sex">' + genderLetterToEmoji(voices[i]) + '</span></button>' + "\n";
-
-        // Add language to array if necessary
-        if (voices[i].lang && langs.indexOf(voices[i].lang) === -1) langs.push(voices[i].lang);
+/**
+ * Return the currently selected voice
+ *
+ * @return {string} 
+ */
+function getSelectedVoice() {
+    let selVoice = document.querySelectorAll('.button-voice.selected-voice')[0];
+    if (typeof selVoice === 'undefined' || selVoice === null) {
+        selVoice = document.getElementsByClassName('button-voice')[1]; // Fallback to first voice
+        selVoice.classList.add('is-success');
+        selVoice.classList.add('selected-voice');
     }
 
-    voiceCount += voices.length;
-}
-
-// Loop through languages
-langs.sort();
-var selLang = urlParamLang == 'All' ? ' is-success selected-lang' : ' ' + styles.button_fg + ' is-hidden';
-var langHtml = '<button type="button" class="button button-lang ' + styles.button_fg + ' is-rounded has-text-weight-bold' + selLang + '" data-lang="All">All</button>' + "\n";
-for (var i = 0; i < langs.length; i++) {
-    selLang = (urlParamLang == langs[i]) || ( !urlParamLang && (defaultLang == langs[i]) ) ? ' is-success selected-lang' : ' is-light is-hidden';
-    langHtml += '<button type="button" class="button button-lang ' + styles.button_fg + ' is-rounded' + selLang + '" data-lang="' + langs[i] + '">' + langs[i] + '</button>' + "\n";
-}
-
-// Sexes
-var sexes = ['Male', 'Female', 'Novelty'];
-var selSex = !urlParamSex || urlParamSex.toUpperCase() == 'A' ? ' is-active' : '';
-var filterSexHtml = '<li class="tab tab-sex has-text-weight-bold' + selSex + '" id="tab-A"><a>All</a></li>';
-for (var i = 0; i < sexes.length; i++) {
-    selSex = (urlParamSex && urlParamSex.toUpperCase() == sexes[i].charAt(0)) ? ' is-active' : '';
-    filterSexHtml += '<li class="tab tab-sex' + selSex +'" id="tab-' + sexes[i].charAt(0) + '"><a>' + sexes[i] + '</a></li>';
-}
-
-// Insert API and Sex filters
-document.getElementById('filter-api').innerHTML = '<ul><li class="tab"><a class="has-text-weight-bold no-hover" disabled>API</a></li>' + filterApiHtml + '</ul>';
-document.getElementById('filter-sex').innerHTML = '<ul><li class="tab"><a class="has-text-weight-bold no-hover" disabled>Sex</a></li>' + filterSexHtml + '</ul>';
-
-// Insert buttons
-document.getElementById('voice-selection').innerHTML = buttonsHtml;
-document.getElementById('lang-selection').innerHTML = '<button id="toggleLangs" class="button ' + styles.button_fg + ' has-text-weight-bold" onclick="toggleLangs();">Language (show/hide)</button>' + langHtml;
-
-// Show exact voice count
-document.getElementById('voicecount').innerHTML = voiceCount;
-
-// Add Event Listeners
-var buttons = document.querySelectorAll('button.button-voice');
-for (var i = 0; i < buttons.length; i++) {
-    buttons[i].addEventListener('click', selectVoice);
-}
-var apiTabs = document.getElementsByClassName('tab-api');
-for (var i = 0; i < apiTabs.length; i++) {
-    apiTabs[i].addEventListener('click', selectApi);
-}
-var sexTabs = document.getElementsByClassName('tab-sex');
-for (var i = 0; i < sexTabs.length; i++) {
-    sexTabs[i].addEventListener('click', selectSex);
-}
-var langTabs = document.getElementsByClassName('button-lang');
-for (var i = 0; i < langTabs.length; i++) {
-    langTabs[i].addEventListener('click', selectLang);
-}
-document.getElementById('playbutton').addEventListener('click', generateTTSUrl);
-document.getElementById('copylinkbutton').addEventListener('click', copyToClipboard);
-document.getElementById('text').addEventListener('input', handleTextInput);
-
-// We may need to update the character limit if a different voice was selected by default via URL paramaters
-setCharLimit();
-
-// If lang isn't set via URL parameters let's make sure we start by only showing default (English) voices
-// which in turn will call updateVoiceList()
-// Otherwise we'll call updateVoiceList() directly to ensure any filters set by URL params are accounted for
-if (!urlParamLang) selectLang(null, defaultLang);
-else updateVoiceList();
-
-// If there is text present in the URL, put it in the textarea and play the audio
-if (urlParamText !== null && decodeURIComponent(urlParamText).trim().length > 0) {
-    var textarea = document.getElementById('text');
-    textarea.value = urlParamText;
-    textarea.dispatchEvent(new Event('input'));     // setting value doesn't trigger an input event so we manually dispatch this
-    generateTTSUrl();
+    return selVoice;
 }
 
 
 /**
- * HELPER FUNCTIONS
+ * Return the currently selected API filter
+ *
+ * @return {string} 
  */
-
-// Return the currently selected voice element
-function getSelectedVoice() {
-    var selVoice = document.querySelectorAll('.button-voice.selected-voice')[0];
-
-    return selVoice ? selVoice : document.getElementsByClassName('button-voice')[0];    // Return first voice as a fallback
-}
-
-// Return the currently selected api element
 function getSelectedApi() {
-    var selApi = document.querySelectorAll('.tab-api.is-active')[0];
+    let selApi = document.querySelectorAll('.tab-api.is-active')[0];
+    if (typeof selApi === 'undefined' || selApi === null) {
+        selApi = document.getElementById('tab-' + defaultApi.replace(' ', '')); // Fallback to default
+        selectApi(null, defaultApi.replace(' ', ''));
+    }
 
-    return selApi ? selApi : document.getElementById('tab-Polly');      // Return Polly as a fallback
+    return selApi;
 }
 
-// Return the currently selected api element
-function getSelectedSex() {
-    var selSex = document.querySelectorAll('.tab-sex.is-active')[0];
 
-    return selSex ? selSex : document.getElementById('tab-A');          // Return All as a fallback
+/**
+ * Return the currently selected gender filter
+ *
+ * @return {string} 
+ */
+function getSelectedGender() {
+    let selGender = document.querySelectorAll('.tab-gender.is-active')[0];
+    if (typeof selGender === 'undefined' || selGender === null) {
+        selGender = document.getElementById('tab-A'); // Fallback to All
+        selectGender(null, 'A');
+    }
+
+    return selGender;
 }
 
-// Return the currently selected lang element
+
+/**
+ * Return the currently selected language filter
+ *
+ * @return {string} 
+ */
 function getSelectedLang() {
-    var selLang = document.querySelectorAll('.button-lang.selected-lang')[0];
+    let selLang = document.querySelectorAll('.button-lang.selected-lang')[0];
+    if (typeof selLang === 'undefined' || selLang === null) {
+        selLang = document.getElementsByClassName('button-lang')[0]; // Fallback to All
+        selectLang(null, 'All');
+    }
 
-    return selLang ? selLang : document.getElementsByClassName('button-lang')[0];    // Return All as a fallback
+    return selLang;
 }
 
-// Change selected API
+
+/**
+ * Change selected API
+ *
+ * @param {Event} e
+ * @param {string} tabName
+ */
 function selectApi(e, tabName) {
-    var tabs = document.querySelectorAll(".tab-api");
-    for (var i = 0; i < tabs.length; i++) {
+    let tabs = document.querySelectorAll(".tab-api");
+    for (let i = 0; i < tabs.length; i++) {
         tabs[i].classList.remove("is-active");
     }
 
-    var activeTab = e !== null ? e.currentTarget : document.getElementById("tab-" + tabName);
+    let activeTab = e !== null ? e.currentTarget : document.getElementById("tab-" + tabName);
     activeTab.classList.add("is-active");
 
     updateVoiceList();
 }
 
-// Change selected sex
-function selectSex(e, tabName) {
-    var tabs = document.querySelectorAll(".tab-sex");
-    for (var i = 0; i < tabs.length; i++) {
+
+/**
+ * Change selected gender
+ *
+ * @param {Event} e
+ * @param {string} tabName
+ */
+function selectGender(e, tabName) {
+    let tabs = document.querySelectorAll(".tab-gender");
+    for (let i = 0; i < tabs.length; i++) {
         tabs[i].classList.remove("is-active");
     }
 
-    var activeTab = e !== null ? e.currentTarget : document.getElementById("tab-" + tabName);
+    let activeTab = e !== null ? e.currentTarget : document.getElementById("tab-" + tabName);
     activeTab.classList.add("is-active");
 
     updateVoiceList();
 }
 
-// Change selected language
+/**
+ * Change selected language
+ *
+ * @param {Event} e
+ * @param {string} tabName
+ */
 function selectLang(e, tabName) {
-    var buttons = document.querySelectorAll(".button-lang");
-    for (var i = 0; i < buttons.length; i++) {
+    let buttons = document.querySelectorAll(".button-lang");
+    for (let i = 0; i < buttons.length; i++) {
         buttons[i].classList.remove("is-success");
         buttons[i].classList.remove("selected-lang");
         buttons[i].classList.add("is-light");
     }
 
-    var activeTab = e !== null ? e.currentTarget : document.querySelectorAll("button[data-lang='" + tabName + "']")[0];
+    let activeTab = e !== null ? e.currentTarget : document.querySelectorAll("button[data-lang='" + tabName + "']")[0];
     activeTab.classList.add("selected-lang");
     activeTab.classList.add("is-success");
     activeTab.classList.remove("is-light");
@@ -1204,21 +438,24 @@ function selectLang(e, tabName) {
     updateVoiceList();
 }
 
-// Update the voices matching our currently selected filters
+/**
+ * Update the voices matching our currently selected filters
+ *
+ */
 function updateVoiceList() {
     const api = getSelectedApi().textContent;
-    const sex = getSelectedSex().textContent.charAt(0);
+    const gender = getSelectedGender().textContent.charAt(0);
     const lang = getSelectedLang().innerHTML;
 
     // Get all the buttons
-    var b = document.querySelectorAll('.button-voice');
+    let b = document.querySelectorAll('.button-voice');
 
     // Loop through buttons and unhide any that match our filters, hide the rest
-    for (var i = 0; i < b.length; i++) {
+    for (let i = 0; i < b.length; i++) {
         if (
-            ((lang != 'All' && b[i].getAttribute('data-lang') == lang) || lang == 'All' || b[i].getAttribute('data-lang') == null) &&
-            ((api != 'All' && b[i].getAttribute('data-api') == api) || api == 'All') &&
-            ((sex != 'A' && b[i].getAttribute('data-sex') == sex) || sex == 'A' || b[i].getAttribute('data-sex') == null)
+            ((lang !== 'All' && b[i].getAttribute('data-lang') === lang) || lang === 'All' || b[i].getAttribute('data-lang') === null) &&
+            ((api !== 'All' && b[i].getAttribute('data-api') === api) || api === 'All') &&
+            ((gender !== 'A' && b[i].getAttribute('data-gender') === gender) || gender === 'A' || b[i].getAttribute('data-gender') === null)
         ) {
             b[i].classList.remove('is-hidden');
         } else {
@@ -1227,13 +464,17 @@ function updateVoiceList() {
     }
 }
 
-// When selecting a voice from the dropdown, set new char limit and URL
+/**
+ * When selecting a voice from the dropdown, set new char limit and URL
+ *
+ * @param {Event} e
+ */
 function selectVoice(e) {
     const selVoice = e ? e.currentTarget : getSelectedVoice();
 
     // Remove active state from all buttons
-    var buttons = document.querySelectorAll('button.button-voice');
-    for (var i = 0; i < buttons.length; i++) {
+    let buttons = document.querySelectorAll('button.button-voice');
+    for (let i = 0; i < buttons.length; i++) {
         buttons[i].classList.remove('selected-voice');
         buttons[i].classList.remove('is-success');
         buttons[i].classList.add('is-light');
@@ -1247,100 +488,154 @@ function selectVoice(e) {
     setCharLimit();
 }
 
-// Change URL parameters
+/**
+ * Change URL parameters in the browser's address bar based on user selections
+ *
+ * @param {string} selVoice
+ * @param {string} text
+ */
 function changeUrl(selVoice, text) {
     selVoice = selVoice ? selVoice : getSelectedVoice();
     text = text ? text : document.getElementById('text').value.trim();
 
-    var newUrl = updateURLParameter(window.location.href, 'voice', selVoice.dataset.vid);
-    newUrl = updateURLParameter(newUrl, 'service', selVoice.dataset.api);
-    newUrl = updateURLParameter(newUrl, 'text', encodeURIComponent(text));
-    newUrl = updateURLParameter(newUrl, 'lang', getSelectedLang().textContent);
-    newUrl = updateURLParameter(newUrl, 's', getSelectedSex().textContent.charAt(0));
+    let newUrl = helper.updateURLParameter(window.location.href, 'voice', selVoice.dataset.vid);
+    newUrl = helper.updateURLParameter(newUrl, 'service', selVoice.dataset.api);
+    newUrl = helper.updateURLParameter(newUrl, 'text', encodeURIComponent(text));
+    newUrl = helper.updateURLParameter(newUrl, 'lang', getSelectedLang().textContent);
+    newUrl = helper.updateURLParameter(newUrl, 'g', getSelectedGender().textContent.charAt(0));
 
     // Change the URL in the address bar
-    setNewUrl(newUrl);
+    helper.setNewUrl(newUrl);
 }
 
-// Update the URL in the browser's address bar
-function setNewUrl(newUrl) {
-    if (window.history.replaceState) {
-       // prevents browser from storing history with each change:
-       window.history.replaceState('', document.getElementsByTagName('title')[0].innerHTML, newUrl);
-    }
-}
-
-// Show/hide buttons for language selection
+/**
+ * Show/hide buttons for language selection
+ *
+ */
 function toggleLangs() {
-    var currentLang = getSelectedLang();
+    let currentLang = getSelectedLang();
 
-    var langs = document.getElementsByClassName('button-lang');
-    for (var i = 0; i < langs.length; i++) {
+    let langs = document.getElementsByClassName('button-lang');
+    for (let i = 0; i < langs.length; i++) {
         if (!langs[i].classList.contains('selected-lang')) langs[i].classList.toggle('is-hidden');
     }
 }
 
-// Handle textarea input
+/**
+ * Handle <textarea> input
+ * Adjusts the height of the element to grow or shrink depending on amount of text entered.
+ * Also calls characterCount() to keep current character count visible to user
+ *
+ * @param {Event} e
+ */
 function handleTextInput(e) {
-    var textarea = e.currentTarget;
+    let textarea = e.currentTarget;
 
     // Autogrow the textarea, or reset if emptied
     if (textarea.value) {
         textarea.style.height = textarea.scrollHeight + 'px';
     } else {
         textarea.style.height = textarea.style.minHeight;
-        textarea.scrollHeight = textarea.offsetHeight;
     }
 
     // Count characters used
     characterCount(textarea, document.getElementById('chars'), document.getElementById('character-count'));
 }
 
-// Generate URL to TTS output
+/**
+ * Generate URL to TTS output
+ * POSTs to request_tts.php with the TTS request and returns JSON
+ *
+ */
 function generateTTSUrl() {
     const voice = getSelectedVoice();
     const api = voice.dataset.api;
-    const text = document.getElementById('text').value.trim() || 'Please enter some text.';
+    const text = document.getElementById('text').value.trim();
 
     // Change the URL parameters
     changeUrl(voice);
 
-    // Send request to the server to get around CORS issues
-    // Show a loading spinner while the proxy sends/receives the request
-    document.getElementById('playbutton').classList.add('is-loading');
+    if (text.length > 0) {
+        // Send request to the server to get around CORS issues
+        // Show a loading spinner while the proxy sends/receives the request
+        document.getElementById('playbutton').classList.add('is-loading');
 
-    // Send request to our proxy script
-    var xhr = new XMLHttpRequest();
-    xhr.onload = function () {
-        var response = JSON.parse(xhr.responseText);
-        if (xhr.readyState == 4 && xhr.status == '200') {
-            //console.log(response);
-            if (response.success === true) {
-                showAudioPlayer(response.speak_url);
-            } else if (response.error) {
-                showErrorMessage(response.error);
+        // Send request to our proxy script
+        let xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+            //console.log(xhr.responseText);
+            let response = JSON.parse(xhr.responseText);
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log(response);
+                if (response.success === true) {
+                    showAudioPlayer(response.audio_url);
+                } else {
+                    showErrorMessage(response.error_msg);
+                }
+            } else {
+                console.error(response);
             }
+
+            // Remove loading spinner
+            document.getElementById('playbutton').classList.remove('is-loading');
+        };
+        xhr.open('POST', 'request_tts.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send('service=' + encodeURIComponent(api) + '&voice=' + encodeURIComponent(voice.dataset.vid) + '&text=' + encodeURIComponent(text));
+    }
+    else {
+        showErrorMessage('No text entered.');
+    }
+}
+
+
+/**
+ * Generate URL to TTS output
+ * POSTs to request_tts.php with the TTS request and returns JSON
+ * Similar to generateTTSUrl() but with extra details for playlists
+ *
+ * @param {string} api
+ * @param {string} voice
+ * @param {string} text
+ * @param {string} voice_name
+ * @param {number} playlist_index
+ */
+function generateTTSUrlForPlaylist(api, voice, text, voice_name, playlist_index) {
+
+    // Send request to the server to get around CORS issues
+    const xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+        const response = JSON.parse(xhr.responseText);
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            //console.log(response);
+            dialogueToArray(response);
         } else {
             console.error(response);
         }
 
-        // Remove loading spinner
-        document.getElementById('playbutton').classList.remove('is-loading');
     };
-    xhr.open('POST', 'proxy.php', true);
+    xhr.open('POST', 'request_tts.php', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.send('service=' + encodeURIComponent(api) + '&voice=' + encodeURIComponent(voice.dataset.vid) + '&text=' + encodeURIComponent(text));
+    xhr.send('service=' + encodeURIComponent(api) + '&voice=' + encodeURIComponent(voice) + '&text=' + encodeURIComponent(text) + '&voice_name=' + encodeURIComponent(voice_name) + '&playlist_index=' + playlist_index);
 }
 
-// Add <audio> player to the DOM
+/**
+ * Add <audio> player to the DOM
+ *
+ * @param {string} ttsUrl
+ */
 function showAudioPlayer(ttsUrl) {
-    var audioHtml = '<audio autoplay controls id="audioplayer" preload="metadata" src="' + ttsUrl + '" title="TTS Audio Clip"><p>Your browser does not support the <code>audio</code> element.</p></audio>';
+    let audioHtml = '<audio autoplay controls id="audioplayer" preload="metadata" src="' + ttsUrl + '" title="TTS Audio Clip"><p>Your browser does not support the <code>audio</code> element.</p></audio>';
     document.getElementById('tts-player').innerHTML = audioHtml;
     document.getElementById('tts-player').classList.remove('is-hidden');
     document.getElementById('copylinkbutton').classList.remove('is-hidden');
 }
 
-// Show error message
+/**
+ * Show error message
+ *
+ * @param {string} message
+ */
 function showErrorMessage(message) {
     document.getElementById('tts-error-text').innerHTML = '<strong>Error:</strong> ' + message;
     document.getElementById('tts-error').classList.remove('is-hidden');
@@ -1349,12 +644,18 @@ function showErrorMessage(message) {
     }, 5000);
 }
 
-// Copy audio link to clipboard
+/**
+ * Copy audio link to clipboard
+ *
+ * @param {Event} e
+ * @param {HTMLElement} copyBtn
+ * @param {string} textToCopy
+ */
 function copyToClipboard(e, copyBtn, textToCopy) {
-    var audioUrl = typeof textToCopy === 'undefined' ? document.getElementById('audioplayer').src : textToCopy;
+    let audioUrl = typeof textToCopy === 'undefined' ? document.getElementById('audioplayer').src : textToCopy;
 
     // Create a temporary text <input> to contain the URL of the audio clip, which we can then select and copy
-    var tempInput = document.createElement('input');
+    let tempInput = document.createElement('input');
     tempInput.type = 'text';
     tempInput.value = audioUrl;
     document.body.appendChild(tempInput);
@@ -1367,11 +668,11 @@ function copyToClipboard(e, copyBtn, textToCopy) {
         tempInput.readOnly = true;
 
         // create a selectable range
-        var range = document.createRange();
+        let range = document.createRange();
         range.selectNodeContents(tempInput);
 
         // select the range
-        var selection = window.getSelection();
+        let selection = window.getSelection();
         selection.removeAllRanges();
         selection.addRange(range);
         tempInput.setSelectionRange(0, 9999);
@@ -1399,11 +700,16 @@ function copyToClipboard(e, copyBtn, textToCopy) {
     }, 2000);
 
     // Add to recents if this was triggered by an event (clicking the main copy link URL button)
-    if (e !== null) addToRecentShares();
+    if (e !== null && currentPage === 'demo') addToRecentShares();
 }
 
-// Set character limit on textarea
-function setCharLimit() {
+/**
+ * Set character limit on a <textarea>
+ * Also visibly show the limit to the user in #charlimit
+ *
+ */
+function setCharLimit()
+{
     const selectedVoice = getSelectedVoice();
     const newCharLimit = selectedVoice.dataset.charlimit;
     document.getElementById('text').maxLength = newCharLimit;
@@ -1411,12 +717,20 @@ function setCharLimit() {
     document.getElementById('text').dispatchEvent(new Event('input'));
 }
 
-// Show character count/limit
-function characterCount(textarea, elChars, elCharCount, service) {
+/**
+ * Show character count/limit
+ *
+ * @param {HTMLElement} textarea
+ * @param {HTMLElement} elChars
+ * @param {HTMLElement} elCharCount
+ * @param {string} service
+ */
+function characterCount(textarea, elChars, elCharCount, service = null)
+{
+    const thisText = textarea.value.trim();
     // Some services count bytes rather than characters
-    const thisText = textarea.value;
-    const api = service == null ? getSelectedVoice().dataset.api : service;
-    const curLength = ttsServices[api].countBytes === true ? byteCount(thisText.trim()) : thisText.trim().length;
+    const api = service === null ? getSelectedVoice().dataset.api : service;
+    const curLength = ttsServices[api].countBytes === true ? helper.byteCount(thisText) : thisText.length;
     elChars.innerHTML = curLength;
 
     // if current length is near the max length change colour to red
@@ -1427,19 +741,19 @@ function characterCount(textarea, elChars, elCharCount, service) {
     }
 }
 
-// Count bytes of text string
-// https://stackoverflow.com/a/12203648/403476
-function byteCount(s) {
-    return encodeURI(s).split(/%..|./).length - 1;
-}
-
-// Convert gender letter to Emoji
-function genderLetterToEmoji(voice) {
-    if (voice.sex == 'M') {
+/**
+ * Convert gender letter to Emoji
+ *
+ * @param {Object} voice
+ * @return {string} 
+ */
+function genderLetterToEmoji(voice)
+{
+    if (voice.gender === 'M') {
         return '\u2642';
-    } else if (voice.sex == 'F') {
+    } else if (voice.gender === 'F') {
         return '\u2640';
-    } else if (voice.sex == 'N') {
+    } else if (voice.gender === 'O') {
         if (voice.customEmoji) return voice.customEmoji;
         return '\u2753';
     }
@@ -1447,27 +761,33 @@ function genderLetterToEmoji(voice) {
     return '\u2753';
 }
 
-// Convert country code (ISO 3166-1 alpha-2) to emoji flag
-function countryCodeToEmoji(countryCode) {
+/**
+ * Convert country code (ISO 3166-1 alpha-2) to emoji flag
+ *
+ * @param {string} countryCode
+ * @return {string} 
+ */
+function countryCodeToEmoji(countryCode)
+{
     // Windows doesn't support flag emojis so we'll display an image instead
     // There are also some edge cases for languages without a flag emoji (Arabic, Esperanto)
 
-    var emoji = '\ud83c\udff3\ufe0f';   // white flag (default)
-    var noFlag = (countryCode == 'ARAB' || countryCode == 'ESPER');   // "country" codes with no flag emoji
-    var isWin = navigator.platform.indexOf('Win') > -1;     // check if user is on Windows
+    let emoji = '\ud83c\udff3\ufe0f';   // white flag (default)
+    let noFlag = (countryCode === 'ARAB' || countryCode === 'ESPER');   // "country" codes with no flag emoji
+    let isWin = navigator.platform.indexOf('Win') > -1;     // check if user is on Windows - deprecated but this is a legitimate use case
 
-    if ((isWin || noFlag) && countryCode.length != 0) {
+    if ((isWin || noFlag) && countryCode.length !== 0) {
         emoji = countryCodeToImg(countryCode);
     }
     else if (countryCode && countryCode.length >= 2) {
         const offset = 127397;
         const firstChar = countryCode.codePointAt(0);
         const secondChar = countryCode.codePointAt(1);
-        var emoji = String.fromCodePoint(firstChar + offset) + String.fromCodePoint(secondChar + offset);
+        emoji = String.fromCodePoint(firstChar + offset) + String.fromCodePoint(secondChar + offset);
 
         // Handle special cases (England, Scotland, Wales) with subdivision flags
-        if (countryCode.length == 6) {
-            switch (countryCode.substr(3, 3)) {
+        if (countryCode.length === 6) {
+            switch (countryCode.substring(3, 3)) {
                 case 'ENG':
                 emoji = '\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f';
                 break;
@@ -1481,16 +801,22 @@ function countryCodeToEmoji(countryCode) {
                 break;
             }
         }
-
-        return emoji;
     }
 
     return emoji;
 }
 
-// Convert country code (ISO 3166-1 alpha-2) to an <img> tag for its flag
-function countryCodeToImg(countryCode) {
-    var imgUrl = '';
+/**
+ * Convert country code (ISO 3166-1 alpha-2) to an <img> tag for its flag
+ * This is mainly for Windows machines as they never have and never will(?) support flag emojis.
+ * Also used for non-country entities that have a flag.
+ *
+ * @param {string} countryCode
+ * @return {*} 
+ */
+function countryCodeToImg(countryCode)
+{
+    let imgUrl = '';
 
     // handle some edge cases where the language doesn't have a flag, or not available from this repo
     switch (countryCode) {
@@ -1509,87 +835,38 @@ function countryCodeToImg(countryCode) {
     return '<img src="' + imgUrl + '" alt="' + countryCode + ' flag" style="width:20px;" />';
 }
 
-// change URL paramaters
-// https://stackoverflow.com/a/10997390/403476
-function updateURLParameter(url, param, paramVal)
+/**
+ * Update the recent shares <div> with what's in our storage
+ *
+ */
+function updateRecentShares()
 {
-    var TheAnchor = null;
-    var newAdditionalURL = "";
-    var tempArray = url.split("?");
-    var baseURL = tempArray[0];
-    var additionalURL = tempArray[1];
-    var temp = "";
-
-    if (additionalURL)
-    {
-        var tmpAnchor = additionalURL.split("#");
-        var TheParams = tmpAnchor[0];
-            TheAnchor = tmpAnchor[1];
-        if(TheAnchor)
-            additionalURL = TheParams;
-
-        tempArray = additionalURL.split("&");
-
-        for (var i=0; i<tempArray.length; i++)
-        {
-            if(tempArray[i].split('=')[0] != param)
-            {
-                newAdditionalURL += temp + tempArray[i];
-                temp = "&";
-            }
-        }
-    }
-    else
-    {
-        var tmpAnchor = baseURL.split("#");
-        var TheParams = tmpAnchor[0];
-            TheAnchor  = tmpAnchor[1];
-
-        if(TheParams)
-            baseURL = TheParams;
-    }
-
-    if(TheAnchor)
-        paramVal += "#" + TheAnchor;
-
-    var rows_txt = temp + "" + param + "=" + paramVal;
-    return baseURL + "?" + newAdditionalURL + rows_txt;
-}
-
-
-// Web Storage
-
-// On page load make sure recent shares is populated if there are any
-updateRecentShares();
-
-// Update the recent shares div with what's in our storage
-function updateRecentShares() {
     if (typeof(Storage) !== "undefined") {
-        var currentData = localStorage.getItem('recentShares');
-        var recentHtml = '', audioHtml = '';
-        var recentContainer = document.getElementById('recentTTS');
+        let currentData = localStorage.getItem('recentShares');
+        let recentHtml = '', audioHtml = '';
+        let recentContainer = document.getElementById('recentTTS');
 
         if (currentData) {
             currentData = JSON.parse(currentData);
             const now = new Date();
             const tooOld = (now.getTime() / 1000) - (3600 * 48);   // 48 hours ago
-            var deletions = false;
+            let deletions = false;
 
-            for (var i = 0; i < currentData.length; i++) {
+            for (let i = 0; i < currentData.length; i++) {
                 // Remove this item if it's too old
                 if ((currentData[i].time / 1000) < tooOld) {
                     currentData.splice(i, 1);
                     deletions = true;
                     i--;
                 } else {
-                    audioHtml = '<audio controls preload="metadata" src="' + currentData[i].audio + '" title="TTS Audio Clip"><p>Your browser does not support the <code>audio</code> element.</p></audio>';
+                    audioHtml = '<audio controls preload="metadata" src="' + currentData[i].audio_url + '" title="TTS Audio Clip"><p>Your browser does not support the <code>audio</code> element.</p></audio>';
                     recentHtml += '<div class="columns recent">' +
-                    '<div class="column is-one-fifth"><span class="recent-voice has-text-weight-bold">' + currentData[i].voiceName + '</span><br/>' +
-                    '<span class="recent-time is-size-7 has-text-grey">' + timeSince(now, new Date(currentData[i].time)) + '</span></div>' +
-                    '<div class="column"><span class="recent-message is-italic">"' + (currentData[i].message.length > 250 ? currentData[i].message.substring(0, 250) + ' [...]' : currentData[i].message ) + '"</span></div>' +
+                    '<div class="column is-one-fifth"><span class="recent-voice has-text-weight-bold">' + currentData[i].voice_name + '</span><br/>' +
+                    '<span class="recent-time is-size-7 has-text-grey">' + helper.timeSince(now, new Date(currentData[i].time)) + '</span></div>' +
+                    '<div class="column"><span class="recent-message is-italic">"' + (currentData[i].text.length > 250 ? currentData[i].text.substring(0, 250) + ' [...]' : currentData[i].text ) + '"</span></div>' +
                     '<div class="column is-two-fifths">' + audioHtml +
-                    ' <button type="button" class="button button-copy is-small ' + styles.button_fg + '" onclick="copyToClipboard(null, this, \'' + currentData[i].audio + '\');">copy URL</button>' +
-                    ' <button type="button" class="button is-small is-danger" onclick="removeShare(' + i + ');">remove</button>' + '</div>' +
+                    ' <button id="btn-copy-recent-' + i + '" type="button" class="button button-copy is-small ' + styles.button_fg + '">copy URL</button>' +
+                    ' <button id="btn-remove-recent-' + i + '" type="button" class="button is-small is-danger">remove</button>' + '</div>' +
                     '</div>';
                 }
             }
@@ -1599,23 +876,35 @@ function updateRecentShares() {
         } else {
             recentHtml = '<em>No links copied yet!</em>';
         }
+
         recentContainer.innerHTML = recentHtml;
+
+        if (currentData) {
+            for (let i = 0; i < currentData.length; i++) {
+                document.getElementById('btn-copy-recent-' + i).addEventListener('click', function(event){copyToClipboard(null, document.getElementById('btn-copy-recent-' + i), currentData[i].audio_url)});
+                document.getElementById('btn-remove-recent-' + i).addEventListener('click', function(event){removeShare(i)});
+            }
+        }
     }
 }
 
-// Add the data of the TTS we just copied to our recent shares
-function addToRecentShares() {
+/**
+ * Add the TTS data we shared to our recent shares
+ *
+ */
+function addToRecentShares()
+{
     if (typeof(Storage) !== "undefined") {
         const now = new Date();
-        var currentData = localStorage.getItem('recentShares');
-        var voice = getSelectedVoice();
-        var dataArray = [];
+        let currentData = localStorage.getItem('recentShares');
+        let voice = getSelectedVoice();
+        let dataArray = [];
 
-        var newData = {
+        let newData = {
             'time': now.getTime(),
-            'voiceName': voice.getElementsByClassName('voice-name')[0].innerText,
-            'message': document.getElementById('text').value.trim(),
-            'audio': document.getElementById('audioplayer').src
+            'voice_name': voice.getElementsByClassName('voice-name')[0].innerText,
+            'text': document.getElementById('text').value.trim(),
+            'audio_url': document.getElementById('audioplayer').src
         };
 
         // If we've already got some data, unshift our new object to the beginning of the array
@@ -1632,31 +921,686 @@ function addToRecentShares() {
     }
 }
 
-// Clear local storage of all shares
-function clearShares() {
+/**
+ * Clear local storage of all shares
+ *
+ */
+function clearShares()
+{
     localStorage.removeItem('recentShares');
     updateRecentShares();
 }
 
-// Remove a share from storage
-function removeShare(index) {
-    var currentData = JSON.parse(localStorage.getItem('recentShares'));
+/**
+ * Remove a share from storage
+ *
+ * @param {number} index
+ */
+function removeShare(index)
+{
+    let currentData = JSON.parse(localStorage.getItem('recentShares'));
     currentData.splice(index, 1);
 
     localStorage.setItem('recentShares', JSON.stringify(currentData));
     updateRecentShares();
 }
 
-// Relative time
-function timeSince(thisDate, pastDate) {
-    var secondsPast = (thisDate.getTime() - pastDate.getTime()) / 1000;
-    if(secondsPast < 60){
-        return parseInt(secondsPast) + ' seconds ago';
+/**
+ * Fetch playlist JSON and parse it
+ * if addToDom is false we'll only update the objects/arrays with the playlist data and won't change the DOM.
+ *
+ * @param {string} plsJSON           The filename of the playlist JSON
+ * @param {boolean} addToDom         Whether or not to add the playlist HTML to the DOM
+ * @param {boolean} editingPlaylist  Whether or not we're currently editing an existing playlist
+ */
+function getPlaylist(plsJSON, addToDom, editingPlaylist) {
+    // Load in the JSON
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'request_pls.php?file=' + plsJSON, true);
+    xhr.onload = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            objConversation = JSON.parse(xhr.responseText);
+            if (objConversation.success === true) {
+                arrPlaylistDialogue = objConversation.dialogue;
+                arrPlaylistVoices = objConversation.voices;
+
+                if (addToDom) {
+                    addPlaylistToDOM();
+                    setTimeout(function () {
+                        setPlaylistMetadata();
+                        playPlaylist();
+                    }, 1000);
+                } else if (editingPlaylist) {
+                    editPlaylist();
+                }
+            }
+            else {
+                document.getElementById('listen-to-this-convo').innerText = 'Error: ' + objConversation.error_msg;
+            }
+            
+        } else {
+            console.error(xhr.response);
+        }
+    };
+    xhr.send();
+}
+
+
+/**
+ * When editing a playlist we need to loop through each dialogue object and set the voice/text values
+ *
+ */
+function editPlaylist() {
+    // Loop through each dialogue and add form fields and set their values
+    for (let i = 0; i < arrPlaylistDialogue.length; i++) {
+        addDialogueBox();
+        if (null !== arrPlaylistDialogue[i]) {
+            document.getElementsByName('con-voice[]')[i].value = arrPlaylistDialogue[i].service + '__' + arrPlaylistDialogue[i].voice.id;
+            document.getElementsByName('con-text[]')[i].innerHTML = arrPlaylistDialogue[i].text;
+        }
     }
-    if(secondsPast < 3600){
-        return parseInt(secondsPast/60) + ' minutes ago';
+}
+
+
+/**
+ * Generate HTML for the voice <select>'s for a conversation
+ *
+ */
+function generateSelectHtml() {
+
+    // Iterate over each group of voices
+    let selVoice, voiceName = '', voiceAccent = '';
+    for (const voiceGroup in ttsServices) {
+        const voices = ttsServices[voiceGroup].voices;
+
+        // Add an optgroup for this API
+        voiceSelectHTML += '<optgroup label="' + voiceGroup + '" data-charlimit="' + ttsServices[voiceGroup].charLimit + '">';
+
+        // Add options for each voice
+        for (let i = 0; i < voices.length; i++) {
+            // Set voice name
+            voiceName = voices[i].name;
+            if (voiceName.length === 0) {
+                // If the voice is not named, use the language
+                voiceName = voices[i].lang;
+                // Include accent/region if applicable
+                if (voices[i].accent.length > 0) {
+                    voiceName += ' (' +  voices[i].accent + ')';
+                }
+            } else {
+                // Append language and accent/region if applicable
+                voiceAccent = voices[i].accent.length > 0 ? ', ' + voices[i].accent : '';
+                voiceName += ' (' + voices[i].lang + voiceAccent + ')';
+            }
+
+            const voiceId = voiceGroup + '__' + voices[i].vid;
+            voiceSelectHTML += '<option value="' + voiceId + '" data-desc="' + voiceName + '" data-voice-name="' + voices[i].name + '">' + voiceName + '</option>';
+        }
+
+        // Close optgroup
+        voiceSelectHTML += '</optgroup>';
+    }
+
+    // voiceSelectHTML is a global variable so no need to return it
+}
+
+
+/**
+ * Insert <option> tags to our voice <select>s on the conversation page, or a specific given <select> element
+ * Also add event listener
+ *
+ * @param {Event} e
+ */
+function populateSelects(e) {
+    if (e !== null) {
+        e.innerHTML = voiceSelectHTML;
+        e.addEventListener('change', updateSelectedVoices);
+    } else {
+        let allVoiceSelects = document.getElementsByName('voice[]');
+        for (let i = 0; i < allVoiceSelects.length; i++) {
+            allVoiceSelects[i].innerHTML = voiceSelectHTML;
+            allVoiceSelects[i].addEventListener('change', updateSelectedVoices);
+        }
+    }
+}
+
+
+/**
+ * Add another voice <select> to the conversation page
+ *
+ */
+function addVoiceSelect() {
+    const voiceCount = document.getElementsByName('voice[]').length;
+    const nextVoiceNo = voiceCount + 1;
+
+    const selectHtml = '<div class="column is-one-third"><div class="field"><label for="voice_' + nextVoiceNo + '" class="label">Voice ' + nextVoiceNo + '</label><div class="control select is-rounded"><select id="voice_' + nextVoiceNo + '" name="voice[]"></select></div></div></div>';
+
+    // Create a div element and add the above HTML in it
+    let uselessDiv = document.createElement('div');
+    uselessDiv.innerHTML = selectHtml;
+
+    let divContainer = document.getElementById('voice-selects');
+
+    // Loop through each child element of the useless div and append them to our container
+    // this avoids using innerHTML which would remove all elements (and user entered text with it) and recreate them
+    while (uselessDiv.firstChild) {
+        divContainer.appendChild(uselessDiv.firstChild);
+    }
+
+    // add <options> and event listener
+    populateSelects(document.getElementById('voice_' + nextVoiceNo));
+}
+
+
+/**
+ * Generate URL with currently selected voices on conversation page
+ *
+ */
+function updateSelectedVoices() {
+    const allVoiceSelects = document.getElementsByName('voice[]');
+    let selectedVoices = [];
+
+    for (let i = 0; i < allVoiceSelects.length; i++) {
+        selectedVoices.push(allVoiceSelects[i].value);
+    }
+
+    // Change the URL in the address bar
+    const newUrl = helper.updateURLParameter(window.location.href, 'voices', selectedVoices);
+    helper.setNewUrl(newUrl);
+
+    let voiceCount = 0; // actually selected voices, not "None"
+    for (let i = 0; i < selectedVoices.length; i++) {
+        if (selectedVoices[i]) voiceCount++;
+    }
+
+    // If we have at least 1 voice selected, enable the add dialogue button
+    document.getElementById('btn-add-con').disabled = voiceCount > 0 ? false : true;
+
+    // If we already have <select>s added we should update them all now
+    let allSelects = document.getElementsByName('con-voice[]');
+    if (voiceCount > 1 && allSelects.length > 0) {
+        const optionHtml = generateOptionTags();
+        for (let i = 0; i < allSelects.length; i++) {
+            const selectedId = allSelects[i].selectedIndex;
+            allSelects[i].innerHTML = optionHtml;
+            allSelects[i].selectedIndex = selectedId;   // set selected index back to what it was
+            updateTextareaAttributes(allSelects[i]);    // update the <select>'s corresponding textarea attributes
+        }
+    }
+    else if (voiceCount > 0 && allSelects.length === 0 && !urlParamEdit) {
+        // Or if we have at least 1 voice chosen but no <select>s in the DOM (for dialogue) we can automatically
+        // add a dialogue box for convenience. No need if we're editing a playlist though, as dialogue boxes
+        // will be added and populated when the JSON is loaded in.
+        addDialogueBox();
+    }
+}
+
+/**
+ * Add a dialogue box (<select> with our chosen voices and corresponding <textrea>)
+ *
+ */
+function addDialogueBox() {
+    // HTML we want to add
+    const randomId = helper.random(8);
+    const selectId = 'con-voice-' + randomId;
+    const buttonId = 'con-delete-' + randomId;
+    const textId = 'con-text-' + randomId;
+    const conVoiceDropdown = '<div class="control select is-rounded"><select id="' + selectId + '" name="con-voice[]"></select></div>';
+    const conBtnRemove = '<div class="control"><button id="' + buttonId + '" type="button" class="delete has-background-danger-dark"></button></div>';
+    const conTextInput = '<div class="control"><textarea id="' + textId + '" name="con-text[]" rows="3" cols="80" maxlength="550" class="textarea dialogue" placeholder="Enter some text here..."></textarea><span class="is-pulled-right is-size-7 has-text-right"><span name="chars[]">0</span>/<span name="charlimit[]">-</span></span></div>';
+    const divBox = '<div class="box"><div class="field is-grouped">' + conVoiceDropdown + conBtnRemove + '</div><div class="field">' + conTextInput + '</div></div>';
+
+    // Create a div element and add the above HTML in it
+    const uselessDiv = document.createElement('div');
+    uselessDiv.innerHTML = divBox;
+
+    let divContainer = document.getElementById('con-voice-and-text-input');
+
+    // Loop through each child element of the useless div and append them to our container
+    // this avoids using innerHTML which would remove all elements (and user entered text with it) and recreate them
+    while (uselessDiv.firstChild) {
+        divContainer.appendChild(uselessDiv.firstChild);
+    }
+
+    // Event listeners
+    document.getElementById(selectId).addEventListener('change', function(event){updateTextareaAttributes(document.getElementById(selectId))});
+    document.getElementById(buttonId).addEventListener('click', function(event){removeDialogueBox(document.getElementById(buttonId))});
+    document.getElementById(textId).addEventListener('input', function(event){handleConvoInput(document.getElementById(textId))});
+
+    const optionHtml = generateOptionTags();
+
+    // Get all our <select>s
+    const allSelects = document.getElementsByName('con-voice[]');
+    allSelects[allSelects.length-1].innerHTML = optionHtml;
+    updateTextareaAttributes(allSelects[allSelects.length-1]);  // set the <select>'s corresponding textarea attributes
+
+    // At this point we'll have at least 1 dialogue box on the page so we can
+    // enable to the speak button
+    document.getElementById('btn-speak-con').disabled = false;
+
+    selectedVoicesToArray();
+}
+
+
+/**
+ * Remove a dialogue box
+ *
+ * @param {HTMLElement} e
+ */
+function removeDialogueBox(e) {
+    e.parentNode.parentNode.parentNode.remove();
+
+    // recount dialogue boxes and disable TTS generation if 0
+    const dialogueCount = document.getElementsByName('con-text[]').length;
+    if (dialogueCount === 0) document.getElementById('btn-speak-con').disabled = true;
+}
+
+
+/**
+ * Generate <option> tag HTML for the <select>'s with our chosen voices in the dialogue boxes
+ *
+ * @return {string} 
+ */
+function generateOptionTags() {
+    // Populate the <select> with our chosen voices
+    const voiceSelects = document.getElementsByName('voice[]');
+    let optionHtml = '';
+    for (let i = 0; i < voiceSelects.length; i++) {
+        const selectId = 'voice_' + (i + 1);
+        const ttsService = document.querySelector('#' + selectId + ' option:checked').parentElement;
+
+        const charLimit = ttsService.dataset.charlimit;
+        const serviceName = ttsService.label;
+        const voiceId = voiceSelects[i].value;
+        const selIdx = voiceSelects[i].selectedIndex;
+        const voiceName = voiceSelects[i].options[selIdx].label;
+        const voiceNameShort = voiceSelects[i].options[selIdx].dataset.voiceName;
+
+        if (voiceId) optionHtml += '<option value="' + voiceId + '" data-charlimit="' + charLimit + '" data-api="' + serviceName + '" data-voice-name="' + voiceNameShort + '">' + voiceName + '</option>';
+    }
+
+    return optionHtml;
+}
+
+/**
+ * Show the user the current character count of this textarea
+ *
+ * @param {HTMLElement} textarea
+ */
+function handleConvoInput(textarea) {
+    const thisDialogueVoice = textarea.parentNode.parentNode.parentNode.getElementsByTagName('select')[0];
+    const idxVoice = thisDialogueVoice.selectedIndex;
+    const voiceOptionTag = thisDialogueVoice.options[idxVoice];
+    const elChars = textarea.parentNode.getElementsByTagName('span')[1];
+    const elCharCount = textarea.parentNode.getElementsByTagName('span')[0];
+
+    // Count characters used
+    characterCount(textarea, elChars, elCharCount, voiceOptionTag.dataset.api);
+}
+
+/**
+ * Set the correct maxlength based on the API being used and make this visible to users in span.character-count[]
+ *
+ * @param {HTMLElement} voiceSelect
+ */
+function updateTextareaAttributes(voiceSelect) {
+    const idxVoice = voiceSelect.selectedIndex;
+    const voiceOptionTag = voiceSelect.options[idxVoice];
+
+    const dialogueContainer = voiceSelect.parentNode.parentNode.parentNode;
+    const elCharCount = dialogueContainer.getElementsByTagName('span')[2];
+    const thisVoiceTextarea = dialogueContainer.getElementsByTagName('textarea')[0];
+    elCharCount.innerHTML = voiceOptionTag.dataset.charlimit;
+    thisVoiceTextarea.maxLength = voiceOptionTag.dataset.charlimit;
+}
+
+
+/**
+ * Make all the calls to the TTS APIs and show user the progress
+ *
+ */
+function generateConversation() {
+    // Loop through each textarea and its respective voice selection
+    const arrayVoices = document.getElementsByName('con-voice[]');
+    const arrayTexts = document.getElementsByName('con-text[]');
+    const count = arrayTexts.length;
+
+    currentPos++;
+
+    if (currentPos === 0) {
+        // We are starting a new playlist so reset everything
+        document.getElementById('con-audio-output').scrollIntoView();
+        document.getElementById('progress-done').classList.add('is-hidden');
+        document.getElementById('progress-bar').classList.add('is-dark');
+        document.getElementById('progress-bar').classList.remove('is-success');
+        document.getElementById('progress-bar').value = 0;
+        document.getElementById('tts-playlist').innerHTML = '';
+        arrPlaylistDialogue = [];
+        arrPlaylistVoices = [];
+    }
+
+    if (currentPos < count) {
+        const voiceInfo = arrayVoices[currentPos].value.split('__');
+        // set variables
+        const text = arrayTexts[currentPos].value.trim();
+        const api = voiceInfo[0];
+        const voice = voiceInfo[1];
+        const selIdx = arrayVoices[currentPos].selectedIndex;
+        const voiceName = arrayVoices[currentPos].options[selIdx].dataset.voiceName;
+
+        updateProgress(currentPos, count);
+
+        // If the text isn't empty we'll generate a TTS URL, otherwise just call this again to skip it.
+        if (text.length > 0) generateTTSUrlForPlaylist(api, voice, text, voiceName, currentPos);
+        else generateConversation();
+    } else {
+        // we've finished generating the audio clips
+        currentPos = -1;
+        document.getElementById('progress-bar').value = 100;
+        document.getElementById('progress-done').classList.remove('is-hidden');
+        selectedVoicesToArray();
+        addPlaylistToDOM();
+        playPlaylist();
+    }
+}
+
+/**
+ * Update HTML progress bar
+ *
+ * @param {number} currentPos
+ * @param {number} count
+ */
+function updateProgress(currentPos, count) {
+    const num = currentPos+1;
+    const progressPct = Math.floor((currentPos / count) * 100);
+    document.getElementById('progress-msg').innerHTML = 'Processing TTS audio: <span class="has-text-weight-bold">' + num + '/' + count + '</span>';
+    document.getElementById('progress-bar').classList.add('is-success');
+    document.getElementById('progress-bar').classList.remove('is-dark');
+    document.getElementById('progress-bar').value = progressPct;
+}
+
+/**
+ * Loop through arrPlaylistDialogue and add each <audio> element to the DOM
+ * If we're on the playlist page, an expanded version will be shown with transcripts.
+ * Otherwise, a condensed version will be shown for the conversation page
+ *
+ */
+function addPlaylistToDOM() {
+    let playlistHtml = '';
+    let buttonsHtml = '';
+    let trackNo = 0;
+    let shareButtonHtml = '<button id="btn-copy-playlist-url" type="button" class="button is-success">Share Playlist</button>';
+
+    for (let i = 0; i < arrPlaylistDialogue.length; i++) {
+        // Check this index isn't undefined (if it is it's probably audio we skipped over due to an error)
+        if (arrPlaylistDialogue[i] !== undefined && arrPlaylistDialogue[i] !== null) {
+            trackNo = (i+1);
+            if (isPlaylistPage) {
+                playlistHtml += `<div class="columns is-vcentered">
+                <div class="column is-one-quarter tts-playlist-audio">
+                    <audio controls preload="metadata" src="${arrPlaylistDialogue[i].audio_url}" title="TTS Audio - ${arrPlaylistDialogue[i].voice.name}" data-track-number="${trackNo}" id="playlist-track-${trackNo}">
+                        <p>Your browser does not support the <code>audio</code> element.</p>
+                    </audio>
+                </div>
+                <div class="column tts-playlist-transcript">
+                    <div id="transcript-box-${trackNo}" class="box mt-0 mb-2 tts-transcript-box">
+                        <p class="mb-2"><span id="tts-voice-track-${trackNo}" class="has-text-weight-bold">${arrPlaylistDialogue[i].voice.name}</span>:</p>
+                        <blockquote id="tts-transcript-track-${trackNo}" class="ml-5">${arrPlaylistDialogue[i].text.replace(/(?:\r\n|\r|\n)/g, '<br>')}</blockquote>
+                    </div>
+                </div>
+                </div>`;
+            }
+            else {
+                // For the preview in the conversation editing page we keep things minimal
+                playlistHtml += `<strong>${arrPlaylistDialogue[i].voice.name}</strong><br />
+                    <audio controls preload="metadata" src="${arrPlaylistDialogue[i].audio_url}" title="TTS Audio - ${arrPlaylistDialogue[i].voice.name}" data-track-number="${trackNo}" id="playlist-track-${trackNo}">
+                        <p>Your browser does not support the <code>audio</code> element.</p>
+                    </audio><br />`;
+            }
+        }
+    }
+    
+    // Add buttons and all the HTML we've built up to the page
+    if (isPlaylistPage) {
+        let voiceIds = [];
+        for (let v = 0; v < arrPlaylistVoices.length; v++) {
+            voiceIds.push(arrPlaylistVoices[v].id);
+        }
+        buttonsHtml += '<a href="./conversation.php?voices=' + Array.from(voiceIds).join(",") + '&amp;edit=' + urlParamPls + '" id="btn-edit-playlist" class="button is-success">Edit This Playlist</a> ' + shareButtonHtml;
+        let playlistButtons = document.getElementById('playlist-buttons');
+        playlistButtons.innerHTML = buttonsHtml + playlistButtons.innerHTML;
+
+        playlistHtml = `
+        <div class="columns">
+            <div class="column is-one-quarter tts-playlist-audio">
+                <span class="has-text-weight-bold">Tracks:</span>
+            </div>
+            <div class="column tts-playlist-transcript">
+                <span class="has-text-weight-bold">Transcript:</span> (<a id="transcript-toggle">Show/Hide</a>)
+            </div>
+        </div>
+        ${playlistHtml}`;
     }
     else {
-        return parseInt(secondsPast/3600) + ' hours ago';
+        playlistHtml += '<br /><br /><div class="field is-grouped"><div class="control">' + shareButtonHtml + '</div></div>';
+    }
+    document.getElementById('tts-playlist').innerHTML = playlistHtml;
+
+    // Event listeners
+    document.getElementById('btn-copy-playlist-url').addEventListener('click', function(event){sharePlaylist(document.getElementById('btn-copy-playlist-url'));});
+    if (isPlaylistPage) {
+        document.getElementById('transcript-toggle').addEventListener('click', function(event) {
+            let transcriptBoxes = document.getElementsByClassName('tts-transcript-box');
+            for (let i = 0; i < transcriptBoxes.length; i++){
+                transcriptBoxes[i].classList.toggle('is-hidden');
+            }
+        });
+    }
+}
+
+/**
+ * Calculate duration of playlist
+ *
+ */
+function playlistDuration() {
+    const audioElements = document.querySelectorAll("audio[data-track-number]");
+    let duration = 0;
+
+    for (let i = 0; i < audioElements.length; i++) {
+        duration += isNaN(audioElements[i].duration) ? 0 : audioElements[i].duration;
+    }
+
+    const fmtDuration = new Date(duration * 1000).toISOString().substring(14, 19);
+    document.getElementById('cnvrstn-duration').innerHTML = 'Duration: ~' + fmtDuration;
+    //console.log('Duration: ' + duration + ' or formatted as: ' + fmtDuration);
+}
+
+/**
+ * Add playlist metadata to page
+ *
+ */
+function setPlaylistMetadata() {
+    // Show the total duration
+    playlistDuration();
+
+    // Get the names of voices used
+    const voiceNames = [];
+    for (let i = 0; i < arrPlaylistVoices.length; i++) {
+        voiceNames.push(arrPlaylistVoices[i].name);
+    }
+
+    // Show the participants (voice names)
+    document.getElementById('listen-to-this-convo').innerHTML = 'TTS conversation featuring ' + Array.from(voiceNames).join(", ");
+}
+
+/**
+ * Play the playlist
+ *
+ */
+function playPlaylist() {
+    let audioElements = document.querySelectorAll("audio[data-track-number]");
+
+    if (audioElements.length > 0) {
+        lastTrackNo = parseInt(audioElements[audioElements.length - 1].dataset.trackNumber);
+
+        for (let i = 0; i < audioElements.length; i++) {
+            audioElements[i].addEventListener('playing', function(e) {
+                //console.log('Audio playback started on track ' + e.target.dataset.trackNumber + ' at ' + e.target.currentTime + ' seconds.');
+                if (isPlaylistPage) document.getElementById('transcript-box-' + e.target.dataset.trackNumber).classList.add('box-currently-playing');
+            });
+            audioElements[i].addEventListener('pause', function(e) {
+                //console.log('Audio playback paused on track ' + e.target.dataset.trackNumber + ' at ' + e.target.currentTime + ' seconds.');
+                if (isPlaylistPage) document.getElementById('transcript-box-' + e.target.dataset.trackNumber).classList.remove('box-currently-playing');
+            });
+            audioElements[i].addEventListener('ended', function(e) {
+                //console.log('Audio playback has ended on track ' + e.target.dataset.trackNumber);
+                if (isPlaylistPage) document.getElementById('transcript-box-' + e.target.dataset.trackNumber).classList.remove('box-currently-playing');
+                playNext(parseInt(e.target.dataset.trackNumber) + 1);
+            });
+        }
+
+        // Play the first track
+        audioElements[0].play();
+    }
+}
+
+/**
+ * Play the next track
+ *
+ * @param {number} nextTrackNo
+ */
+function playNext(nextTrackNo) {
+    //console.log('attempting to play track ' + nextTrackNo);
+    const nextTrack = document.getElementById('playlist-track-' + nextTrackNo);
+    if (nextTrack !== null) {
+        nextTrack.play().catch(function() {
+            console.log('Failed to play track ' + nextTrackNo);
+            console.log('Skipping to next track...');
+            nextTrackNo++;
+            playNext(nextTrackNo);
+        });
+    } else if (nextTrackNo <= lastTrackNo) {
+        console.log('Track ' + nextTrackNo + ' is missing. Trying the next track...');
+        nextTrackNo++;
+        playNext(nextTrackNo);
+    }
+}
+
+/**
+ * Show/hide transcript of the audio
+ *
+ * @param {number|string} i
+ */
+function toggleTranscript(i) {
+    const transcriptBox = document.getElementById('transcript-' + i);
+    const transcriptBtn = document.getElementById('btn-transcript-' + i);
+    transcriptBox.classList.toggle('is-hidden');
+    transcriptBox.classList.contains('is-hidden') ? transcriptBtn.innerHTML = 'Show transcript' : transcriptBtn.innerHTML = 'Hide transcript';
+}
+
+/**
+ * Creates an object containing information on the voices the user has selected for this conversation
+ *
+ */
+function selectedVoicesToArray() {
+    const voiceOptions = document.querySelector("select[name='con-voice[]']").options;
+
+    arrPlaylistVoices = [];
+    for (let i = 0; i < voiceOptions.length; i++) {
+        let voiceInfo = {};
+        voiceInfo.id = voiceOptions[i].value;
+        voiceInfo.name = voiceOptions[i].innerText;
+        arrPlaylistVoices[i] = voiceInfo;
+    }
+}
+
+
+/**
+ * Creates/adds to an object containing information on the conversation dialogue
+ * this includes its position in the playlist, the voice used, the text, and the URL of the audio
+ * Only to be called via the XHR response
+ *
+ * @param {Object} result
+ */
+function dialogueToArray(result) {
+    if (result.success === true) {
+        const playlistIndex = parseInt(result.meta.playlist_index);
+
+        let dialogue = {};
+        dialogue.voice = {};
+        dialogue.voice.id = result.meta.voice_id;
+        dialogue.voice.name = result.meta.service + ' - ' + result.meta.voice_name;
+        dialogue.service = result.meta.service;
+        dialogue.text = result.meta.text;
+        dialogue.audio_url = result.audio_url;
+
+        arrPlaylistDialogue[playlistIndex] = dialogue;
+    } else {
+        // show an error?
+        console.log('Dialogue skipped. Reason: ' + result.error_msg);
+    }
+
+    // Call generateConversation() again to continue going through the input
+    generateConversation();
+}
+
+
+/**
+ * Convert all the conversation data to a JSON string ready for writing to a file.
+ *
+ * @return {string} 
+ */
+function conversationToJSON() {
+    objConversation = {};
+    objConversation.success = true;
+    objConversation.voices = arrPlaylistVoices;
+    objConversation.dialogue = arrPlaylistDialogue;
+
+    return JSON.stringify(objConversation);
+}
+
+
+/**
+ * Saves all conversation data to a playlist (JSON file)
+ * Returns shareable URL on success
+ *
+ * @param {HTMLElement} e
+ */
+function sharePlaylist(e) {
+    if (currentPage === 'playlist') {
+        // We're already viewing the playlist so we just need to copy the current URL
+        copyToClipboard(null, e, window.location.href);
+    }
+    else {
+        // Put the contents of our voice and dialogue arrays into a JSON string
+        const filecontents = conversationToJSON();
+
+        // Generate a unique name
+        const now = new Date();
+        const dateString = now.toISOString().substring(0, 23).replace(/\D/g, '');   // only numeric characters
+        const filename = dateString + '_' + helper.random(6);
+
+        // Save the JSON data server side for sharing (we'll also validate the data there for security purposes)
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+            //console.log(xhr.responseText);
+            const response = JSON.parse(xhr.responseText);
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                //console.log(response);
+                if (response.success === true) {
+                    // Copy playlist URL to clipboard
+                    copyToClipboard(null, e, response.playlist_url);
+                }
+                else {
+                    showErrorMessage(response.error_msg);
+                }
+            } else {
+                console.error(response);
+            }
+
+        };
+        xhr.open('POST', 'request_pls.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send('save=1&name=' + encodeURIComponent(filename) + '&json=' + encodeURIComponent(filecontents));
     }
 }

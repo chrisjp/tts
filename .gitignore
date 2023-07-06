@@ -2,6 +2,9 @@
 config.php
 assets/audio/*
 
+# composer
+vendor/
+
 # Generic OS files to ignore
 
 # General
