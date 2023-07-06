@@ -1,27 +1,4 @@
 <?php
-// Grab all the stuff we need
-require_once './vendor/autoload.php';
-
-use ChrisJP\TTS\Playlist;
-
-// Instantiate the TTS Playlist class
-$ttsPls = new Playlist();
-
-// Save playlist
-if ($ttsPls->tryingToSavePlaylist()) {
-    header('Content-Type: application/json');
-    $savedPlsJSON = $ttsPls->savePlaylist($_REQUEST['json'], $_REQUEST['name']);
-    exit($savedPlsJSON);
-}
-
-// Load playlist
-if ($ttsPls->tryingToLoadPlaylist()) {
-    header('Content-Type: application/json');
-    $playlistJSON = $ttsPls->loadPlaylist($_REQUEST['pls_file']);
-    exit($playlistJSON);
-}
-
-// If we got this far we're viewing a playlist
 require_once 'include/header.php';
 ?>
             <div class="box">

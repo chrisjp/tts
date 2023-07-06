@@ -38,7 +38,7 @@ class Playlist extends TTS
             $checkJSON = json_decode($json);
 
             if (json_last_error() === JSON_ERROR_NONE) {
-                $playlistUrl = $this->getRequestScheme() . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '?pls=' . $name;
+                $playlistUrl = $this->getRequestScheme() . $_SERVER['HTTP_HOST'] . '/playlist.php?pls=' . $name;
                 $playlistFilename = 'TTSPlaylist_' . $name . '.json';
 
                 $put = file_put_contents($this->getPathToAudioDir() . $playlistFilename, $json);
@@ -135,7 +135,7 @@ class Playlist extends TTS
      */
     public function tryingToLoadPlaylist(): bool
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_REQUEST['pls_file'])) return true;
+        if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_REQUEST['file'])) return true;
         return false;
     }
 

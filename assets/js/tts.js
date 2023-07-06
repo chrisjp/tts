@@ -954,9 +954,9 @@ function removeShare(index)
  * @param {boolean} editingPlaylist  Whether or not we're currently editing an existing playlist
  */
 function getPlaylist(plsJSON, addToDom, editingPlaylist) {
-    // Load in the JSON (via playlist.php for security and validation)
+    // Load in the JSON
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', 'playlist.php?pls_file=' + plsJSON, true);
+    xhr.open('GET', 'request_pls.php?file=' + plsJSON, true);
     xhr.onload = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             objConversation = JSON.parse(xhr.responseText);
@@ -1599,7 +1599,7 @@ function sharePlaylist(e) {
             }
 
         };
-        xhr.open('POST', 'playlist.php', true);
+        xhr.open('POST', 'request_pls.php', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.send('save=1&name=' + encodeURIComponent(filename) + '&json=' + encodeURIComponent(filecontents));
     }
