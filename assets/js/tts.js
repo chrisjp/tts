@@ -1127,6 +1127,11 @@ function updateSelectedVoices() {
             updateTextareaAttributes(allSelects[i]);    // update the <select>'s corresponding textarea attributes
         }
     }
+    else if (voiceCount > 0 && allSelects.length === 0) {
+        // Or if we have at least 1 voice chosen but no <select>s in the DOM (for dialogue) we can automatically
+        // add a dialogue box for convenience
+        addDialogueBox();
+    }
 }
 
 /**
