@@ -47,11 +47,6 @@ class GoogleTranslate implements Service
      */
     private string $defaultVoice = 'en-gb';
 
-    public function __construct()
-    {
-        // Nothing to do here
-    }
-
     /**
      * Returns the full name of this service.
      *

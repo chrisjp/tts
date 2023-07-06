@@ -58,11 +58,6 @@ class BingTranslator implements Service
      */
     private string $defaultVoice = 'en-US-JennyNeural';
 
-    public function __construct()
-    {
-        // Nothing to do here
-    }
-
     /**
      * Returns the full name of this service.
      *

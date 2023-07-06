@@ -47,11 +47,6 @@ class Oddcast implements Service
      */
     private string $defaultVoice = '3-3-1';
 
-    public function __construct()
-    {
-        // Nothing to do here
-    }
-
     /**
      * Returns the full name of this service.
      *
