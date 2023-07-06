@@ -11,7 +11,7 @@ export function updateURLParameter(url, param, paramVal)
 {
     let TheAnchor = null;
     let newAdditionalURL = '';
-    const tempArray = url.split('?');
+    let tempArray = url.split('?');
     let baseURL = tempArray[0];
     let additionalURL = tempArray[1];
     let temp = '';
