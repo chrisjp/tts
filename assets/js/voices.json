@@ -428,6 +428,7 @@
             {"vid": "en_us_stitch", "name": "Stitch (Lilo & Stitch)", "flag": "", "lang": "English", "accent": "", "gender": "O", "customEmoji": "\uD83D\uDC28"},
             {"vid": "en_us_rocket", "name": "Rocket (Guardians of the Galaxy)", "flag": "US", "lang": "English", "accent": "American", "gender": "O", "customEmoji": "\uD83E\uDD9D"},
             {"vid": "en_female_madam_leota", "name": "Madame Leota", "flag": "US", "lang": "English", "accent": "", "gender": "O", "customEmoji": "\uD83D\uDD2E"},
+            {"vid": "en_male_cupid", "name": "Cupid", "flag": "US", "lang": "English", "accent": "", "gender": "O", "customEmoji": "\uD83D\uDC98"},
             {"vid": "en_male_ghosthost", "name": "Ghost Host", "flag": "US", "lang": "English", "accent": "", "gender": "O"},
             {"vid": "en_male_wizard", "name": "Wizard (Magician)", "flag": "US", "lang": "English", "accent": "", "gender": "O", "customEmoji": "\uD83E\uDDD9\u200D\u2642\uFE0F"},
             {"vid": "en_male_pirate", "name": "Pirate", "flag": "US", "lang": "English", "accent": "", "gender": "O", "customEmoji": "\uD83C\uDFF4\u200D\u2620\uFE0F"},
