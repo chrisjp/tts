@@ -49,7 +49,7 @@ if (currentPage === 'demo') {
     // DEMO PAGE
 
     // Iterate over each group of voices
-    let buttonsHtml = '', selVoice, voiceName = '', voiceAccent = '', voiceCount = 0, langs = [];
+    let buttonsHtml = '', selVoice, voiceName = '', voiceLang = '', voiceCount = 0, langs = [];
     let selApi = !urlParamApi || urlParamApi === 'All' ? ' is-active' : '';
     let filterApiHtml = '<li class="tab tab-api has-text-weight-bold' + selApi + '" id="tab-All"><a>All</a></li>';
     for (let voiceGroup in ttsServices) {
@@ -66,18 +66,14 @@ if (currentPage === 'demo') {
         for (let i = 0; i < voices.length; i++) {
             // Set voice name
             voiceName = voices[i].name;
-            if (voiceName.length === 0) {
-                // If the voice is not named, use the language
-                voiceName = voices[i].lang;
-                // Include accent/region if applicable
-                if (voices[i].accent.length > 0) {
-                    voiceName += ' (' +  voices[i].accent + ')';
-                }
-            } else {
-                // Append language and accent/region if applicable
-                voiceAccent = voices[i].accent.length > 0 ? ', ' + voices[i].accent : '';
-                voiceName += ' (' + voices[i].lang + voiceAccent + ')';
-            }
+            
+            // Voice language should have accent/region appended if set
+            voiceLang = voices[i].lang;
+            if (voices[i].accent.length > 0) voiceLang += ', ' + voices[i].accent
+           
+            // If voice name is the language itself then don't bother appending it
+            if (voiceName !== voiceLang) voiceName += ' (' + voiceLang + ')';
+
             // Add button
             selVoice = ((urlParamVoice === voices[i].vid) && (urlParamApi === voiceGroup)) || ( (!urlParamApi || !urlParamVoice) && (defaultVoice === voices[i].vid) && (defaultApi === voiceGroup) ) ? ' is-success selected-voice' : '';
             buttonsHtml += '<button type="button" class="button button-voice ' + styles.button_fg + ' is-rounded' + selVoice + '" title="' + voiceName + '" data-vid="' + voices[i].vid + '" data-api="' + voiceGroup + '" data-lang="' + voices[i].lang + '" data-gender="' + voices[i].gender + '" data-charlimit="' + ttsServices[voiceGroup].charLimit + '">' +
