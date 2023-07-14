@@ -17,6 +17,7 @@ use ChrisJP\TTS\ReturnObjectTrait;
  * Some voices have multiple IDs associate with them. Duplicates are removed from the JSON but mentioned here for completeness.
  * en_us_002 -> en_us_001
  * br_001 -> br_004
+ * id_female_noor -> id_001
  * 
  */
 class TikTok implements Service 
