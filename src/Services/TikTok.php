@@ -12,7 +12,12 @@ use ChrisJP\TTS\ReturnObjectTrait;
  * The API is not publicly documented. https://github.com/oscie57/tiktok-voice/wiki has been a huge help
  * especially for headers, cookies and voice codes.
  * 
- * Some voices appear to be duplicated (e.g. en_us_001/en_us_002 and br_001/br_004) but are kept in the JSON for completeness.
+ * ## Duplicated voices
+ * 
+ * Some voices have multiple IDs associate with them. Duplicates are removed from the JSON but mentioned here for completeness.
+ * en_us_002 -> en_us_001
+ * br_001 -> br_004
+ * 
  */
 class TikTok implements Service 
 {
