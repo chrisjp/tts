@@ -469,6 +469,7 @@
             {"vid": "id_female_icha", "name": "Icha", "flag": "ID", "lang": "Indonesian", "accent": "", "gender": "F"},
             {"vid": "id_female_noor", "name": "Noor", "flag": "ID", "lang": "Indonesian", "accent": "", "gender": "F"},
             {"vid": "id_male_putra", "name": "Putra", "flag": "ID", "lang": "Indonesian", "accent": "", "gender": "M"},
+            {"vid": "it_male_m18", "name": "Italian Male", "flag": "IT", "lang": "Italian", "accent": "", "gender": "M"},
             {"vid": "jp_001", "name": "Miho (美穂)", "flag": "JP", "lang": "Japanese", "accent": "", "gender": "F"},
             {"vid": "jp_003", "name": "Keiko (恵子)", "flag": "JP", "lang": "Japanese", "accent": "", "gender": "F"},
             {"vid": "jp_005", "name": "Sakura (さくら)", "flag": "JP", "lang": "Japanese", "accent": "", "gender": "F"},
