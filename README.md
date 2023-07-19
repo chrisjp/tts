@@ -55,7 +55,6 @@ Regarding URL validity, it is recommended you enable local saving in `config.php
 - Generated audio (MP3) is returned as a data URI
 #### [Acapela](https://www.acapela-group.com/demos/)
 - 2000 character text limit
-- Light background noise plays throughout the audio
 #### [Oddcast](https://www.oddcast.com/ttsdemo/)
 - 600 character text limit
 #### [Microsoft Azure Speech](https://learn.microsoft.com/en-us/azure/cognitive-services/Speech-Service/) (via [Bing Translator](https://www.bing.com/translator))
