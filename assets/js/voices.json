@@ -772,6 +772,8 @@
             {"vid": "alyona_nt22k", "name": "Alyona (neural)", "flag": "RU", "lang": "Russian", "accent": "", "gender": "F"},
             {"vid": "lena22k", "name": "Lena", "flag": "RU", "lang": "Russian", "accent": "", "gender": "F"},
             {"vid": "lena_nt22k", "name": "Lena (neural)", "flag": "RU", "lang": "Russian", "accent": "", "gender": "F"},
+            {"vid": "biera_hmm_22k", "name": "Biera", "flag": "", "lang": "Sámi", "accent": "Northern", "gender": "M"},
+            {"vid": "elle_hmm_22k", "name": "Elle", "flag": "", "lang": "Sámi", "accent": "Northern", "gender": "F"},
             {"vid": "anabtob22k", "name": "Ana btob", "flag": "ES", "lang": "Spanish", "accent": "Spain", "gender": "F"},
             {"vid": "anabtob_nt22k", "name": "Ana btob (neural)", "flag": "ES", "lang": "Spanish", "accent": "Spain", "gender": "F"},
             {"vid": "antonio22k", "name": "Antonio", "flag": "ES", "lang": "Spanish", "accent": "Spain", "gender": "M"},
