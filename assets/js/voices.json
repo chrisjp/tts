@@ -1038,6 +1038,39 @@
             {"vid": "1-7-40", "name": "Vira", "flag": "UA", "lang": "Ukrainian", "accent": "", "gender": "F"}
         ]
     },
+    "VoiceForge":
+    {
+        "charLimit": 540,
+        "countBytes": false,
+        "voices": [
+            {"vid": "Conrad", "name": "Conrad", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
+            {"vid": "Designer", "name": "Designer Dave", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
+            {"vid": "Diesel", "name": "Diesel", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
+            {"vid": "Dog", "name": "Dog", "flag": "US", "lang": "English", "accent": "", "gender": "O", "customEmoji": "\uD83D\uDC15"},
+            {"vid": "Evilgenius", "name": "Evil Genius", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
+            {"vid": "Frank", "name": "Frank", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
+            {"vid": "French-fry", "name": "French-fry", "flag": "FR", "lang": "English", "accent": "French", "gender": "M"},
+            {"vid": "Gregory", "name": "Gregory", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
+            {"vid": "Jerkface", "name": "Jerkface", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
+            {"vid": "JerseyGirl", "name": "Jersey Girl", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
+            {"vid": "Kayla", "name": "Kayla", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
+            {"vid": "Kevin", "name": "Kevin", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
+            {"vid": "Kidaroo", "name": "Kidaroo", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
+            {"vid": "Princess", "name": "Princess", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
+            {"vid": "RansomNote", "name": "Ransom Note", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
+            {"vid": "Robot", "name": "Robot", "flag": "US", "lang": "English", "accent": "American", "gender": "O", "customEmoji": "\uD83E\uDD16"},
+            {"vid": "Shygirl", "name": "Shy Girl", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
+            {"vid": "Susan", "name": "Susan", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
+            {"vid": "Tamika", "name": "Tamika", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
+            {"vid": "TopHat", "name": "Top Hat", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
+            {"vid": "Vixen", "name": "Vixen", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
+            {"vid": "Vlad", "name": "Vlad", "flag": "RU", "lang": "English", "accent": "Russian", "gender": "M"},
+            {"vid": "Warren", "name": "Warren Peas", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
+            {"vid": "Wiseguy", "name": "Wiseguy", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
+            {"vid": "Zach", "name": "Zach", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
+            {"vid": "Obama", "name": "Obama", "flag": "US", "lang": "English", "accent": "American", "gender": "O", "customEmoji": "\uD83D\uDC68\uD83C\uDFFE\u200D\uD83E\uDDB2"}
+        ]
+    },
     "Bing Translator":
     {
         "charLimit": 3000,
