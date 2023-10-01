@@ -57,6 +57,8 @@ Regarding URL validity, it is recommended you enable local saving in `config.php
 - 2000 character text limit
 #### [Oddcast](https://www.oddcast.com/ttsdemo/)
 - 600 character text limit
+#### [VoiceForge](https://voiceforge.com/)
+- 540 character text limit
 #### [Cepstral](https://www.cepstral.com/en/demos)
 - No practical character limit appears to be in place, but it is set to 5000 because anything over this takes well over a minute to generate.
 - Their server rate-limits requests. It is highly likely that Cepstral will often not work on the demo due to the traffic it receives. It is recommended you use their own site directly, otherwise you'll have to host this library yourself.
