@@ -1071,6 +1071,40 @@
             {"vid": "Obama", "name": "Obama", "flag": "US", "lang": "English", "accent": "American", "gender": "O", "customEmoji": "\uD83D\uDC68\uD83C\uDFFE\u200D\uD83E\uDDB2"}
         ]
     },
+    "Cepstral":
+    {
+        "charLimit": 5000,
+        "countBytes": false,
+        "voices": [
+            {"vid": "Allison", "name": "Allison", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
+            {"vid": "Amy", "name": "Amy", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
+            {"vid": "Belle", "name": "Belle", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
+            {"vid": "Callie", "name": "Callie", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
+            {"vid": "Charlie", "name": "Charlie", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
+            {"vid": "Dallas", "name": "Dallas", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
+            {"vid": "Damien", "name": "Damien", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
+            {"vid": "David", "name": "David", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
+            {"vid": "Diane", "name": "Diane", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
+            {"vid": "Duchess", "name": "Duchess", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
+            {"vid": "Emily", "name": "Emily", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
+            {"vid": "Linda", "name": "Linda", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
+            {"vid": "Robin", "name": "Robin", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
+            {"vid": "Shouty", "name": "Shouty", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
+            {"vid": "Walter", "name": "Walter", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
+            {"vid": "William", "name": "William", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
+            {"vid": "Whispery", "name": "Whispery", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
+            {"vid": "Lawrence", "name": "Lawrence", "flag": "GB", "lang": "English", "accent": "British", "gender": "M"},
+            {"vid": "Millie", "name": "Millie", "flag": "GB", "lang": "English", "accent": "British", "gender": "F"},
+            {"vid": "Duncan", "name": "Duncan", "flag": "GB-SCT", "lang": "English", "accent": "Scottish", "gender": "M"},
+            {"vid": "Vittoria", "name": "Vittoria", "flag": "IT", "lang": "Italian", "accent": "", "gender": "F"},
+            {"vid": "Katrin", "name": "Katrin", "flag": "DE", "lang": "German", "accent": "", "gender": "F"},
+            {"vid": "Matthias", "name": "Matthias", "flag": "DE", "lang": "German", "accent": "", "gender": "M"},
+            {"vid": "Isabelle", "name": "Isabelle", "flag": "CA", "lang": "French", "accent": "Canadian", "gender": "F"},
+            {"vid": "Jean-Pierre", "name": "Jean-Pierre", "flag": "CA", "lang": "French", "accent": "Canadian", "gender": "M"},
+            {"vid": "Alejandra", "name": "Alejandra", "flag": "MX", "lang": "Spanish", "accent": "Mexican", "gender": "F"},
+            {"vid": "Miguel", "name": "Miguel", "flag": "MX", "lang": "Spanish", "accent": "Mexican", "gender": "M"}
+        ]
+    },
     "Bing Translator":
     {
         "charLimit": 3000,
