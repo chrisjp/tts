@@ -23,6 +23,7 @@ if (__FILE__ === $_SERVER['SCRIPT_FILENAME']) {
                 // <a href="https://www.cepstral.com/en/demos">Cepstral</a>
                 // <a href="https://learn.microsoft.com/en-us/azure/cognitive-services/Speech-Service/">Microsoft Azure Speech</a> (via <a href="https://www.bing.com/translator">Bing Translator</a>)
                 // <a href="https://translate.google.com/">Google Translate</a>
+                // <a href="https://www.ispeech.org/">iSpeech</a>
             </p>
             <p>
                 <a href="https://github.com/chrisjp/tts"><img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/github.svg" width="32" height="32" alt="GitHub" /></a>
