@@ -125,7 +125,7 @@ class GoogleTranslate implements Service
             $success = true;
 
             // $response is raw MP3 audio data, so we can provide a data URI for it
-            $audioUrl ='data:audio/mp3;base64,' . base64_encode($response);
+            $audioUrl ='data:audio/mpeg;base64,' . base64_encode($response);
         }
         else {
             $errorMessage = 'HTTP Error ' . $curlInfo['http_code'] . '; Attempted URL: ' . $curlInfo['url'];

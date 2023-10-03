@@ -138,7 +138,7 @@ class TikTok implements Service
         if ($responseObj->status_code === 0) {
             $success = true;
             $audioData = $responseObj->data->v_str;     // base64 encoded MP3 data
-            $audioUrl ='data:audio/mp3;base64,' . $audioData;
+            $audioUrl ='data:audio/mpeg;base64,' . $audioData;
 
             // Overwrite the base64 data because it can be rather large and we'd essentially be returning it twice
             $responseObj->data->v_str = '[redacted to reduce size]';

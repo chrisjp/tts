@@ -124,11 +124,12 @@ class StreamElements implements Service
         $audioUrl = null;
         $errorMessage = null;
  
+        // Content type is incorrectly set as audio/mp3
         if ($curlInfo['http_code'] === 200 && $curlInfo['content_type'] === 'audio/mp3') {
             $success = true;
 
             // $response is raw MP3 audio data, so we can provide a data URI for it
-            $audioUrl ='data:audio/mp3;base64,' . base64_encode($response);
+            $audioUrl ='data:audio/mpeg;base64,' . base64_encode($response);
         }
         else {
             $errorResponse = json_decode($response);
