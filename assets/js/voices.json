@@ -1640,5 +1640,53 @@
             {"vid": "ur", "name": "Urdu", "flag": "PK", "lang": "Urdu", "accent": "", "gender": "F"},
             {"vid": "vi-vn", "name": "Vietnamese", "flag": "VN", "lang": "Vietnamese", "accent": "", "gender": "F"}
         ]
+    },
+    "iSpeech":
+    {
+        "charLimit": 600,
+        "countBytes": true,
+        "voices": [
+            {"vid": "usenglishfemale", "name": "US English Female", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
+            {"vid": "usenglishmale", "name": "US English Male", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
+            {"vid": "ukenglishfemale", "name": "UK English Female", "flag": "GB", "lang": "English", "accent": "England", "gender": "F"},
+            {"vid": "ukenglishmale", "name": "UK English Male", "flag": "GB", "lang": "English", "accent": "England", "gender": "M"},
+            {"vid": "auenglishfemale", "name": "Australian English Female", "flag": "AU", "lang": "English", "accent": "Australian", "gender": "F"},
+            {"vid": "caenglishfemale", "name": "Canadian English Female", "flag": "CA", "lang": "English", "accent": "Canadian", "gender": "F"},
+            {"vid": "arabicmale", "name": "Arabic Male", "flag": "ARAB", "lang": "Arabic", "accent": "", "gender": "M"},
+            {"vid": "hkchinesefemale", "name": "HK Cantonese Female", "flag": "HK", "lang": "Cantonese", "accent": "Hong Kong", "gender": "F"},
+            {"vid": "eurcatalanfemale", "name": "Catalan Female", "flag": "ES-CT", "lang": "Catalan", "accent": "", "gender": "F"},
+            {"vid": "eurczechfemale", "name": "Czech Female", "flag": "CZ", "lang": "Czech", "accent": "", "gender": "F"},
+            {"vid": "eurdanishfemale", "name": "Danish Female", "flag": "DK", "lang": "Danish", "accent": "", "gender": "F"},
+            {"vid": "eurdutchfemale", "name": "Dutch Female", "flag": "NL", "lang": "Dutch", "accent": "", "gender": "F"},
+            {"vid": "eurfinnishfemale", "name": "Finnish Female", "flag": "FI", "lang": "Finnish", "accent": "", "gender": "F"},
+            {"vid": "eurfrenchfemale", "name": "French Female", "flag": "FR", "lang": "French", "accent": "", "gender": "F"},
+            {"vid": "eurfrenchmale", "name": "French Male", "flag": "FR", "lang": "French", "accent": "", "gender": "M"},
+            {"vid": "cafrenchfemale", "name": "Canadian French Female", "flag": "CA", "lang": "French", "accent": "Canadian", "gender": "F"},
+            {"vid": "cafrenchmale", "name": "Canadian French Male", "flag": "CA", "lang": "French", "accent": "Canadian", "gender": "M"},
+            {"vid": "eurgermanfemale", "name": "German Female", "flag": "DE", "lang": "German", "accent": "", "gender": "F"},
+            {"vid": "eurgermanmale", "name": "German Male", "flag": "DE", "lang": "German", "accent": "", "gender": "M"},
+            {"vid": "eurgreekfemale", "name": "Greek Female", "flag": "GR", "lang": "Greek", "accent": "", "gender": "F"},
+            {"vid": "huhungarianfemale", "name": "Hungarian Female", "flag": "HU", "lang": "Hungarian", "accent": "", "gender": "F"},
+            {"vid": "euritalianfemale", "name": "Italian Female", "flag": "IT", "lang": "Italian", "accent": "", "gender": "F"},
+            {"vid": "euritalianmale", "name": "Italian Male", "flag": "IT", "lang": "Italian", "accent": "", "gender": "M"},
+            {"vid": "jpjapanesefemale", "name": "Japanese Female", "flag": "JP", "lang": "Japanese", "accent": "", "gender": "F"},
+            {"vid": "krkoreanfemale", "name": "Korean Female", "flag": "KR", "lang": "Korean", "accent": "", "gender": "F"},
+            {"vid": "chchinesefemale", "name": "Chinese Female", "flag": "CN", "lang": "Mandarin", "accent": "", "gender": "F"},
+            {"vid": "twchinesefemale", "name": "Taiwanese Female", "flag": "TW", "lang": "Mandarin", "accent": "Taiwan", "gender": "F"},
+            {"vid": "eurnorwegianfemale", "name": "Norwegian Female", "flag": "NO", "lang": "Norwegian", "accent": "", "gender": "F"},
+            {"vid": "eurpolishfemale", "name": "Polish Female", "flag": "PL", "lang": "Polish", "accent": "", "gender": "F"},
+            {"vid": "eurportuguesefemale", "name": "Portuguese Female", "flag": "PT", "lang": "Portuguese", "accent": "European", "gender": "F"},
+            {"vid": "eurportuguesemale", "name": "Portuguese Male", "flag": "PT", "lang": "Portuguese", "accent": "European", "gender": "M"},
+            {"vid": "brportuguesefemale", "name": "Brazilian Female", "flag": "BR", "lang": "Portuguese", "accent": "Brazilian", "gender": "F"},
+            {"vid": "rurussianfemale", "name": "Russian Female", "flag": "RU", "lang": "Russian", "accent": "", "gender": "F"},
+            {"vid": "rurussianmale", "name": "Russian Male", "flag": "RU", "lang": "Russian", "accent": "", "gender": "M"},
+            {"vid": "eurspanishfemale", "name": "Spanish Female", "flag": "ES", "lang": "Spanish", "accent": "Spain", "gender": "F"},
+            {"vid": "eurspanishmale", "name": "Spanish Male", "flag": "ES", "lang": "Spanish", "accent": "Spain", "gender": "M"},
+            {"vid": "usspanishfemale", "name": "US Spanish Female", "flag": "MX", "lang": "Spanish", "accent": "Latin American", "gender": "F"},
+            {"vid": "usspanishmale", "name": "US Spanish Male", "flag": "MX", "lang": "Spanish", "accent": "Latin American", "gender": "M"},
+            {"vid": "swswedishfemale", "name": "Swedish Female", "flag": "SE", "lang": "Swedish", "accent": "", "gender": "F"},
+            {"vid": "eurturkishfemale", "name": "Turkish Female", "flag": "TR", "lang": "Turkish", "accent": "", "gender": "F"},
+            {"vid": "eurturkishmale", "name": "Turkish Male", "flag": "TR", "lang": "Turkish", "accent": "", "gender": "M"}
+        ]
     }
 }

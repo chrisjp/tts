@@ -72,6 +72,12 @@ Regarding URL validity, it is recommended you enable local saving in `config.php
 #### [Google Translate](https://translate.google.com/)
 - 200 character limit
 - Generated audio (MP3) is returned as a data URI
+#### [iSpeech](https://www.ispeech.org/)
+- Requires a valid API key as their public demo website is no longer functional. A demo key for evaluation purposes is provided if you do not have one.
+- Depending on the permissions of the API key being used, TTS will be limited to a variable word count (maximum of 100 for the demo key).
+- Some non-English voices cannot interpret English text and will instead say each individual letter.
+- API server can be unreliable and sometimes not return a response.
+- Generated audio (MP3) is returned as a data URI
 
 
 ## Demo website
