@@ -53,11 +53,15 @@ Regarding URL validity, it is recommended you enable local saving in `config.php
 - Generated audio (MP3) is returned as a data URI
 #### [IBM Watson](https://www.ibm.com/products/text-to-speech)
 - Generated audio (MP3) is returned as a data URI
+#### [Cerence](https://codefactoryglobal.com/speech-technology/)
+- Generated audio (MP3) is returned as a data URI
+- text limit was unable to be accurately determined and seemed to depend on numerous factors, including voice and/or language. In testing I was able to get above 1900 characters with many voices, but certain strings (e.g. a long line of emojis) would result in an error even if the length was well under that. Text of an equivalent length in languages that do not use a Latin character set would also produce an error. Limit is therefore set at 1900 bytes as this should work for most voices.
 #### [Acapela](https://www.acapela-group.com/demos/)
 - 2000 character text limit
 #### [Oddcast](https://www.oddcast.com/ttsdemo/)
 - 600 character text limit
 #### [VoiceForge](https://voiceforge.com/)
+- Generated audio (WAV) is returned as a data URI
 - 540 character text limit
 #### [Cepstral](https://www.cepstral.com/en/demos)
 - No practical character limit appears to be in place, but it is set to 5000 because anything over this takes well over a minute to generate.
