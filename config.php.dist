@@ -32,3 +32,10 @@ define('SAVE_TXT', false);
 // 2. Look for a cookie named "sessionid" - you may wish to use the Cookie Editor extension (https://cookie-editor.cgagnier.ca) for your browser to do this.
 // 3. Copy and paste the value below
 define('TIKTOK_SID', 'ReplaceThisWithARealSID');
+
+// iSpeech API key
+// A valid key is required to use the iSpeech TTS service as their public demo website is no longer functional.
+// If you do not have one, 'developerdemokeydeveloperdemokey' can be used, however, this has very limited use:
+// - TTS input will be limited to a maximum of 100 words
+// - Generated audio will usually contain a message telling you to obtain a valid key
+define('API_KEY_ISPEECH', 'developerdemokeydeveloperdemokey');
