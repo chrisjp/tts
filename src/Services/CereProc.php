@@ -147,7 +147,7 @@ class CereProc implements Service
         $headers = [
             'content-type: text/plain;charset=UTF-8',
             'user-agent: ' . $_SERVER['HTTP_USER_AGENT'],
-            'cookie: Drupal.visitor.liveDemo=' . $cookieKey,
+            'cookie: Drupal.visitor.liveDemoTk=' . $cookieKey,
             'referer: ' . $this::demoSite,
             'origin: https://www.cereproc.com',
         ];
