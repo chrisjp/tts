@@ -13,7 +13,6 @@ if (__FILE__ === $_SERVER['SCRIPT_FILENAME']) {
                 TTS Demo by <a href="https://chrisphillips.uk">Chris Phillips</a><br />
                 Powered by: <a href="https://aws.amazon.com/polly/">Amazon Polly</a> (via <a href="https://streamelements.com/">StreamElements</a>/<a href="https://streamlabs.com/">Streamlabs</a>)
                 // <a href="https://cloud.google.com/text-to-speech">Google Cloud Text-to-Speech</a> (via StreamElements)
-                // <a href="https://cereproc.com/">CereProc</a>
                 // <a href="https://tiktok.com">TikTok</a>
                 // <a href="https://www.ibm.com/cloud/watson-text-to-speech/">IBM Watson</a>
                 // <a href="https://codefactoryglobal.com/speech-technology/">Cerence</a>
