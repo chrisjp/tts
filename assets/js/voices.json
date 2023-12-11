@@ -314,7 +314,7 @@
             {"vid": "en_male_jomboy", "name": "Game On", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
             {"vid": "en_female_ghost", "name": "Ghost", "flag": "US", "lang": "English", "accent": "American", "gender": "O", "customEmoji": "\uD83D\uDC7B"},
             {"vid": "en_male_ghosthost", "name": "Ghost Host", "flag": "US", "lang": "English", "accent": "American", "gender": "O"},
-            {"vid": "en_male_david_gingerman", "name": "GingerChime", "flag": "GB", "lang": "English", "accent": "", "gender": "M"},
+            {"vid": "en_male_david_gingerman", "name": "GingerChime", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
             {"vid": "en_female_grandma", "name": "Grandma", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
             {"vid": "en_male_ukneighbor", "name": "Lord Cringe", "flag": "GB", "lang": "English", "accent": "England", "gender": "M"},
             {"vid": "en_male_wizard", "name": "Magician", "flag": "US", "lang": "English", "accent": "", "gender": "O", "customEmoji": "\uD83E\uDDD9\u200D\u2642\uFE0F"},
