@@ -25,7 +25,7 @@ class TikTok implements Service
 
     use ReturnObjectTrait;
 
-    const baseURL = 'https://api22-normal-c-useast1a.tiktokv.com/media/api/text/speech/invoke/';
+    const baseURL = 'https://api22-normal-c-useast2a.tiktokv.com/media/api/text/speech/invoke/';
 
     const demoSite = '';
 
