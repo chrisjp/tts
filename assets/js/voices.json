@@ -1596,3 +1596,9 @@
         ]
     }
 }
+    "UberDuck":
+    {
+        "charLimit": 600,
+        "countBytes": true,
+        "voices": [
+            {"vid": "zwf", "name": "ZWF", "flag": "US", "lang": "English", "accent": "American", "gender": "M"}
