@@ -1252,6 +1252,8 @@
             {"vid": "en-SG-WayneNeural", "name": "Wayne", "flag": "SG", "lang": "English", "accent": "Singapore", "gender": "M"},
             {"vid": "en-TZ-ImaniNeural", "name": "Imani", "flag": "TZ", "lang": "English", "accent": "Tanzania", "gender": "F"},
             {"vid": "en-TZ-ElimuNeural", "name": "Elimu", "flag": "TZ", "lang": "English", "accent": "Tanzania", "gender": "M"},
+            {"vid": "en-US-AvaNeural", "name": "Ava", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
+            {"vid": "en-US-AndrewNeural", "name": "Andrew", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
             {"vid": "en-US-JennyNeural", "name": "Jenny", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
             {"vid": "en-US-GuyNeural", "name": "Guy", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
             {"vid": "en-US-AriaNeural", "name": "Aria", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
