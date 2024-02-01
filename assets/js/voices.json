@@ -1568,3 +1568,13 @@
         ]
     }
 }
+    "UberDuck":
+    {
+        "charLimit": 600,
+        "countBytes": true,
+        "voices":
+    "Suno":
+    {
+        "charLimit": 600,
+        "countBytes": true,
+        "voices":
