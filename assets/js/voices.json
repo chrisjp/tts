@@ -1070,6 +1070,8 @@
             {"vid": "Designer", "name": "Designer Dave", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
             {"vid": "Diesel", "name": "Diesel", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
             {"vid": "Dog", "name": "Dog", "flag": "US", "lang": "English", "accent": "", "gender": "O", "customEmoji": "\uD83D\uDC15"},
+            {"vid": "David", "name": "David", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
+            {"vid": "Damien", "name": "Damien", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
             {"vid": "Evilgenius", "name": "Evil Genius", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
             {"vid": "Frank", "name": "Frank", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
             {"vid": "French-fry", "name": "French-fry", "flag": "FR", "lang": "English", "accent": "French", "gender": "M"},
