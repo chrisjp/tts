@@ -95,8 +95,13 @@ class Streamlabs implements Service
             'text'  => $text,
         ];
 
+        // As of January 2024 the request will timeout if no Referer header is passed
+        $headers = [
+            'Referer: https://streamlabs.com',
+        ];
+
         $request = new Request($this::baseURL);
-        $request->sendRequest($params);
+        $request->sendRequest($params, true, $headers);
 
         $response = $request->getResponse();
         $curlInfo = $request->getInfo();
