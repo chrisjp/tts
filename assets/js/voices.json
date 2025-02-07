@@ -594,7 +594,7 @@
             {"vid": "tamira22k", "name": "Tamira", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
             {"vid": "tamira_nt22k", "name": "Tamira (neural)", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
             {"vid": "taylor22k", "name": "Taylor", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
-            {"vid": "taylor_nt22k", "name": "Taylor (neural)", "flag": "US", "lang": "English", "accent": "American", "gender": "M"},
+            {"vid": "haldria22k", "name": "Haldria", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
             {"vid": "tracy22k", "name": "Tracy", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
             {"vid": "tracy_nt22k", "name": "Tracy (neural)", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
             {"vid": "valeriaenglish22k", "name": "Valeria", "flag": "US", "lang": "English", "accent": "American", "gender": "F"},
