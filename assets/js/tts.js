@@ -769,7 +769,8 @@ function countryCodeToEmoji(countryCode)
     // There are also some edge cases for languages without a flag emoji (Arabic, Esperanto)
 
     let emoji = '\ud83c\udff3\ufe0f';   // white flag (default)
-    let noFlag = (countryCode === 'ARAB' || countryCode === 'ESPER');   // "country" codes with no flag emoji
+    let noFlag = (countryCode === 'ARAB' || countryCode === 'ESPER' 
+                  || countryCode === 'ES-CT' || countryCode === 'ES-PV' || countryCode === 'ES-GA');   // "country" codes with no flag emoji
     let isWin = navigator.platform.indexOf('Win') > -1;     // check if user is on Windows - deprecated but this is a legitimate use case
 
     if ((isWin || noFlag) && countryCode.length !== 0) {
